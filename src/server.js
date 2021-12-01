@@ -1,9 +1,12 @@
 const Hapi = require('@hapi/hapi');
 const Inert = require('@hapi/inert');
 const Vision = require('@hapi/vision');
-const HapiSwagger = require('hapi-swagger');
 const { PORT } = require('./common/config');
-const swaggerOptions = require('../doc/swagger-documentation');
+const Swagger = require('./plugins/swagger');
+const userRouter = require('./resources/users/user.router');
+const pageNotFound = require('./resources/helpers/index');
+
+const plugins = [Inert, Vision, Swagger];
 
 const init = async () => {
   const server = Hapi.server({
@@ -11,14 +14,20 @@ const init = async () => {
     host: 'localhost'
   });
 
-  await server.register([
-    Inert,
-    Vision,
-    {
-      plugin: HapiSwagger,
-      options: swaggerOptions
-    }
-  ]);
+  await server.register(plugins);
+
+  server.route(pageNotFound);
+
+  // user routes
+  server.route(userRouter.getAllUsers);
+  server.route(userRouter.getUserById);
+  server.route(userRouter.updateUserById);
+  server.route(userRouter.creatUser);
+  server.route(userRouter.deleteUserById);
+
+  // board routes
+
+  // task routes
 
   await server.start();
   console.log('Server running on %s', server.info.uri);

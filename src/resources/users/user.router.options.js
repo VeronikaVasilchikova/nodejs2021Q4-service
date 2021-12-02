@@ -6,20 +6,30 @@ const {
   createUser,
   removeUserById
 } = require('./user.service');
+const User = require('./user.model');
 
-const userSchema = Joi.object({
-  id: Joi.string(),
+const getUserSchema = Joi.object({
+  id: Joi.string().required(),
+  name: Joi.string().required(),
+  login: Joi.string().required()
+});
+const updateUserSchema = Joi.object({
   name: Joi.string(),
   login: Joi.string(),
   password: Joi.string()
-});
-const allUsersSchema = Joi.array().items(userSchema);
+}).required();
+const postUserSchema = Joi.object({
+  name: Joi.string().required(),
+  login: Joi.string().required(),
+  password: Joi.string().required()
+}).required();
+const allUsersSchema = Joi.array().items(getUserSchema);
 
 const userRouterOptions = {
   getAllUsers: {
-    handler: (request, h) => {
-      console.log(h);
-      return getAllUsers();
+    handler: () => {
+      const allUsers = getAllUsers();
+      return allUsers.map(User.toResponse);
     },
     plugins: {
       'hapi-swagger': {
@@ -29,7 +39,7 @@ const userRouterOptions = {
             schema: allUsersSchema
           },
           401: {
-            description: 'UnauthorizedError'
+            description: 'Access token is missing or invalid'
           }
         }
       }
@@ -39,20 +49,20 @@ const userRouterOptions = {
     tags: ['api', 'users']
   },
   getUser: {
-    handler: (request, h) => {
-      console.log(h);
+    handler: (request) => {
       const { userId } = request.params;
-      return getUserById(userId);
+      const user = getUserById(userId);
+      return User.toResponse(user);
     },
     plugins: {
       'hapi-swagger': {
         responses: {
           200: {
             description: 'Successful operation',
-            schema: userSchema
+            schema: getUserSchema
           },
           401: {
-            description: 'UnauthorizedError'
+            description: 'Access token is missing or invalid'
           },
           404: {
             description: 'User not found'
@@ -63,66 +73,80 @@ const userRouterOptions = {
     description: 'Get user by ID',
     notes: [`Gets a user by ID
       e.g. "/users/123" (remove password from response)`],
-    tags: ['api', 'users']
+    tags: ['api', 'users'],
+    validate: {
+      params: Joi.object({
+        userId: Joi.string().required()
+      }),
+    }
   },
   updateUser: {
-    handler: (request, h) => {
-      console.log(h);
+    handler: async (request) => {
       const { payload } = request;
       const { userId } = request.params;
-      return updateUserById(userId, payload);
+      const updatedUser = await updateUserById(userId, payload);
+      return User.toResponse(updatedUser);
     },
     plugins: {
       'hapi-swagger': {
         responses: {
           200: {
             description: 'Successful operation',
-            schema: userSchema
+            schema: getUserSchema
           },
           400: {
             description: 'Bad request'
           },
           401: {
-            description: 'UnauthorizedError'
+            description: 'Access token is missing or invalid'
           }
         }
       }
     },
     description: 'Update a user',
     notes: ['Updates a user by ID'],
-    tags: ['api', 'users']
+    tags: ['api', 'users'],
+    validate: {
+      params: Joi.object({
+        userId: Joi.string().required()
+      }),
+      payload: updateUserSchema
+    }
   },
   createUser: {
-    handler: (request, h) => {
-      console.log(h);
+    handler: async (request) => {
       const { payload } = request;
-      return createUser(payload);
+      const createdUser = await createUser(payload);
+      return User.toResponse(createdUser);
     },
     plugins: {
       'hapi-swagger': {
         responses: {
           200: {
             description: 'Successful operation',
-            schema: userSchema
+            schema: getUserSchema
           },
           400: {
             description: 'Bad request'
           },
           401: {
-            description: 'UnauthorizedError'
+            description: 'Access token is missing or invalid'
           }
         }
       }
     },
     description: 'Create user',
     notes: ['Creates a new user (remove password from response)'],
-    tags: ['api', 'users']
+    tags: ['api', 'users'],
+    validate: {
+      payload: postUserSchema
+    }
   },
   deleteUser: {
-    handler: (request, h) => {
-      console.log(h);
+    handler: async (request) => {
       const { userId } = request.params;
-      return removeUserById(userId);
+      await removeUserById(userId);
+      return 'The user has been deleted'
     },
     plugins: {
       'hapi-swagger': {
@@ -131,7 +155,7 @@ const userRouterOptions = {
             description: 'The user has been deleted'
           },
           401: {
-            description: 'UnauthorizedError'
+            description: 'Access token is missing or invalid'
           },
           404: {
             description: 'User not found'
@@ -144,6 +168,11 @@ const userRouterOptions = {
       DELETE User, all Tasks where User is assignee
       should be updated to put userId=null`],
     tags: ['api', 'users'],
+    validate: {
+      params: Joi.object({
+        userId: Joi.string().required()
+      }),
+    }
   }
 }
 

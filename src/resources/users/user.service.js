@@ -4,7 +4,7 @@ const getAllUsers = () => usersRepo.getAllUsers();
 
 const getUserById = (userId) => usersRepo.getUserById(userId);
 
-const updateUserById = (userId, data) => usersRepo.getUserById(userId, data);
+const updateUserById = (userId, data) => usersRepo.updateUserById(userId, data);
 
 const createUser = (user) => usersRepo.createUser(user);
 

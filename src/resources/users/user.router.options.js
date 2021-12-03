@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const Boom = require('@hapi/boom');
 const {
   getAllUsers,
   getUserById,
@@ -27,9 +28,9 @@ const allUsersSchema = Joi.array().items(getUserSchema);
 
 const userRouterOptions = {
   getAllUsers: {
-    handler: () => {
+    handler: (request, h) => {
       const allUsers = getAllUsers();
-      return allUsers.map(User.toResponse);
+      return h.response(allUsers.map(User.toResponse)).code(200);
     },
     plugins: {
       'hapi-swagger': {
@@ -46,18 +47,25 @@ const userRouterOptions = {
     },
     description: 'Get all users',
     notes: ['Gets all users (remove password from response)'],
-    tags: ['api', 'users']
+    tags: ['api', 'users'],
+    response: {
+      status: {
+        200: allUsersSchema,
+        401: Joi.string()
+      }
+    }
   },
   getUser: {
-    handler: (request) => {
+    handler: (request, h) => {
       const { userId } = request.params;
       const user = getUserById(userId);
-      return User.toResponse(user);
+      if (!user) throw Boom.notFound('User not found');
+      return h.response(User.toResponse(user)).code(201);
     },
     plugins: {
       'hapi-swagger': {
         responses: {
-          200: {
+          201: {
             description: 'Successful operation',
             schema: getUserSchema
           },

@@ -30,25 +30,19 @@ const boardRouterOptions = {
     },
     description: 'Get all boards',
     notes: ['Returns all boards'],
-    tags: ['api', 'boards'],
-    response: {
-      status: {
-        200: Joi.array().items(boardSchema.get),
-        401: Joi.string()
-      }
-    }
+    tags: ['api', 'boards']
   },
   getBoard: {
     handler: (request, h) => {
       const { boardId } = request.params;
       const board = getBoardById(boardId);
       if (!board) throw Boom.notFound('Board not found');
-      return h.response(board).code(201);
+      return h.response(board).code(200);
     },
     plugins: {
       'hapi-swagger': {
         responses: {
-          201: {
+          200: {
             description: 'Successful operation',
             schema: boardSchema.get
           },

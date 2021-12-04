@@ -5,7 +5,7 @@ const boardSchema = {
     id: Joi.string().required(),
     title: Joi.string().required(),
     columns: Joi.array().items(Joi.object({
-      id: Joi.string().required(),
+      id: Joi.string(),
       title: Joi.string().required(),
       order: Joi.number().required()
     })).required()

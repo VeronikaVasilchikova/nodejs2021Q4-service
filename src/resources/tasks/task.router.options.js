@@ -12,7 +12,7 @@ const taskSchema = require('./task.schema');
 const taskRouterOptions = {
   getAllTasks: {
     handler: (request, h) => {
-      const { boardId } = request;
+      const { boardId } = request.params;
       const allTasks = getAllTasks(boardId);
       return h.response(allTasks).code(200);
     },
@@ -113,7 +113,8 @@ const taskRouterOptions = {
   },
   createTask: {
     handler: async (request, h) => {
-      const { payload, boardId } = request;
+      const { payload } = request;
+      const { boardId } = request.params;
       const createdTask = await createTask(boardId, payload);
       return h.response(createdTask).code(201);
     },

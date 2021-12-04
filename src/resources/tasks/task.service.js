@@ -1,6 +1,6 @@
 const tasksRepo = require('./task.memory.repository');
 
-const getAllTasks = () => tasksRepo.getAllTasks();
+const getAllTasks = (boardId) => tasksRepo.getAllTasks(boardId);
 
 const getTaskById = (boardId, taskId) => tasksRepo.getTaskById(boardId, taskId);
 

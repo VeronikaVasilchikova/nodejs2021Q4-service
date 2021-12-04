@@ -7,6 +7,7 @@ const {
   createBoard,
   removeBoardById
 } = require('./board.service');
+const { removeTaskById } = require('../tasks/task.service');
 const boardSchema = require('./board.schema');
 
 const boardRouterOptions = {
@@ -93,8 +94,7 @@ const boardRouterOptions = {
     validate: {
       params: Joi.object({
         boardId: Joi.string().required()
-      }),
-      payload: boardSchema.update
+      })
     }
   },
   createBoard: {
@@ -130,6 +130,7 @@ const boardRouterOptions = {
     handler: async (request, h) => {
       const { boardId } = request.params;
       await removeBoardById(boardId);
+      await removeTaskById(boardId);
       return h.response('The board has been deleted').code(204);
     },
     plugins: {

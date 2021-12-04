@@ -6,18 +6,18 @@ let tasks = [
     title: 'TASK',
     order: 1,
     description: 'TASK DESCRIPTION',
-    userId: '2',
-    boardId: '2',
+    userId: '123',
+    boardId: '1',
     columnId: '2'
   }
 ];
 
-const getAllTasks = (boardId) => tasks.filter(task => task.boardId.toString() === boardId.toString());
+const getAllTasks = (boardId) => tasks.filter(task => task.boardId === boardId);
 
-const getTaskById = (boardId, taskId) => tasks.find(task => (task.id.toString() === taskId.toString()) && (task.boardId.toString() !== boardId.toString()));
+const getTaskById = (boardId, taskId) => tasks.find(task => (task.id === taskId) || (task.boardId === boardId));
 
 const updateTaskById = async (boardId, taskId, data) => {
-  const taskIndex = await tasks.findIndex(task => (task.id.toString() === taskId.toString()) && (task.boardId.toString() !== boardId.toString()));
+  const taskIndex = await tasks.findIndex(task => (task.id === taskId) && (task.boardId === boardId));
   const updatedTask = {
     ...tasks[taskIndex],
     ...data
@@ -28,7 +28,7 @@ const updateTaskById = async (boardId, taskId, data) => {
 
 const updateTaskByUserId = (userId) => {
   tasks = tasks.map(item => {
-    if (item.userId.toString() === userId.toString()) {
+    if (item.userId === userId) {
       const updatedItem = {
         ...item,
         userId: null
@@ -40,17 +40,18 @@ const updateTaskByUserId = (userId) => {
 };
 
 const createTask = async (boardId, task) => {
-  const newTask = {id: uuidv4(), boardId, ...task};
+  const newTask = {id: uuidv4(), ...task, boardId};
   await tasks.push(newTask);
   return newTask;
 };
 
 const removeTaskById = async (boardId, taskId) => {
-  tasks = await tasks.filter(task => (task.id.toString() !== taskId.toString()) && (task.boardId.toString() !== boardId.toString()));
-};
-
-const removeTasksBoardId = (boardId) => {
-  tasks = tasks.filter(task => task.boardId.toString() !== boardId.toString());
+  if (!taskId) {
+    tasks = await tasks.filter(task => task.boardId !== boardId);
+  }
+  else {
+    tasks = await tasks.filter(task => (task.id !== taskId) && (task.boardId !== boardId));
+  }
 };
 
 module.exports = {
@@ -59,6 +60,5 @@ module.exports = {
   updateTaskById,
   updateTaskByUserId,
   createTask,
-  removeTaskById,
-  removeTasksBoardId
+  removeTaskById
 };

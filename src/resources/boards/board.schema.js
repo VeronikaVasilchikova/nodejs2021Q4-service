@@ -14,8 +14,8 @@ const boardSchema = {
     title: Joi.string().required(),
     columns: Joi.array().items(Joi.object({
       id: Joi.string(),
-      title: Joi.string().required(),
-      order: Joi.number().required()
+      title: Joi.string(),
+      order: Joi.number()
     })).required()
   }).required(),
   post: Joi.object({

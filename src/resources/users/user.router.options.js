@@ -44,12 +44,12 @@ const userRouterOptions = {
       const { userId } = request.params;
       const user = getUserById(userId);
       if (!user) throw Boom.notFound('User not found');
-      return h.response(User.toResponse(user)).code(201);
+      return h.response(User.toResponse(user)).code(200);
     },
     plugins: {
       'hapi-swagger': {
         responses: {
-          201: {
+          200: {
             description: 'Successful operation',
             schema: userSchema.get
           },
@@ -101,20 +101,19 @@ const userRouterOptions = {
     validate: {
       params: Joi.object({
         userId: Joi.string().required()
-      }),
-      payload: userSchema.update
+      })
     }
   },
   createUser: {
     handler: async (request, h) => {
       const { payload } = request;
       const createdUser = await createUser(payload);
-      return h.response(User.toResponse(createdUser)).code(200);
+      return h.response(User.toResponse(createdUser)).code(201);
     },
     plugins: {
       'hapi-swagger': {
         responses: {
-          200: {
+          201: {
             description: 'Successful operation',
             schema: userSchema.get
           },

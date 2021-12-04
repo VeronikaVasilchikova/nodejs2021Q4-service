@@ -1,5 +1,4 @@
 const boardsRepo = require('./board.memory.repository');
-const tasksRepo = require('../tasks/task.memory.repository');
 
 const getAllBoards = () => boardsRepo.getAllBoards();
 
@@ -10,7 +9,6 @@ const updateBoardById = (boardId, data) => boardsRepo.updateBoardById(boardId, d
 const createBoard = (boardId) => boardsRepo.createBoard(boardId);
 
 const removeBoardById = (boardId) => {
-  tasksRepo.removeTasksBoardId(boardId);
   boardsRepo.removeBoardById(boardId);
 };
 

@@ -33,11 +33,10 @@ const taskRouterOptions = {
     notes: [`Gets tasks by the Board ID
       (e.g. “/board/1/tasks”)`],
     tags: ['api', 'tasks'],
-    response: {
-      status: {
-        200: Joi.array().items(taskSchema.get),
-        401: Joi.string()
-      }
+    validate: {
+      params: Joi.object({
+        boardId: Joi.string().required()
+      }),
     }
   },
   getTask: {
@@ -45,12 +44,12 @@ const taskRouterOptions = {
       const { boardId, taskId } = request.params;
       const task = getTaskById(boardId, taskId);
       if (!task) throw Boom.notFound('Task not found');
-      return h.response(task).code(201);
+      return h.response(task).code(200);
     },
     plugins: {
       'hapi-swagger': {
         responses: {
-          201: {
+          200: {
             description: 'Successful operation',
             schema: taskSchema.get
           },
@@ -107,8 +106,7 @@ const taskRouterOptions = {
       params: Joi.object({
         boardId: Joi.string().required(),
         taskId: Joi.string().required()
-      }),
-      payload: taskSchema.update
+      })
     }
   },
   createTask: {
@@ -136,13 +134,7 @@ const taskRouterOptions = {
     },
     description: 'Create new task',
     notes: ['Creates a new task'],
-    tags: ['api', 'tasks'],
-    validate: {
-      params: Joi.object({
-        boardId: Joi.string().required()
-      }),
-      payload: taskSchema.post
-    }
+    tags: ['api', 'tasks']
   },
   deleteTask: {
     handler: async (request, h) => {

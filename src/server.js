@@ -4,6 +4,7 @@ const Vision = require('@hapi/vision');
 const { PORT } = require('./common/config');
 const Swagger = require('./plugins/swagger');
 const userRouter = require('./resources/users/user.router');
+const boardRouter = require('./resources/boards/board.router');
 const pageNotFound = require('./resources/helpers/index');
 
 const plugins = [Inert, Vision, Swagger];
@@ -26,6 +27,11 @@ const init = async () => {
   server.route(userRouter.deleteUserById);
 
   // board routes
+  server.route(boardRouter.getAllBoards);
+  server.route(boardRouter.getBoardById);
+  server.route(boardRouter.updateBoardById);
+  server.route(boardRouter.createBoard);
+  server.route(boardRouter.deleteBoardById);
 
   // task routes
 

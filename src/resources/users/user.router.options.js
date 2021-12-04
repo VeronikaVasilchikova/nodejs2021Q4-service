@@ -8,23 +8,7 @@ const {
   removeUserById
 } = require('./user.service');
 const User = require('./user.model');
-
-const getUserSchema = Joi.object({
-  id: Joi.string().required(),
-  name: Joi.string().required(),
-  login: Joi.string().required()
-});
-const updateUserSchema = Joi.object({
-  name: Joi.string(),
-  login: Joi.string(),
-  password: Joi.string()
-}).required();
-const postUserSchema = Joi.object({
-  name: Joi.string().required(),
-  login: Joi.string().required(),
-  password: Joi.string().required()
-}).required();
-const allUsersSchema = Joi.array().items(getUserSchema);
+const userSchema = require('./user.schema');
 
 const userRouterOptions = {
   getAllUsers: {
@@ -37,7 +21,7 @@ const userRouterOptions = {
         responses: {
           200: {
             description: 'Successful operation',
-            schema: allUsersSchema
+            schema: Joi.array().items(userSchema.get)
           },
           401: {
             description: 'Access token is missing or invalid'
@@ -50,7 +34,7 @@ const userRouterOptions = {
     tags: ['api', 'users'],
     response: {
       status: {
-        200: allUsersSchema,
+        200: Joi.array().items(userSchema.get),
         401: Joi.string()
       }
     }
@@ -67,7 +51,7 @@ const userRouterOptions = {
         responses: {
           201: {
             description: 'Successful operation',
-            schema: getUserSchema
+            schema: userSchema.get
           },
           401: {
             description: 'Access token is missing or invalid'
@@ -89,18 +73,18 @@ const userRouterOptions = {
     }
   },
   updateUser: {
-    handler: async (request) => {
+    handler: async (request, h) => {
       const { payload } = request;
       const { userId } = request.params;
       const updatedUser = await updateUserById(userId, payload);
-      return User.toResponse(updatedUser);
+      return h.response(User.toResponse(updatedUser)).code(200);
     },
     plugins: {
       'hapi-swagger': {
         responses: {
           200: {
             description: 'Successful operation',
-            schema: getUserSchema
+            schema: userSchema.get
           },
           400: {
             description: 'Bad request'
@@ -118,21 +102,21 @@ const userRouterOptions = {
       params: Joi.object({
         userId: Joi.string().required()
       }),
-      payload: updateUserSchema
+      payload: userSchema.update
     }
   },
   createUser: {
-    handler: async (request) => {
+    handler: async (request, h) => {
       const { payload } = request;
       const createdUser = await createUser(payload);
-      return User.toResponse(createdUser);
+      return h.response(User.toResponse(createdUser)).code(200);
     },
     plugins: {
       'hapi-swagger': {
         responses: {
           200: {
             description: 'Successful operation',
-            schema: getUserSchema
+            schema: userSchema.get
           },
           400: {
             description: 'Bad request'
@@ -147,14 +131,14 @@ const userRouterOptions = {
     notes: ['Creates a new user (remove password from response)'],
     tags: ['api', 'users'],
     validate: {
-      payload: postUserSchema
+      payload: userSchema.post
     }
   },
   deleteUser: {
-    handler: async (request) => {
+    handler: async (request, h) => {
       const { userId } = request.params;
       await removeUserById(userId);
-      return 'The user has been deleted'
+      return h.response('The user has been deleted').code(204);
     },
     plugins: {
       'hapi-swagger': {

@@ -5,6 +5,7 @@ const { PORT } = require('./common/config');
 const Swagger = require('./plugins/swagger');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
+const taskRouter = require('./resources/tasks/task.router');
 const pageNotFound = require('./resources/helpers/index');
 
 const plugins = [Inert, Vision, Swagger];
@@ -34,6 +35,11 @@ const init = async () => {
   server.route(boardRouter.deleteBoardById);
 
   // task routes
+  server.route(taskRouter.getAllTasks);
+  server.route(taskRouter.getTaskById);
+  server.route(taskRouter.updateTaskById);
+  server.route(taskRouter.createTask);
+  server.route(taskRouter.deleteTaskById);
 
   await server.start();
   console.log('Server running on %s', server.info.uri);

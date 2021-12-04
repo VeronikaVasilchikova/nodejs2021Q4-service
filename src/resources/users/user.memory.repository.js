@@ -24,8 +24,8 @@ const updateUserById = async (userId, data) => {
 };
 
 const createUser = async (user) => {
-  const newUser = await {id: uuidv4(), ...user};
-  users.push(newUser);
+  const newUser = {id: uuidv4(), ...user};
+  await users.push(newUser);
   return newUser;
 };
 

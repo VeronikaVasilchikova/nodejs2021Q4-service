@@ -6,6 +6,7 @@ let boards = [
     title: 'board',
     columns: [
       {
+        id: '1',
         title: 'test',
         order: 1
       }
@@ -28,8 +29,8 @@ const updateBoardById = async (boardId, data) => {
 };
 
 const createBoard = async (board) => {
-  const newBoard = await {id: uuidv4(), ...board};
-  boards.push(newBoard);
+  const newBoard = {id: uuidv4(), ...board};
+  await boards.push(newBoard);
   return newBoard;
 };
 

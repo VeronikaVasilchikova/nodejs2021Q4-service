@@ -1,16 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
+const Task = require('./task.model');
 
-let tasks = [
-  {
-    id: '1',
-    title: 'TASK',
-    order: 1,
-    description: 'TASK DESCRIPTION',
-    userId: '123',
-    boardId: '1',
-    columnId: '2'
-  }
-];
+let tasks = [new Task()];
 
 const getAllTasks = (boardId) => tasks.filter(task => task.boardId === boardId);
 

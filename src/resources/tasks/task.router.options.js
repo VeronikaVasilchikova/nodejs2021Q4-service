@@ -31,12 +31,15 @@ const taskRouterOptions = {
     },
     description: 'Get Tasks by boardId',
     notes: [`Gets tasks by the Board ID
-      (e.g. “/board/1/tasks”)`],
+      (e.g. "/board/1/tasks")`],
     tags: ['api', 'tasks'],
     validate: {
       params: Joi.object({
         boardId: Joi.string().required()
-      }),
+      })
+    },
+    response: {
+      schema: Joi.array().items(taskSchema.get)
     }
   },
   getTask: {
@@ -64,13 +67,16 @@ const taskRouterOptions = {
     },
     description: 'Get Task by boardId and taskId',
     notes: [`Gets the Task by the Board's and task ID
-      (e.g. “/board/1/tasks/123”)`],
+      (e.g. "/board/1/tasks/123")`],
     tags: ['api', 'tasks'],
     validate: {
       params: Joi.object({
         boardId: Joi.string().required(),
         taskId: Joi.string().required()
-      }),
+      })
+    },
+    response: {
+      schema: taskSchema.get
     }
   },
   updateTask: {
@@ -106,7 +112,11 @@ const taskRouterOptions = {
       params: Joi.object({
         boardId: Joi.string().required(),
         taskId: Joi.string().required()
-      })
+      }),
+      payload: taskSchema.update
+    },
+    response: {
+      schema: taskSchema.get
     }
   },
   createTask: {
@@ -134,7 +144,16 @@ const taskRouterOptions = {
     },
     description: 'Create new task',
     notes: ['Creates a new task'],
-    tags: ['api', 'tasks']
+    tags: ['api', 'tasks'],
+    validate: {
+      params: Joi.object({
+        boardId: Joi.string().required()
+      }),
+      payload: taskSchema.post
+    },
+    response: {
+      schema: taskSchema.get
+    }
   },
   deleteTask: {
     handler: async (request, h) => {

@@ -1,18 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
+const Board = require('./board.model');
 
-let boards = [
-  {
-    id: '1',
-    title: 'board',
-    columns: [
-      {
-        id: '1',
-        title: 'test',
-        order: 1
-      }
-    ]
-  }
-];
+let boards = [new Board()];
 
 const getAllBoards = () => boards;
 

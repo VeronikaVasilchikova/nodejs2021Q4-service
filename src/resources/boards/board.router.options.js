@@ -31,7 +31,10 @@ const boardRouterOptions = {
     },
     description: 'Get all boards',
     notes: ['Returns all boards'],
-    tags: ['api', 'boards']
+    tags: ['api', 'boards'],
+    response: {
+      schema: Joi.array().items(boardSchema.get)
+    }
   },
   getBoard: {
     handler: (request, h) => {
@@ -62,7 +65,10 @@ const boardRouterOptions = {
     validate: {
       params: Joi.object({
         boardId: Joi.string().required()
-      }),
+      })
+    },
+    response: {
+      schema: boardSchema.get
     }
   },
   updateBoard: {
@@ -94,7 +100,11 @@ const boardRouterOptions = {
     validate: {
       params: Joi.object({
         boardId: Joi.string().required()
-      })
+      }),
+      payload: boardSchema.update
+    },
+    response: {
+      schema: boardSchema.get
     }
   },
   createBoard: {
@@ -124,6 +134,9 @@ const boardRouterOptions = {
     tags: ['api', 'boards'],
     validate: {
       payload: boardSchema.post
+    },
+    response: {
+      schema: boardSchema.get
     }
   },
   deleteBoard: {
@@ -154,7 +167,7 @@ const boardRouterOptions = {
     validate: {
       params: Joi.object({
         boardId: Joi.string().required()
-      }),
+      })
     }
   }
 }

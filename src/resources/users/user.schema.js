@@ -1,20 +1,24 @@
 const Joi = require('joi');
 
+const nameValidationRule = Joi.string().required().example('test name');
+const loginValidationRule = Joi.string().required().example('test login');
+
 const userSchema = {
   get: Joi.object({
     id: Joi.string().required(),
-    name: Joi.string().required(),
-    login: Joi.string().required()
+    name: nameValidationRule,
+    login: loginValidationRule
   }),
   update: Joi.object({
-    name: Joi.string(),
-    login: Joi.string(),
-    password: Joi.string()
+    id: Joi.string(),
+    name: nameValidationRule,
+    login: Joi.string().example('test login'),
+    password: Joi.string().example('@password')
   }).required(),
   post: Joi.object({
-    name: Joi.string().required(),
-    login: Joi.string().required(),
-    password: Joi.string().required()
+    name: nameValidationRule,
+    login: loginValidationRule,
+    password: Joi.string().required().example('@password')
   }).required()
 };
 

@@ -33,10 +33,7 @@ const userRouterOptions = {
     notes: ['Gets all users (remove password from response)'],
     tags: ['api', 'users'],
     response: {
-      status: {
-        200: Joi.array().items(userSchema.get),
-        401: Joi.string()
-      }
+      schema: Joi.array().items(userSchema.get)
     }
   },
   getUser: {
@@ -69,7 +66,10 @@ const userRouterOptions = {
     validate: {
       params: Joi.object({
         userId: Joi.string().required()
-      }),
+      })
+    },
+    response: {
+      schema: userSchema.get
     }
   },
   updateUser: {
@@ -101,7 +101,11 @@ const userRouterOptions = {
     validate: {
       params: Joi.object({
         userId: Joi.string().required()
-      })
+      }),
+      payload: userSchema.update
+    },
+    response: {
+      schema: userSchema.get
     }
   },
   createUser: {
@@ -131,6 +135,9 @@ const userRouterOptions = {
     tags: ['api', 'users'],
     validate: {
       payload: userSchema.post
+    },
+    response: {
+      schema: userSchema.get
     }
   },
   deleteUser: {
@@ -162,7 +169,7 @@ const userRouterOptions = {
     validate: {
       params: Joi.object({
         userId: Joi.string().required()
-      }),
+      })
     }
   }
 }

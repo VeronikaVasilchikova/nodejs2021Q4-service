@@ -1,13 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
+const User = require('./user.model');
 
-let users = [
-  {
-    id: '123',
-    name: 'USER',
-    login: 'user',
-    password: 'P@55w0rd'
-  }
-];
+let users = [new User()];
 
 const getAllUsers = () => users;
 

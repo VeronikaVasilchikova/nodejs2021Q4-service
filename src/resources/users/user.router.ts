@@ -28,4 +28,4 @@ const userRouter = {
   }
 }
 
-module.exports = userRouter;
+export default userRouter;

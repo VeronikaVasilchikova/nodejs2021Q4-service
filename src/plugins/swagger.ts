@@ -1,7 +1,10 @@
-const HapiSwagger = require('hapi-swagger');
-const swaggerOptions = require('../../doc/swagger-options');
+import * as HapiSwagger from 'hapi-swagger';
+// import { Plugin } from "@hapi/hapi";
+import SWAGGER_OPTIONS from '../../doc/swagger-options';
 
-module.exports = {
+const SWAGGER = {
   plugin: HapiSwagger,
-  options: swaggerOptions
+  options: SWAGGER_OPTIONS
 };
+
+export default SWAGGER;

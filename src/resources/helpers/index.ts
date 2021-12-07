@@ -1,4 +1,4 @@
-const Boom = require('@hapi/boom');
+import * as Boom from '@hapi/boom';
 
 const pageNotFound = {
   method: '*',
@@ -8,4 +8,4 @@ const pageNotFound = {
   }
 }
 
-module.exports = pageNotFound;
+export default pageNotFound;

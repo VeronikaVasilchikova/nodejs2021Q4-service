@@ -1,22 +1,29 @@
-const Hapi = require('@hapi/hapi');
-const Inert = require('@hapi/inert');
-const Vision = require('@hapi/vision');
-const { PORT } = require('./common/config');
-const Swagger = require('./plugins/swagger');
-const userRouter = require('./resources/users/user.router');
-const boardRouter = require('./resources/boards/board.router');
-const taskRouter = require('./resources/tasks/task.router');
-const pageNotFound = require('./resources/helpers/index');
+import * as Hapi from '@hapi/hapi';
+import * as Inert from '@hapi/inert';
+import * as Vision from '@hapi/vision';
+import CONFIG from './common/config';
+import SWAGGER from './plugins/swagger';
+import userRouter from './resources/users/user.router';
+import boardRouter from './resources/boards/board.router';
+import taskRouter from './resources/tasks/task.router';
+import pageNotFound from './resources/helpers/index';
 
-const plugins = [Inert, Vision, Swagger];
+const plugins = [Inert, Vision];
+const { PORT } = CONFIG;
 
-const init = async () => {
+/**
+ * Initiate Hapi server
+ *
+ * @returns {Promise<void>}
+ */
+const init = async (): Promise<void> => {
   const server = Hapi.server({
     port: PORT || 3000,
     host: 'localhost'
   });
 
   await server.register(plugins);
+  await server.register(SWAGGER);
 
   server.route(pageNotFound);
 
@@ -45,7 +52,7 @@ const init = async () => {
   console.log('Server running on %s', server.info.uri);
 };
 
-process.on('unhandledRejection', (err) => {
+process.on('unhandledRejection', (err): void => {
   console.log(err);
   process.exit(1);
 });

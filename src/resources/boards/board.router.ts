@@ -28,4 +28,4 @@ const boardRouter = {
   }
 }
 
-module.exports = boardRouter;
+export default boardRouter;

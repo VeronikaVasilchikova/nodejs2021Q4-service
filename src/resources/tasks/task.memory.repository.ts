@@ -40,7 +40,7 @@ export default class TaskMemoryRepository {
     return newTask;
   };
 
-  public static removeTaskById = async (boardId: string, taskId: string): Promise<void> => {
+  public static removeTaskById = async (boardId: string, taskId?: string): Promise<void> => {
     if (!taskId) {
       TaskMemoryRepository.tasks = await TaskMemoryRepository.tasks.filter(task => task.boardId !== boardId);
     }

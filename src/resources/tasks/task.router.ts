@@ -1,4 +1,4 @@
-const taskRouterOptions = require('./task.router.options');
+import taskRouterOptions from './task.router.options';
 
 const taskRouter = {
   getAllTasks: {

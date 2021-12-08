@@ -12,7 +12,7 @@ export default class TaskService {
 
   public static createTask = (boardId: string, task: ITaskDataBasic): Promise<ITaskData> => TaskMemoryRepository.createTask(boardId, task);
 
-  public static removeTaskById = (boardId: string, taskId: string) => {
+  public static removeTaskById = (boardId: string, taskId?: string): void => {
     TaskMemoryRepository.removeTaskById(boardId, taskId);
   };
 }

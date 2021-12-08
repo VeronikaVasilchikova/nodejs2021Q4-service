@@ -1,4 +1,4 @@
-const boardRouterOptions = require('./board.router.options');
+import boardRouterOptions from './board.router.options';
 
 const boardRouter = {
   getAllBoards: {

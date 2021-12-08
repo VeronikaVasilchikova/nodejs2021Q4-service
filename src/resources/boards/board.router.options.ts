@@ -1,19 +1,16 @@
-const Joi = require('joi');
-const Boom = require('@hapi/boom');
-const {
-  getAllBoards,
-  getBoardById,
-  updateBoardById,
-  createBoard,
-  removeBoardById
-} = require('./board.service');
-const { removeTaskById } = require('../tasks/task.service');
-const boardSchema = require('./board.schema');
+import * as Hapi from '@hapi/hapi';
+import { Request } from "@hapi/hapi";
+import Joi from 'joi';
+import Boom from '@hapi/boom';
+import BoardService from './board.service';
+import TaskService from '../tasks/task.service';
+import boardSchema from './board.schema';
+import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
 
 const boardRouterOptions = {
   getAllBoards: {
-    handler: (request, h) => {
-      const allBoards = getAllBoards();
+    handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
+      const allBoards = BoardService.getAllBoards();
       return h.response(allBoards).code(200);
     },
     plugins: {
@@ -37,9 +34,9 @@ const boardRouterOptions = {
     }
   },
   getBoard: {
-    handler: (request, h) => {
+    handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
       const { boardId } = request.params;
-      const board = getBoardById(boardId);
+      const board = BoardService.getBoardById(boardId);
       if (!board) throw Boom.notFound('Board not found');
       return h.response(board).code(200);
     },
@@ -72,10 +69,10 @@ const boardRouterOptions = {
     }
   },
   updateBoard: {
-    handler: async (request, h) => {
-      const { payload } = request;
+    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+      const payload: IBoardData = <IBoardData>request.payload;
       const { boardId } = request.params;
-      const updatedBoard = await updateBoardById(boardId, payload);
+      const updatedBoard = await BoardService.updateBoardById(boardId, payload);
       return h.response(updatedBoard).code(200);
     },
     plugins: {
@@ -108,9 +105,9 @@ const boardRouterOptions = {
     }
   },
   createBoard: {
-    handler: async (request, h) => {
-      const { payload } = request;
-      const createdBoard = await createBoard(payload);
+    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+      const payload: IBoardDataBasic = <IBoardDataBasic>request.payload;
+      const createdBoard = await BoardService.createBoard(payload);
       return h.response(createdBoard).code(201);
     },
     plugins: {
@@ -140,10 +137,10 @@ const boardRouterOptions = {
     }
   },
   deleteBoard: {
-    handler: async (request, h) => {
+    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
       const { boardId } = request.params;
-      await removeBoardById(boardId);
-      await removeTaskById(boardId);
+      await BoardService.removeBoardById(boardId);
+      await TaskService.removeTaskById(boardId);
       return h.response('The board has been deleted').code(204);
     },
     plugins: {
@@ -172,4 +169,4 @@ const boardRouterOptions = {
   }
 }
 
-module.exports = boardRouterOptions;
+export default boardRouterOptions;

@@ -44,3 +44,24 @@ export interface ITaskDataOptional {
   boardId?: string;
   columnId?: string;
 }
+
+export interface IColumns {
+  id: string;
+  title: string;
+  order: number;
+}
+
+export interface IBoardDataBasic {
+  title: string;
+  columns: Array<IColumns>;
+}
+
+export interface IBoardData extends IBoardDataBasic {
+  id: string;
+}
+
+export interface IBoardDataOptional {
+  id?: string;
+  title?: string;
+  columns?: Array<IColumns>;
+}

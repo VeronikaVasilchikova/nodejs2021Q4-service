@@ -1,21 +1,16 @@
-const boardsRepo = require('./board.memory.repository');
+import BoardMemoryRepository from './board.memory.repository';
+import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
 
-const getAllBoards = () => boardsRepo.getAllBoards();
+export default class BoardService {
+  public static getAllBoards = (): Array<IBoardData> | []=> BoardMemoryRepository.getAllBoards();
 
-const getBoardById = (boardId) => boardsRepo.getBoardById(boardId);
+  public static getBoardById = (boardId: string): IBoardData | undefined => BoardMemoryRepository.getBoardById(boardId);
 
-const updateBoardById = (boardId, data) => boardsRepo.updateBoardById(boardId, data);
+  public static updateBoardById = (boardId: string, data: IBoardData): Promise<IBoardData> => BoardMemoryRepository.updateBoardById(boardId, data);
 
-const createBoard = (boardId) => boardsRepo.createBoard(boardId);
+  public static createBoard = (boardId: IBoardDataBasic): Promise<IBoardData> => BoardMemoryRepository.createBoard(boardId);
 
-const removeBoardById = (boardId) => {
-  boardsRepo.removeBoardById(boardId);
-};
-
-module.exports = {
-  getAllBoards,
-  getBoardById,
-  updateBoardById,
-  createBoard,
-  removeBoardById
-};
+  public static removeBoardById = (boardId: string): void => {
+    BoardMemoryRepository.removeBoardById(boardId);
+  };
+}

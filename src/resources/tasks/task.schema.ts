@@ -1,4 +1,4 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
 const alternativeValidation = Joi.alternatives().try(Joi.string().required(), null);
 const taskSchema = {
@@ -30,4 +30,4 @@ const taskSchema = {
   }).required()
 }
 
-module.exports = taskSchema;
+export default taskSchema;

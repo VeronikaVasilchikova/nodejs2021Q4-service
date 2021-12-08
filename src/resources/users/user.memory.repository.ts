@@ -4,9 +4,11 @@ import {IUserData, ICreatedUserData} from '../helpers/interfaces';
 
 export default class UserMemoryRepository {
   private static users: Array<IUserData> = [new User({})];
-  public static getAllUsers = (): Array<IUserData> => UserMemoryRepository.users;
+  public static getAllUsers = (): Array<IUserData> | [] => UserMemoryRepository.users;
 
-  public static getUserById = (userId: string): IUserData | undefined => UserMemoryRepository.users.find(user => user.id.toString() === userId.toString());
+  public static getUserById = (userId: string): IUserData | undefined => {
+    return UserMemoryRepository.users.find(user => user.id.toString() === userId.toString());
+  };
 
   public static updateUserById = async (userId: string, data: IUserData): Promise<IUserData> => {
     const index = await UserMemoryRepository.users.findIndex(item => item.id.toString() === userId.toString());

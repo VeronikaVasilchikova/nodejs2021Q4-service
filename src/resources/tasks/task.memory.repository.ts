@@ -1,55 +1,51 @@
-const { v4: uuidv4 } = require('uuid');
-const Task = require('./task.model');
+import { v4 as uuidv4 } from 'uuid';
+import Task from './task.model';
+import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';
 
-let tasks = [new Task()];
+export default class TaskMemoryRepository {
+  private static tasks: Array<ITaskData> = [new Task()];
 
-const getAllTasks = (boardId) => tasks.filter(task => task.boardId === boardId);
+  public static getAllTasks = (boardId: string): Array<ITaskData> | [] => TaskMemoryRepository.tasks.filter(task => task.boardId === boardId);
 
-const getTaskById = (boardId, taskId) => tasks.find(task => (task.id === taskId) || (task.boardId === boardId));
-
-const updateTaskById = async (boardId, taskId, data) => {
-  const taskIndex = await tasks.findIndex(task => (task.id === taskId) && (task.boardId === boardId));
-  const updatedTask = {
-    ...tasks[taskIndex],
-    ...data
+  public static getTaskById = (boardId: string, taskId: string): ITaskData | undefined => {
+    return TaskMemoryRepository.tasks.find(task => (task.id === taskId) || (task.boardId === boardId));
   };
-  tasks[taskIndex] = updatedTask;
-  return tasks[taskIndex];
-};
 
-const updateTaskByUserId = (userId) => {
-  tasks = tasks.map(item => {
-    if (item.userId === userId) {
-      const updatedItem = {
-        ...item,
-        userId: null
-      };
-      return updatedItem;
+  public static updateTaskById = async (boardId: string, taskId: string, data: ITaskData): Promise<ITaskData> => {
+    const taskIndex = await TaskMemoryRepository.tasks.findIndex(task => (task.id === taskId) && (task.boardId === boardId));
+    const updatedTask = {
+      ...TaskMemoryRepository.tasks[taskIndex],
+      ...data
+    };
+    TaskMemoryRepository.tasks[taskIndex] = updatedTask;
+    return TaskMemoryRepository.tasks[taskIndex];
+  };
+
+  public static updateTaskByUserId = (userId: string): void => {
+    TaskMemoryRepository.tasks = TaskMemoryRepository.tasks.map(item => {
+      if (item.userId === userId) {
+        const updatedItem = {
+          ...item,
+          userId: null
+        };
+        return updatedItem;
+      }
+      return item;
+    })
+  };
+
+  public static createTask = async (boardId: string, task: ITaskDataBasic): Promise<ITaskData> => {
+    const newTask = {id: uuidv4(), ...task, boardId};
+    await TaskMemoryRepository.tasks.push(newTask);
+    return newTask;
+  };
+
+  public static removeTaskById = async (boardId: string, taskId: string): Promise<void> => {
+    if (!taskId) {
+      TaskMemoryRepository.tasks = await TaskMemoryRepository.tasks.filter(task => task.boardId !== boardId);
     }
-    return item;
-  })
-};
-
-const createTask = async (boardId, task) => {
-  const newTask = {id: uuidv4(), ...task, boardId};
-  await tasks.push(newTask);
-  return newTask;
-};
-
-const removeTaskById = async (boardId, taskId) => {
-  if (!taskId) {
-    tasks = await tasks.filter(task => task.boardId !== boardId);
-  }
-  else {
-    tasks = await tasks.filter(task => (task.id !== taskId) && (task.boardId !== boardId));
-  }
-};
-
-module.exports = {
-  getAllTasks,
-  getTaskById,
-  updateTaskById,
-  updateTaskByUserId,
-  createTask,
-  removeTaskById
-};
+    else {
+      TaskMemoryRepository.tasks = await TaskMemoryRepository.tasks.filter(task => (task.id !== taskId) && (task.boardId !== boardId));
+    }
+  };
+}

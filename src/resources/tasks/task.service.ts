@@ -1,21 +1,18 @@
-const tasksRepo = require('./task.memory.repository');
+import TaskMemoryRepository from './task.memory.repository';
+import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';
 
-const getAllTasks = (boardId) => tasksRepo.getAllTasks(boardId);
+export default class TaskService {
+  public static getAllTasks = (boardId: string): Array<ITaskData> | [] => TaskMemoryRepository.getAllTasks(boardId);
 
-const getTaskById = (boardId, taskId) => tasksRepo.getTaskById(boardId, taskId);
+  public static getTaskById = (boardId: string, taskId: string): ITaskData | undefined => TaskMemoryRepository.getTaskById(boardId, taskId);
 
-const updateTaskById = (boardId, tasksId, data) => tasksRepo.updateTaskById(boardId, tasksId, data);
+  public static updateTaskById = (boardId: string, tasksId: string, data: ITaskData): Promise<ITaskData> => {
+    return TaskMemoryRepository.updateTaskById(boardId, tasksId, data);
+  };
 
-const createTask = (boardId, task) => tasksRepo.createTask(boardId, task);
+  public static createTask = (boardId: string, task: ITaskDataBasic): Promise<ITaskData> => TaskMemoryRepository.createTask(boardId, task);
 
-const removeTaskById = (boardId, taskId) => {
-  tasksRepo.removeTaskById(boardId, taskId);
-};
-
-module.exports = {
-  getAllTasks,
-  getTaskById,
-  updateTaskById,
-  createTask,
-  removeTaskById
-};
+  public static removeTaskById = (boardId: string, taskId: string) => {
+    TaskMemoryRepository.removeTaskById(boardId, taskId);
+  };
+}

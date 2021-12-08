@@ -1,4 +1,4 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
 const nameValidationRule = Joi.string().required().example('test name');
 const loginValidationRule = Joi.string().required().example('test login');
@@ -22,4 +22,4 @@ const userSchema = {
   }).required()
 };
 
-module.exports = userSchema;
+export default userSchema;

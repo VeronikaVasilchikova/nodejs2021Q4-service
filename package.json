@@ -9,11 +9,10 @@
   "description": "REST service starter for RS School",
   "main": "src/server.ts",
   "scripts": {
-    "start": "nodemon src/server.ts",
+    "start": "ts-node-dev --respawn src/server.ts",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
-    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
-    "dev": "ts-node-dev --respawn src/server.ts"
+    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
   },
   "keywords": [
     "rs",
@@ -66,6 +65,7 @@
     "@types/hapi__joi": "^17.1.7",
     "@types/hapi__vision": "^5.5.3",
     "@types/node": "^16.11.12",
+    "@types/uuid": "^8.3.3",
     "chai": "4.3.4",
     "debug": "4.3.2",
     "dirty-chai": "2.0.1",

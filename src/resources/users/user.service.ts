@@ -1,23 +1,18 @@
-const usersRepo = require('./user.memory.repository');
+import UserMemoryRepository from './user.memory.repository';
 const tasksRepo = require('../tasks/task.memory.repository');
+import {IUserData, ICreatedUserData} from '../helpers/interfaces';
 
-const getAllUsers = () => usersRepo.getAllUsers();
+export default class UserService {
+  public static getAllUsers = (): Array<IUserData> => UserMemoryRepository.getAllUsers();
 
-const getUserById = (userId) => usersRepo.getUserById(userId);
+  public static getUserById = (userId: string): IUserData | undefined => UserMemoryRepository.getUserById(userId);
 
-const updateUserById = (userId, data) => usersRepo.updateUserById(userId, data);
+  public static updateUserById = (userId: string, data: IUserData): Promise<IUserData> => UserMemoryRepository.updateUserById(userId, data);
 
-const createUser = (user) => usersRepo.createUser(user);
+  public static createUser = (user: ICreatedUserData): Promise<IUserData> => UserMemoryRepository.createUser(user);
 
-const removeUserById = (userId) => {
-  tasksRepo.updateTaskByUserId(userId);
-  usersRepo.removeUserById(userId);
-};
-
-module.exports = {
-  getAllUsers,
-  getUserById,
-  updateUserById,
-  createUser,
-  removeUserById
+  public static removeUserById = (userId: string): void => {
+    tasksRepo.updateTaskByUserId(userId);
+    UserMemoryRepository.removeUserById(userId);
+  };
 };

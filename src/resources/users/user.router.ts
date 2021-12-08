@@ -1,4 +1,4 @@
-const userRouterOptions = require('./user.router.options');
+import userRouterOptions from './user.router.options';
 
 const userRouter = {
   getAllUsers: {

@@ -1,19 +1,16 @@
-const Joi = require('joi');
-const Boom = require('@hapi/boom');
-const {
-  getAllUsers,
-  getUserById,
-  updateUserById,
-  createUser,
-  removeUserById
-} = require('./user.service');
-const User = require('./user.model');
-const userSchema = require('./user.schema');
+import * as Hapi from '@hapi/hapi';
+import { Request } from "@hapi/hapi";
+import Boom from '@hapi/boom';
+import Joi from 'joi';
+import UserService from "./user.service";
+import User from './user.model';
+import userSchema from './user.schema';
+import {IUserData, ICreatedUserData} from '../helpers/interfaces';
 
 const userRouterOptions = {
   getAllUsers: {
-    handler: (request, h) => {
-      const allUsers = getAllUsers();
+    handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
+      const allUsers = UserService.getAllUsers();
       return h.response(allUsers.map(User.toResponse)).code(200);
     },
     plugins: {
@@ -37,9 +34,9 @@ const userRouterOptions = {
     }
   },
   getUser: {
-    handler: (request, h) => {
+    handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
       const { userId } = request.params;
-      const user = getUserById(userId);
+      const user = UserService.getUserById(userId);
       if (!user) throw Boom.notFound('User not found');
       return h.response(User.toResponse(user)).code(200);
     },
@@ -73,10 +70,10 @@ const userRouterOptions = {
     }
   },
   updateUser: {
-    handler: async (request, h) => {
-      const { payload } = request;
+    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+      const payload: IUserData = <IUserData>request.payload;
       const { userId } = request.params;
-      const updatedUser = await updateUserById(userId, payload);
+      const updatedUser = await UserService.updateUserById(userId, payload);
       return h.response(User.toResponse(updatedUser)).code(200);
     },
     plugins: {
@@ -109,9 +106,9 @@ const userRouterOptions = {
     }
   },
   createUser: {
-    handler: async (request, h) => {
-      const { payload } = request;
-      const createdUser = await createUser(payload);
+    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+      const payload: ICreatedUserData = <ICreatedUserData>request.payload;
+      const createdUser = await UserService.createUser(payload);
       return h.response(User.toResponse(createdUser)).code(201);
     },
     plugins: {
@@ -141,9 +138,9 @@ const userRouterOptions = {
     }
   },
   deleteUser: {
-    handler: async (request, h) => {
+    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
       const { userId } = request.params;
-      await removeUserById(userId);
+      await UserService.removeUserById(userId);
       return h.response('The user has been deleted').code(204);
     },
     plugins: {
@@ -174,4 +171,4 @@ const userRouterOptions = {
   }
 }
 
-module.exports = userRouterOptions;
+export default userRouterOptions;

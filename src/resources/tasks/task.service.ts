@@ -6,9 +6,7 @@ export default class TaskService {
 
   public static getTaskById = (boardId: string, taskId: string): ITaskData | undefined => TaskMemoryRepository.getTaskById(boardId, taskId);
 
-  public static updateTaskById = (boardId: string, tasksId: string, data: ITaskData): Promise<ITaskData> => {
-    return TaskMemoryRepository.updateTaskById(boardId, tasksId, data);
-  };
+  public static updateTaskById = (boardId: string, tasksId: string, data: ITaskData): Promise<ITaskData> => TaskMemoryRepository.updateTaskById(boardId, tasksId, data);
 
   public static createTask = (boardId: string, task: ITaskDataBasic): Promise<ITaskData> => TaskMemoryRepository.createTask(boardId, task);
 

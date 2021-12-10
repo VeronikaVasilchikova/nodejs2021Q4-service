@@ -7,9 +7,7 @@ export default class TaskMemoryRepository {
 
   public static getAllTasks = (boardId: string): Array<ITaskData> | [] => TaskMemoryRepository.tasks.filter(task => task.boardId === boardId);
 
-  public static getTaskById = (boardId: string, taskId: string): ITaskData | undefined => {
-    return TaskMemoryRepository.tasks.find(task => (task.id === taskId) || (task.boardId === boardId));
-  };
+  public static getTaskById = (boardId: string, taskId: string): ITaskData | undefined => TaskMemoryRepository.tasks.find(task => (task.id === taskId) || (task.boardId === boardId));
 
   public static updateTaskById = async (boardId: string, taskId: string, data: ITaskData): Promise<ITaskData> => {
     const taskIndex = await TaskMemoryRepository.tasks.findIndex(task => (task.id === taskId) && (task.boardId === boardId));

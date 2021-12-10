@@ -1,5 +1,3 @@
-import * as HapiSwagger from 'hapi-swagger';
-
 interface IUserBasicData {
   name: string;
   login: string;

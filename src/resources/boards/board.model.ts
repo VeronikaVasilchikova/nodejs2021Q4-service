@@ -3,8 +3,11 @@ import { IColumns, IBoardDataOptional } from '../helpers/interfaces';
 
 export default class Board {
   id: string;
+
   title: string;
+
   columns: Array<IColumns>;
+
   constructor({
     id = uuidv4(),
     title = 'BOARD',

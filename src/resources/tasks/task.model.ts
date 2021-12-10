@@ -3,11 +3,17 @@ import { ITaskDataOptional } from '../helpers/interfaces';
 
 export default class Task {
   id: string;
+
   title: string;
+
   order: number;
+
   description: string;
+
   userId: string;
+
   boardId: string;
+
   columnId: string;
 
   constructor({

@@ -15,4 +15,4 @@ export default class UserService {
     TaskMemoryRepository.updateTaskByUserId(userId);
     UserMemoryRepository.removeUserById(userId);
   };
-};
+}

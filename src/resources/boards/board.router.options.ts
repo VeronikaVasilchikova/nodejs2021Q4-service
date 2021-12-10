@@ -9,8 +9,8 @@ import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
 
 const boardRouterOptions = {
   getAllBoards: {
-    handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
-      const allBoards = BoardService.getAllBoards();
+    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+      const allBoards = await BoardService.getAllBoards();
       return h.response(allBoards).code(200);
     },
     plugins: {
@@ -34,9 +34,9 @@ const boardRouterOptions = {
     }
   },
   getBoard: {
-    handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
+    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
       const { boardId } = request.params;
-      const board = BoardService.getBoardById(boardId);
+      const board = await BoardService.getBoardById(boardId);
       if (!board) throw Boom.notFound('Board not found');
       return h.response(board).code(200);
     },

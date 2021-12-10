@@ -11,7 +11,8 @@ const userRouterOptions = {
   getAllUsers: {
     handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
       const allUsers = UserService.getAllUsers();
-      return h.response(allUsers.length ? allUsers.map(User.toResponse) : []).code(200);
+      const res = allUsers.length ? allUsers.map(User.toResponse.bind(User)) : [];
+      return h.response(res).code(200);
     },
     plugins: {
       'hapi-swagger': {

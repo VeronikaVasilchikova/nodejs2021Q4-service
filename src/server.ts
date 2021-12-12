@@ -13,8 +13,7 @@ const { PORT } = CONFIG;
 
 /**
  * Initiate Hapi server
- *
- * @returns {Promise<void>}
+ * @returns Promise with no data
  */
 const init = async (): Promise<void> => {
   const server = Hapi.server({

@@ -9,8 +9,8 @@ import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';
 const taskRouterOptions = {
   getAllTasks: {
     handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
-      const { boardId } = request.params;
-      const allTasks = TaskService.getAllTasks(boardId);
+      const {boardId} = request.params;
+      const allTasks = TaskService.getAllTasks(<string>boardId);
       return h.response(allTasks).code(200);
     },
     plugins: {
@@ -42,7 +42,7 @@ const taskRouterOptions = {
   getTask: {
     handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
       const { boardId, taskId } = request.params;
-      const task = TaskService.getTaskById(boardId, taskId);
+      const task: ITaskData | undefined = TaskService.getTaskById(<string>boardId, <string>taskId);
       if (!task) throw Boom.notFound('Task not found');
       return h.response(task).code(200);
     },
@@ -80,7 +80,7 @@ const taskRouterOptions = {
     handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
       const payload: ITaskData = <ITaskData>request.payload;
       const { boardId, taskId } = request.params;
-      const updatedTask = await TaskService.updateTaskById(boardId, taskId, payload);
+      const updatedTask: ITaskData = await TaskService.updateTaskById(<string>boardId, <string>taskId, payload);
       return h.response(updatedTask).code(200);
     },
     plugins: {
@@ -119,8 +119,8 @@ const taskRouterOptions = {
   createTask: {
     handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
       const payload: ITaskDataBasic = <ITaskDataBasic>request.payload;
-      const { boardId } = request.params;
-      const createdTask = await TaskService.createTask(boardId, payload);
+      const {boardId} = request.params;
+      const createdTask: ITaskData = await TaskService.createTask(<string>boardId, payload);
       return h.response(createdTask).code(201);
     },
     plugins: {
@@ -155,7 +155,7 @@ const taskRouterOptions = {
   deleteTask: {
     handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
       const { boardId, taskId } = request.params;
-      await TaskService.removeTaskById(boardId, taskId);
+      await TaskService.removeTaskById(<string>boardId, <string>taskId);
       return h.response('The task has been deleted').code(204);
     },
     plugins: {

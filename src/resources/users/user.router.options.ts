@@ -36,8 +36,8 @@ const userRouterOptions = {
   },
   getUser: {
     handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
-      const { userId } = request.params;
-      const user = UserService.getUserById(userId);
+      const {userId} = request.params;
+      const user = UserService.getUserById(<string>userId);
       if (!user) throw Boom.notFound('User not found');
       return h.response(User.toResponse(user)).code(200);
     },
@@ -73,8 +73,8 @@ const userRouterOptions = {
   updateUser: {
     handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
       const payload: IUserData = <IUserData>request.payload;
-      const { userId } = request.params;
-      const updatedUser = await UserService.updateUserById(userId, payload);
+      const {userId} = request.params;
+      const updatedUser: IUserData = await UserService.updateUserById(<string>userId, payload);
       return h.response(User.toResponse(updatedUser)).code(200);
     },
     plugins: {
@@ -140,8 +140,8 @@ const userRouterOptions = {
   },
   deleteUser: {
     handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
-      const { userId } = request.params;
-      await UserService.removeUserById(userId);
+      const {userId} = request.params;
+      await UserService.removeUserById(<string>userId);
       return h.response('The user has been deleted').code(204);
     },
     plugins: {

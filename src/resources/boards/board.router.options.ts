@@ -35,8 +35,8 @@ const boardRouterOptions = {
   },
   getBoard: {
     handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
-      const { boardId } = request.params;
-      const board = await BoardService.getBoardById(boardId);
+      const {boardId} = request.params;
+      const board = await BoardService.getBoardById(<string>boardId);
       if (!board) throw Boom.notFound('Board not found');
       return h.response(board).code(200);
     },
@@ -71,8 +71,8 @@ const boardRouterOptions = {
   updateBoard: {
     handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
       const payload: IBoardData = <IBoardData>request.payload;
-      const { boardId } = request.params;
-      const updatedBoard = await BoardService.updateBoardById(boardId, payload);
+      const {boardId} = request.params;
+      const updatedBoard: IBoardData = await BoardService.updateBoardById(<string>boardId, payload);
       return h.response(updatedBoard).code(200);
     },
     plugins: {
@@ -138,9 +138,9 @@ const boardRouterOptions = {
   },
   deleteBoard: {
     handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
-      const { boardId } = request.params;
-      await BoardService.removeBoardById(boardId);
-      await TaskService.removeTaskById(boardId);
+      const {boardId} = request.params;
+      await BoardService.removeBoardById(<string>boardId);
+      await TaskService.removeTaskById(<string>boardId);
       return h.response('The board has been deleted').code(204);
     },
     plugins: {

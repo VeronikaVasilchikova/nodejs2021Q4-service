@@ -9,8 +9,8 @@ import {IUserData, ICreatedUserData} from '../helpers/interfaces';
 
 const userRouterOptions = {
   getAllUsers: {
-    handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
-      const allUsers = UserService.getAllUsers();
+    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+      const allUsers = await UserService.getAllUsers();
       const res = allUsers.length ? allUsers.map(User.toResponse.bind(User)) : [];
       return h.response(res).code(200);
     },
@@ -35,9 +35,9 @@ const userRouterOptions = {
     }
   },
   getUser: {
-    handler: (request: Request, h: Hapi.ResponseToolkit): Hapi.ResponseObject => {
+    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
       const {userId} = request.params;
-      const user = UserService.getUserById(<string>userId);
+      const user = await UserService.getUserById(<string>userId);
       if (!user) throw Boom.notFound('User not found');
       return h.response(User.toResponse(user)).code(200);
     },

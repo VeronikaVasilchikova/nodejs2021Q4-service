@@ -13,13 +13,6 @@ export interface ICreatedUserData extends IUserBasicData {
   password: string;
 }
 
-export interface IUserDataOptional {
-  id?: string;
-  name?: string;
-  login?: string;
-  password?: string;
-}
-
 export interface ITaskDataBasic {
   title: string;
   order: number;
@@ -31,16 +24,6 @@ export interface ITaskDataBasic {
 
 export interface ITaskData extends ITaskDataBasic {
   id: string;
-}
-
-export interface ITaskDataOptional {
-  id?: string;
-  title?: string;
-  order?: number;
-  description?: string;
-  userId?: string;
-  boardId?: string;
-  columnId?: string;
 }
 
 export interface IColumns {
@@ -56,10 +39,4 @@ export interface IBoardDataBasic {
 
 export interface IBoardData extends IBoardDataBasic {
   id: string;
-}
-
-export interface IBoardDataOptional {
-  id?: string;
-  title?: string;
-  columns?: Array<IColumns>;
 }

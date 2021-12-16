@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { ITaskDataOptional } from '../helpers/interfaces';
+import { ITaskData } from '../helpers/interfaces';
 
 export default class Task {
   id: string;
@@ -10,21 +10,23 @@ export default class Task {
 
   description: string;
 
-  userId: string;
+  userId: string | null;
 
-  boardId: string;
+  boardId: string | null;
 
-  columnId: string;
+  columnId: string | null;
 
-  constructor({
-    id = uuidv4(),
-    title = 'TASK',
-    order = 1,
-    description = 'TASK DESCRIPTION',
-    userId = uuidv4(),
-    boardId = uuidv4(),
-    columnId = uuidv4()
-  }: ITaskDataOptional = {}) {
+  constructor(
+    {
+      id = uuidv4(),
+      title = 'TASK',
+      order = 1,
+      description = 'TASK DESCRIPTION',
+      userId = uuidv4(),
+      boardId = uuidv4(),
+      columnId = uuidv4()
+    }: Partial<ITaskData> = {}
+  ) {
     this.id = id;
     this.title = title;
     this.order = order;

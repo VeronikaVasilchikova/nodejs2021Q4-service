@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { IColumns, IBoardDataOptional } from '../helpers/interfaces';
+import { IColumns, IBoardData } from '../helpers/interfaces';
 
 export default class Board {
   id: string;
@@ -8,11 +8,13 @@ export default class Board {
 
   columns: Array<IColumns>;
 
-  constructor({
-    id = uuidv4(),
-    title = 'BOARD',
-    columns = [{id: uuidv4(), title: 'column title', order: 1}]
-  }: IBoardDataOptional = {}) {
+  constructor(
+    {
+      id = uuidv4(),
+      title = 'BOARD',
+      columns = [{id: uuidv4(), title: 'column title', order: 1}]
+    }: Partial<IBoardData> = {}
+  ) {
     this.id = id;
     this.title = title;
     this.columns = columns;

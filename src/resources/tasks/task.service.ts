@@ -6,12 +6,12 @@ import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';
 
 export default class TaskService {
   /**
-   * Returns Hapi response with all existing tasks
+   * Returns Hapi response with all existing tasks with status code 200 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static getAllTasks = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static getAllTasks = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const {boardId} = request.params;
       const allTasks = await TaskMemoryRepository.getAllTasks(<string>boardId);
@@ -23,12 +23,12 @@ export default class TaskService {
   }
 
   /**
-   * Returns Hapi response with existing task
+   * Returns Hapi response with existing task with status code 200 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static getTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static getTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const { boardId, taskId } = request.params;
       const task = await TaskMemoryRepository.getTaskById(<string>boardId, <string>taskId);
@@ -43,12 +43,12 @@ export default class TaskService {
   }
 
   /**
-   * Returns Hapi response with updated task
+   * Returns Hapi response with updated task with status code 200 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static updateTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static updateTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never=> {
     try {
       const payload: ITaskData = <ITaskData>request.payload;
       const { boardId, taskId } = request.params;
@@ -61,12 +61,12 @@ export default class TaskService {
   }
 
   /**
-   * Returns Hapi response with newly created task
+   * Returns Hapi response with newly created task with status code 201 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static createTask = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static createTask = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const payload = <ITaskDataBasic>request.payload;
       const {boardId} = request.params;
@@ -79,12 +79,12 @@ export default class TaskService {
   }
 
   /**
-   * Returns Hapi response with message about deleted task
+   * Returns Hapi response with message about deleted task with status code 204 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static removeTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static removeTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const { boardId, taskId } = request.params;
       await TaskMemoryRepository.removeTaskById(<string>boardId, <string>taskId);

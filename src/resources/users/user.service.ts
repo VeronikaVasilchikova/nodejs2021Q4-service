@@ -8,12 +8,12 @@ import User from './user.model';
 
 export default class UserService {
   /**
-   * Returns Hapi response with all users
+   * Returns Hapi response with all users with status code 200 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static getAllUsers = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static getAllUsers = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const allUsers = await UserMemoryRepository.getAllUsers();
       const res = allUsers.length ? allUsers.map(User.toResponse.bind(User)) : [];
@@ -25,12 +25,12 @@ export default class UserService {
   }
 
   /**
-   * Returns Hapi response with user data
+   * Returns Hapi response with user data with status code 200 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static getUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static getUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never=> {
     const {userId} = request.params;
     try {
       const user = await UserMemoryRepository.getUserById(<string>userId)
@@ -42,12 +42,12 @@ export default class UserService {
   }
 
   /**
-   * Returns Hapi response with updated user data
+   * Returns Hapi response with updated user data with status code 200 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static updateUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static updateUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const payload: IUserData = <IUserData>request.payload;
       const {userId} = request.params;
@@ -60,12 +60,12 @@ export default class UserService {
   }
 
   /**
-   * Returns Hapi response with newly created user data
+   * Returns Hapi response with newly created user data with status code 201 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static createUser = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static createUser = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never=> {
     try {
       const payload: ICreatedUserData = <ICreatedUserData>request.payload;
       const createdUser = await UserMemoryRepository.createUser(payload);
@@ -77,12 +77,12 @@ export default class UserService {
   }
 
   /**
-   * Returns Hapi response with message about deleted user
+   * Returns Hapi response with message about deleted user with status code 204 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static removeUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static removeUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const {userId} = request.params;
       await TaskMemoryRepository.updateTaskByUserId(<string>userId);

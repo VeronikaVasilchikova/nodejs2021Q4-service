@@ -7,12 +7,12 @@ import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
 
 export default class BoardService {
   /**
-   * Returns Hapi response with all existing boards
+   * Returns Hapi response with all existing boards atus code 200 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static getAllBoards = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static getAllBoards = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const allBoards = await BoardMemoryRepository.getAllBoards();
       return h.response(allBoards).code(200);
@@ -23,12 +23,12 @@ export default class BoardService {
   }
 
   /**
-   * Returns Hapi response with existing board
+   * Returns Hapi response with existing board atus code 200 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static getBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static getBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const {boardId} = request.params;
       const board = await BoardMemoryRepository.getBoardById(<string>boardId);
@@ -43,12 +43,12 @@ export default class BoardService {
   }
 
   /**
-   * Returns Hapi response with updated bord data
+   * Returns Hapi response with updated bord data atus code 200 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static updateBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static updateBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const payload: IBoardData = <IBoardData>request.payload;
       const {boardId} = request.params;
@@ -61,12 +61,12 @@ export default class BoardService {
   }
 
   /**
-   * Returns Hapi response with newly created bord data
+   * Returns Hapi response with newly created bord data atus code 201 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static createBoard = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static createBoard = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const payload: IBoardDataBasic = <IBoardDataBasic>request.payload;
       const createdBoard = await BoardMemoryRepository.createBoard(payload);
@@ -78,12 +78,12 @@ export default class BoardService {
   }
 
   /**
-   * Returns Hapi response with message about removed board
+   * Returns Hapi response with message about removed board atus code 204 or throw error
    * @param request Hapi request
    * @param h Hapi response
-   * @returns Promise resolved Hapi response object
+   * @returns Promise resolved Hapi response object or throw error
    */
-  public static removeBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+  public static removeBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const {boardId} = request.params;
       await BoardMemoryRepository.removeBoardById(<string>boardId);

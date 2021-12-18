@@ -1,19 +1,10 @@
-import * as Hapi from '@hapi/hapi';
-import { Request } from "@hapi/hapi";
-import Boom from '@hapi/boom';
 import Joi from 'joi';
 import UserService from "./user.service";
-import User from './user.model';
 import userSchema from './user.schema';
-import {IUserData, ICreatedUserData} from '../helpers/interfaces';
 
 const userRouterOptions = {
   getAllUsers: {
-    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
-      const allUsers = await UserService.getAllUsers();
-      const res = allUsers.length ? allUsers.map(User.toResponse.bind(User)) : [];
-      return h.response(res).code(200);
-    },
+    handler: UserService.getAllUsers,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -35,12 +26,7 @@ const userRouterOptions = {
     }
   },
   getUser: {
-    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
-      const {userId} = request.params;
-      const user = await UserService.getUserById(<string>userId);
-      if (!user) throw Boom.notFound('User not found');
-      return h.response(User.toResponse(user)).code(200);
-    },
+    handler: UserService.getUserById,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -71,12 +57,7 @@ const userRouterOptions = {
     }
   },
   updateUser: {
-    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
-      const payload: IUserData = <IUserData>request.payload;
-      const {userId} = request.params;
-      const updatedUser: IUserData = await UserService.updateUserById(<string>userId, payload);
-      return h.response(User.toResponse(updatedUser)).code(200);
-    },
+    handler: UserService.updateUserById,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -107,11 +88,7 @@ const userRouterOptions = {
     }
   },
   createUser: {
-    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
-      const payload: ICreatedUserData = <ICreatedUserData>request.payload;
-      const createdUser = await UserService.createUser(payload);
-      return h.response(User.toResponse(createdUser)).code(201);
-    },
+    handler: UserService.createUser,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -139,11 +116,7 @@ const userRouterOptions = {
     }
   },
   deleteUser: {
-    handler: async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
-      const {userId} = request.params;
-      await UserService.removeUserById(<string>userId);
-      return h.response('The user has been deleted').code(204);
-    },
+    handler: UserService.removeUserById,
     plugins: {
       'hapi-swagger': {
         responses: {

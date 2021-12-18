@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import Boom from '@hapi/boom';
 import Board from './board.model';
 import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
 
@@ -16,7 +17,11 @@ export default class BoardMemoryRepository {
    * @param boardId identifier of board
    * @returns Promise resolved a board data
    */
-  public static getBoardById = async (boardId: string): Promise<IBoardData | undefined> => BoardMemoryRepository.boards.find(board => board.id.toString() === boardId.toString());
+  public static getBoardById = async (boardId: string): Promise<IBoardData> => {
+    const board = BoardMemoryRepository.boards.find(boardItem => boardItem.id.toString() === boardId.toString());
+    if (!board) throw Boom.notFound('Board not found');
+    return board;
+  }
 
   /**
    * Returns an updated board data based on identifier

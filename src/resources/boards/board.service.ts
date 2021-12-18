@@ -1,41 +1,97 @@
+import * as Hapi from '@hapi/hapi';
+import { Request } from "@hapi/hapi";
+import Boom from '@hapi/boom';
 import BoardMemoryRepository from './board.memory.repository';
+import TaskMemoryRepository from '../tasks/task.memory.repository';
 import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
 
 export default class BoardService {
   /**
-   * Returns an array of all boards
-   * @returns Promise resolved an array of all boards
+   * Returns Hapi response with all existing boards
+   * @param request Hapi request
+   * @param h Hapi response
+   * @returns Promise resolved Hapi response object
    */
-  public static getAllBoards = async (): Promise<Array<IBoardData> | []> => BoardMemoryRepository.getAllBoards();
+  public static getAllBoards = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+    try {
+      const allBoards = await BoardMemoryRepository.getAllBoards();
+      return h.response(allBoards).code(200);
+    }
+    catch (error) {
+      throw Boom.badImplementation((<Error>error).message);
+    }
+  }
 
   /**
-   * Returns a board data based on the identifier
-   * @param boardId identifier of board
-   * @returns Promise resolved a board data
+   * Returns Hapi response with existing board
+   * @param request Hapi request
+   * @param h Hapi response
+   * @returns Promise resolved Hapi response object
    */
-  public static getBoardById = async (boardId: string): Promise<IBoardData | undefined> => BoardMemoryRepository.getBoardById(boardId);
+  public static getBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+    try {
+      const {boardId} = request.params;
+      const board = await BoardMemoryRepository.getBoardById(<string>boardId);
+      return h.response(board).code(200);
+    }
+    catch (error) {
+      if (!Boom.isBoom(error)) {
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
+    }
+  }
 
   /**
-   * Returns an updated board data based on identifier
-   * @param boardId identifier of board
-   * @param data new data for existing board
-   * @returns Promise resolved an updated board data
+   * Returns Hapi response with updated bord data
+   * @param request Hapi request
+   * @param h Hapi response
+   * @returns Promise resolved Hapi response object
    */
-  public static updateBoardById = async (boardId: string, data: IBoardData): Promise<IBoardData> => BoardMemoryRepository.updateBoardById(boardId, data);
+  public static updateBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+    try {
+      const payload: IBoardData = <IBoardData>request.payload;
+      const {boardId} = request.params;
+      const updatedBoard: IBoardData = await BoardMemoryRepository.updateBoardById(<string>boardId, payload);
+      return h.response(updatedBoard).code(200);
+    }
+    catch (error) {
+      throw Boom.badImplementation((<Error>error).message);
+    }
+  }
 
   /**
-   * Returns a newly created board data
-   * @param board new board data
-   * @returns Promise resolved a newly created board data
+   * Returns Hapi response with newly created bord data
+   * @param request Hapi request
+   * @param h Hapi response
+   * @returns Promise resolved Hapi response object
    */
-  public static createBoard = async (boardId: IBoardDataBasic): Promise<IBoardData> => BoardMemoryRepository.createBoard(boardId);
+  public static createBoard = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+    try {
+      const payload: IBoardDataBasic = <IBoardDataBasic>request.payload;
+      const createdBoard = await BoardMemoryRepository.createBoard(payload);
+      return h.response(createdBoard).code(201);
+    }
+    catch (error) {
+      throw Boom.badImplementation((<Error>error).message);
+    }
+  }
 
   /**
-   * Remove an existing board from database based on identifier
-   * @param boardId identifier of board
-   * @returns Promise resolved no data
+   * Returns Hapi response with message about removed board
+   * @param request Hapi request
+   * @param h Hapi response
+   * @returns Promise resolved Hapi response object
    */
-  public static removeBoardById = async (boardId: string): Promise<void> => {
-    BoardMemoryRepository.removeBoardById(boardId);
+  public static removeBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+    try {
+      const {boardId} = request.params;
+      await BoardMemoryRepository.removeBoardById(<string>boardId);
+      await TaskMemoryRepository.removeTaskById(<string>boardId);
+      return h.response('The board has been deleted').code(204);
+    }
+    catch (error) {
+      throw Boom.badImplementation((<Error>error).message);
+    }
   };
 }

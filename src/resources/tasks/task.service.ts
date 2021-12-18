@@ -1,46 +1,97 @@
+import * as Hapi from '@hapi/hapi';
+import { Request } from "@hapi/hapi";
+import Boom from '@hapi/boom';
 import TaskMemoryRepository from './task.memory.repository';
 import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';
 
 export default class TaskService {
   /**
-   * Returns all tasks of pointed board
-   * @param boardId board identifier
-   * @returns Promise resolved task array
+   * Returns Hapi response with all existing tasks
+   * @param request Hapi request
+   * @param h Hapi response
+   * @returns Promise resolved Hapi response object
    */
-  public static getAllTasks = (boardId: string): Promise<Array<ITaskData> | []> => TaskMemoryRepository.getAllTasks(boardId);
+  public static getAllTasks = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+    try {
+      const {boardId} = request.params;
+      const allTasks = await TaskMemoryRepository.getAllTasks(<string>boardId);
+      return h.response(allTasks).code(200);
+    }
+    catch (error) {
+      throw Boom.badImplementation((<Error>error).message);
+    }
+  }
 
   /**
-   * Returns an existing task based on board and task identifier
-   * @param boardId board identifier
-   * @param taskId task identifier
-   * @returns Promise resolved existing task data
+   * Returns Hapi response with existing task
+   * @param request Hapi request
+   * @param h Hapi response
+   * @returns Promise resolved Hapi response object
    */
-  public static getTaskById = (boardId: string, taskId: string): Promise<ITaskData | undefined> => TaskMemoryRepository.getTaskById(boardId, taskId);
+  public static getTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+    try {
+      const { boardId, taskId } = request.params;
+      const task = await TaskMemoryRepository.getTaskById(<string>boardId, <string>taskId);
+      return h.response(task).code(200);
+    }
+    catch (error) {
+      if (!Boom.isBoom(error)) {
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
+    }
+  }
 
   /**
-   * Returns an updated task based on board and task identifier
-   * @param boardId board identifier
-   * @param taskId task identifier
-   * @param data new task data
-   * @returns Promise resolved updated task data
+   * Returns Hapi response with updated task
+   * @param request Hapi request
+   * @param h Hapi response
+   * @returns Promise resolved Hapi response object
    */
-  public static updateTaskById = (boardId: string, tasksId: string, data: ITaskData): Promise<ITaskData> => TaskMemoryRepository.updateTaskById(boardId, tasksId, data);
+  public static updateTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+    try {
+      const payload: ITaskData = <ITaskData>request.payload;
+      const { boardId, taskId } = request.params;
+      const updatedTask: ITaskData = await TaskMemoryRepository.updateTaskById(<string>boardId, <string>taskId, payload);
+      return h.response(updatedTask).code(200);
+    }
+    catch (error) {
+      throw Boom.badImplementation((<Error>error).message);
+    }
+  }
 
   /**
-   * Return a newly created task for existing board
-   * @param boardId identifier of board
-   * @param task new task data
-   * @returns Promise resolved newly created task data
+   * Returns Hapi response with newly created task
+   * @param request Hapi request
+   * @param h Hapi response
+   * @returns Promise resolved Hapi response object
    */
-  public static createTask = (boardId: string, task: ITaskDataBasic): Promise<ITaskData> => TaskMemoryRepository.createTask(boardId, task);
+  public static createTask = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+    try {
+      const payload = <ITaskDataBasic>request.payload;
+      const {boardId} = request.params;
+      const createdTask = await TaskMemoryRepository.createTask(<string>boardId, payload);
+      return h.response(createdTask).code(201);
+    }
+    catch (error) {
+      throw Boom.badImplementation((<Error>error).message);
+    }
+  }
 
   /**
-   * Remove an existing task from database based on board or/and task identifier
-   * @param boardId identifier of board
-   * @param taskId identifier of task
-   * @returns Promise resolved no data
+   * Returns Hapi response with message about deleted task
+   * @param request Hapi request
+   * @param h Hapi response
+   * @returns Promise resolved Hapi response object
    */
-  public static removeTaskById = (boardId: string, taskId?: string): void => {
-    TaskMemoryRepository.removeTaskById(boardId, taskId);
-  };
+  public static removeTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> => {
+    try {
+      const { boardId, taskId } = request.params;
+      await TaskMemoryRepository.removeTaskById(<string>boardId, <string>taskId);
+      return h.response('The task has been deleted').code(204);
+    }
+    catch (error) {
+      throw Boom.badImplementation((<Error>error).message);
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import Boom from '@hapi/boom';
 import Task from './task.model';
 import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';
 
@@ -18,7 +19,11 @@ export default class TaskMemoryRepository {
    * @param taskId task identifier
    * @returns Promise resolved existing task data
    */
-  public static getTaskById = async (boardId: string, taskId: string): Promise<ITaskData | undefined> => TaskMemoryRepository.tasks.find(task => (task.id === taskId) || (task.boardId === boardId));
+  public static getTaskById = async (boardId: string, taskId: string): Promise<ITaskData> => {
+    const task = TaskMemoryRepository.tasks.find(taskItem => (taskItem.id === taskId) || (taskItem.boardId === boardId));
+    if (!task) throw Boom.notFound('Task not found');
+    return task;
+  }
 
   /**
    * Returns an updated task based on board and task identifier

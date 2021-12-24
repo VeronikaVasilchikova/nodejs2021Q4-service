@@ -17,7 +17,7 @@ const { PORT } = CONFIG;
  */
 const createServer = async (): Promise<Hapi.Server> => {
   const server: Hapi.Server = Hapi.server({
-    port: PORT || 3000,
+    port: PORT || 4000,
     host: 'localhost'
   });
 

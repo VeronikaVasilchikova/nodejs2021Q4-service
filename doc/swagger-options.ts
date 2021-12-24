@@ -1,6 +1,5 @@
 import * as HapiSwagger from 'hapi-swagger';
-
-const Package = require('../package.json') ;
+import * as Package from '../package.json';
 
 const SWAGGER_OPTIONS: HapiSwagger.RegisterOptions = {
   jsonPath: '/documentation.json',

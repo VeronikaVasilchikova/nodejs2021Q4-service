@@ -9,8 +9,8 @@
   "description": "REST service starter for RS School",
   "main": "src/server.ts",
   "scripts": {
-    "start": "tsc -p tsconfig.json && node build/src/server.js",
-    "build": "tsc -p tsconfig.json",
+    "start:dev": "ts-node-dev --respawn src/server.ts development",
+    "start:prod": "tsc -p tsconfig.json && node build/src/server.js production",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"

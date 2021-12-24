@@ -1,13 +1,22 @@
 {
   "compilerOptions": {
-    "allowJs": false,
-    "strict": true,
-    "noImplicitAny": true,
     "target": "es6",
+    "module": "commonjs",
+    "allowJs": false,
+    "outDir": "build",
+    "downlevelIteration": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "outDir": "build",
-    "resolveJsonModule": true,
-    "module": "commonjs"
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "resolveJsonModule": true
   }
 }

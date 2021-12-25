@@ -6,6 +6,7 @@ import TaskMemoryRepository from '../tasks/task.memory.repository';
 import { IUserData, ICreatedUserData, IDataToLogging } from '../helpers/interfaces';
 import User from './user.model';
 import Logger from '../../logger';
+import ErrorHandler from '../../error';
 
 export default class UserService {
   /**
@@ -23,7 +24,11 @@ export default class UserService {
       return h.response(res).code(200);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('getAllUsers', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -33,16 +38,20 @@ export default class UserService {
    * @param h Hapi response
    * @returns Promise resolved Hapi response object or throw error
    */
-  public static getUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never=> {
+  public static getUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     const {userId} = request.params;
     try {
       const loggerDataObj: IDataToLogging = Logger.createDataToLogging('getUserById', request, 200);
       Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
       const user = await UserMemoryRepository.getUserById(<string>userId)
-      return h.response(User.toResponse(<IUserData>user)).code(200);
+      return h.response(User.toResponse(user)).code(200);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('getUserById', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -62,7 +71,11 @@ export default class UserService {
       return h.response(User.toResponse(updatedUser)).code(200);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('updateUserById', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -72,7 +85,7 @@ export default class UserService {
    * @param h Hapi response
    * @returns Promise resolved Hapi response object or throw error
    */
-  public static createUser = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never=> {
+  public static createUser = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const loggerDataObj: IDataToLogging = Logger.createDataToLogging('createUser', request, 201);
       Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
@@ -81,7 +94,11 @@ export default class UserService {
       return h.response(User.toResponse(createdUser)).code(201);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('createUser', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -101,7 +118,11 @@ export default class UserService {
       return h.response('The user has been deleted').code(204);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('removeUserById', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 }

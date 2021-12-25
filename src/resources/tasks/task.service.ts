@@ -4,6 +4,7 @@ import Boom from '@hapi/boom';
 import TaskMemoryRepository from './task.memory.repository';
 import { ITaskData, ITaskDataBasic, IDataToLogging } from '../helpers/interfaces';
 import Logger from '../../logger';
+import ErrorHandler from '../../error';
 
 export default class TaskService {
   /**
@@ -21,7 +22,11 @@ export default class TaskService {
       return h.response(allTasks).code(200);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('getAllTasks', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -41,6 +46,7 @@ export default class TaskService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('getTaskById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -53,7 +59,7 @@ export default class TaskService {
    * @param h Hapi response
    * @returns Promise resolved Hapi response object or throw error
    */
-  public static updateTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never=> {
+  public static updateTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
       const loggerDataObj: IDataToLogging = Logger.createDataToLogging('updateTaskById', request, 200);
       Logger.writeDataToFile('../data/task-logger.json', JSON.stringify(loggerDataObj));
@@ -63,7 +69,11 @@ export default class TaskService {
       return h.response(updatedTask).code(200);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('updateTaskById', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -83,7 +93,11 @@ export default class TaskService {
       return h.response(createdTask).code(201);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('createTask', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -102,7 +116,11 @@ export default class TaskService {
       return h.response('The task has been deleted').code(204);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('removeTaskById', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 }

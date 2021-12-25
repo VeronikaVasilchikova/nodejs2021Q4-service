@@ -48,3 +48,9 @@ export interface IDataToLogging {
   body: string | object;
   statusCode: number;
 }
+
+export interface IErrorData {
+  name: string;
+  errorMessage: string;
+  statusCode: number;
+}

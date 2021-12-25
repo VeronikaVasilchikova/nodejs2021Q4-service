@@ -5,6 +5,7 @@ import BoardMemoryRepository from './board.memory.repository';
 import TaskMemoryRepository from '../tasks/task.memory.repository';
 import { IBoardData, IBoardDataBasic, IDataToLogging } from '../helpers/interfaces';
 import Logger from '../../logger';
+import ErrorHandler from '../../error';
 
 export default class BoardService {
   /**
@@ -21,7 +22,11 @@ export default class BoardService {
       return h.response(allBoards).code(200);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('getAllBoards', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -41,6 +46,7 @@ export default class BoardService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('getBoardById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -63,7 +69,11 @@ export default class BoardService {
       return h.response(updatedBoard).code(200);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('updateBoardById', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -82,7 +92,11 @@ export default class BoardService {
       return h.response(createdBoard).code(201);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('createBoard', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -102,7 +116,11 @@ export default class BoardService {
       return h.response('The board has been deleted').code(204);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        ErrorHandler.handleError('removeBoardById', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   };
 }

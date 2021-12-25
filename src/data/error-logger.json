@@ -1,0 +1,18 @@
+{"name":"updateTaskByUserId","errorMessage":"Task with userId=e639ae82-b129-434e-a0fb-6b3af62ed7ae not found","statusCode":404}
+{"name":"updateTaskByUserId","errorMessage":"Task with userId=7e5f50fd-5f09-4b41-8051-d01993e8d342 not found","statusCode":404}
+{"name":"updateTaskByUserId","errorMessage":"Task with userId=e32ba6ee-e28a-44ec-a853-6d627f5aeeb3 not found","statusCode":404}
+{"name":"updateTaskByUserId","errorMessage":"Task with userId=493b0302-cbb5-4c8d-9b02-11a13e696c3c not found","statusCode":404}
+{"name":"removeTaskById","errorMessage":"Task with taskId=a9546c8e-b50f-4e4c-819b-a995d0ab335b and boardId=1e4a056a-003f-4a6d-9f3d-449f93ef1710 not found","statusCode":404}
+{"name":"removeTaskById","errorMessage":"Task with boardId=1e4a056a-003f-4a6d-9f3d-449f93ef1710 not found","statusCode":404}
+{"name":"removeTaskById","errorMessage":"Task with boardId=3ac5d6b8-0abf-47a0-80f1-62ee9a4fe3f6 not found","statusCode":404}
+{"name":"removeTaskById","errorMessage":"Task with boardId=c248121f-4a7e-48b0-91ed-e509266db604 not found","statusCode":404}
+{"name":"removeTaskById","errorMessage":"Task with boardId=a7a6f1d4-907c-432f-be67-a6fcccf00756 not found","statusCode":404}
+{"name":"getBoardById","errorMessage":"Board with id=a7a6f1d4-907c-432f-be67-a6fcccf00756 not found","statusCode":404}
+{"name":"getTaskById","errorMessage":"Task with boardId=e3f4f833-92b0-40e8-86b2-60f02f27ef2c and taskId=3624cd38-fce7-440d-9178-843a2963707c not found","statusCode":404}
+{"name":"getTaskById","errorMessage":"Task with boardId=e3f4f833-92b0-40e8-86b2-60f02f27ef2c and taskId=5c16b87a-407e-4b6e-a2a0-8205fb29b6cd not found","statusCode":404}
+{"name":"getTaskById","errorMessage":"Task with boardId=e3f4f833-92b0-40e8-86b2-60f02f27ef2c and taskId=f5666b9f-3d51-4ba3-a9fa-722369369790 not found","statusCode":404}
+{"name":"getTaskById","errorMessage":"Task with boardId=e3f4f833-92b0-40e8-86b2-60f02f27ef2c and taskId=7bd124bc-fa01-4d7c-a57c-5c8bb459abc5 not found","statusCode":404}
+{"name":"getTaskById","errorMessage":"Task with boardId=e3f4f833-92b0-40e8-86b2-60f02f27ef2c and taskId=66cf5bde-ac8d-4af3-9c01-144fefd4e359 not found","statusCode":404}
+{"name":"removeTaskById","errorMessage":"Task with boardId=616f09f7-bd94-422d-898d-57489d587ac4 not found","statusCode":404}
+{"name":"getTaskById","errorMessage":"Task with boardId=b3ae1ba5-4cf0-4df9-b8e6-af05776b67f8 and taskId=fcef16fd-a079-484a-acbf-4e4073ebc807 not found","statusCode":404}
+{"name":"removeTaskById","errorMessage":"Task with boardId=b3ae1ba5-4cf0-4df9-b8e6-af05776b67f8 not found","statusCode":404}

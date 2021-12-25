@@ -1,0 +1,14 @@
+{"name":"getAllUsers","params":"there are no params","url":"http://localhost:4000/users","body":"there is no body","statusCode":200}
+{"name":"createUser","params":"there are no params","url":"http://localhost:4000/users","body":{"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"},"statusCode":201}
+{"name":"getUserById","params":{"userId":"5355af0f-3c14-499c-a0ad-fa8229933460"},"url":"http://localhost:4000/users/5355af0f-3c14-499c-a0ad-fa8229933460","body":"there is no body","statusCode":200}
+{"name":"removeUserById","params":{"userId":"5355af0f-3c14-499c-a0ad-fa8229933460"},"url":"http://localhost:4000/users/5355af0f-3c14-499c-a0ad-fa8229933460","body":"there is no body","statusCode":204}
+{"name":"createUser","params":"there are no params","url":"http://localhost:4000/users","body":{"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"},"statusCode":201}
+{"name":"removeUserById","params":{"userId":"3c6b14b9-0b87-422f-93c7-47cbe606b4e6"},"url":"http://localhost:4000/users/3c6b14b9-0b87-422f-93c7-47cbe606b4e6","body":"there is no body","statusCode":204}
+{"name":"createUser","params":"there are no params","url":"http://localhost:4000/users","body":{"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"},"statusCode":201}
+{"name":"updateUserById","params":{"userId":"b7f0fd8b-915c-4e20-94c6-2add09b073ea"},"url":"http://localhost:4000/users/b7f0fd8b-915c-4e20-94c6-2add09b073ea","body":{"name":"Autotest updated TEST_USER","login":"test_user","password":"T35t_P@55w0rd","id":"b7f0fd8b-915c-4e20-94c6-2add09b073ea"},"statusCode":200}
+{"name":"getUserById","params":{"userId":"b7f0fd8b-915c-4e20-94c6-2add09b073ea"},"url":"http://localhost:4000/users/b7f0fd8b-915c-4e20-94c6-2add09b073ea","body":"there is no body","statusCode":200}
+{"name":"removeUserById","params":{"userId":"b7f0fd8b-915c-4e20-94c6-2add09b073ea"},"url":"http://localhost:4000/users/b7f0fd8b-915c-4e20-94c6-2add09b073ea","body":"there is no body","statusCode":204}
+{"name":"createUser","params":"there are no params","url":"http://localhost:4000/users","body":{"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"},"statusCode":201}
+{"name":"removeUserById","params":{"userId":"62523f06-4cf8-4533-abdb-e5c998444e81"},"url":"http://localhost:4000/users/62523f06-4cf8-4533-abdb-e5c998444e81","body":"there is no body","statusCode":204}
+{"name":"createUser","params":"there are no params","url":"http://localhost:4000/users","body":{"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"},"statusCode":201}
+{"name":"removeUserById","params":{"userId":"c60966c5-f4aa-488b-a824-8156452ea615"},"url":"http://localhost:4000/users/c60966c5-f4aa-488b-a824-8156452ea615","body":"there is no body","statusCode":204}

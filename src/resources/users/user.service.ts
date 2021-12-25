@@ -3,8 +3,9 @@ import { Request } from "@hapi/hapi";
 import Boom from '@hapi/boom';
 import UserMemoryRepository from './user.memory.repository';
 import TaskMemoryRepository from '../tasks/task.memory.repository';
-import {IUserData, ICreatedUserData} from '../helpers/interfaces';
+import { IUserData, ICreatedUserData, IDataToLogging } from '../helpers/interfaces';
 import User from './user.model';
+import Logger from '../../logger';
 
 export default class UserService {
   /**
@@ -15,6 +16,8 @@ export default class UserService {
    */
   public static getAllUsers = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('getAllUsers', request, 200);
+      Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
       const allUsers = await UserMemoryRepository.getAllUsers();
       const res = allUsers.length ? allUsers.map(User.toResponse.bind(User)) : [];
       return h.response(res).code(200);
@@ -33,6 +36,8 @@ export default class UserService {
   public static getUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never=> {
     const {userId} = request.params;
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('getUserById', request, 200);
+      Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
       const user = await UserMemoryRepository.getUserById(<string>userId)
       return h.response(User.toResponse(<IUserData>user)).code(200);
     }
@@ -49,6 +54,8 @@ export default class UserService {
    */
   public static updateUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('updateUserById', request, 200);
+      Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
       const payload: IUserData = <IUserData>request.payload;
       const {userId} = request.params;
       const updatedUser: IUserData = await UserMemoryRepository.updateUserById(<string>userId, payload);
@@ -67,6 +74,8 @@ export default class UserService {
    */
   public static createUser = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never=> {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('createUser', request, 201);
+      Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
       const payload: ICreatedUserData = <ICreatedUserData>request.payload;
       const createdUser = await UserMemoryRepository.createUser(payload);
       return h.response(User.toResponse(createdUser)).code(201);
@@ -84,6 +93,8 @@ export default class UserService {
    */
   public static removeUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('removeUserById', request, 204);
+      Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
       const {userId} = request.params;
       await TaskMemoryRepository.updateTaskByUserId(<string>userId);
       await UserMemoryRepository.removeUserById(<string>userId);

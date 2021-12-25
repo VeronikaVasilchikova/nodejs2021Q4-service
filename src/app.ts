@@ -7,6 +7,7 @@ import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
 import pageNotFound from './resources/helpers/index';
+import Logger from './logger';
 
 const plugins = [Inert, Vision];
 const { PORT } = CONFIG;
@@ -47,9 +48,14 @@ const createServer = async (): Promise<Hapi.Server> => {
   server.route(taskRouter.createTask);
   server.route(taskRouter.deleteTaskById);
 
+  // clear all files contain logging
+  Logger.clearFile('src/data/board-logger.json');
+  Logger.clearFile('src/data/task-logger.json');
+  Logger.clearFile('src/data/user-logger.json');
+
   try {
     await server.start();
-    process.stdout.write(`Server running on %s ${server.info.uri}`);
+    process.stdout.write(`Server running on %s ${server.info.uri}\n`);
   } catch(error) {
     process.stderr.write((<Error>error).message);
     process.exit(1);

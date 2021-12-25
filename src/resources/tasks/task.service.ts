@@ -2,7 +2,8 @@ import * as Hapi from '@hapi/hapi';
 import { Request } from "@hapi/hapi";
 import Boom from '@hapi/boom';
 import TaskMemoryRepository from './task.memory.repository';
-import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';
+import { ITaskData, ITaskDataBasic, IDataToLogging } from '../helpers/interfaces';
+import Logger from '../../logger';
 
 export default class TaskService {
   /**
@@ -13,6 +14,8 @@ export default class TaskService {
    */
   public static getAllTasks = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('getAllTasks', request, 200);
+      Logger.writeDataToFile('../data/task-logger.json', JSON.stringify(loggerDataObj));
       const {boardId} = request.params;
       const allTasks = await TaskMemoryRepository.getAllTasks(<string>boardId);
       return h.response(allTasks).code(200);
@@ -30,6 +33,8 @@ export default class TaskService {
    */
   public static getTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('getTaskById', request, 200);
+      Logger.writeDataToFile('../data/task-logger.json', JSON.stringify(loggerDataObj));
       const { boardId, taskId } = request.params;
       const task = await TaskMemoryRepository.getTaskById(<string>boardId, <string>taskId);
       return h.response(task).code(200);
@@ -50,6 +55,8 @@ export default class TaskService {
    */
   public static updateTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never=> {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('updateTaskById', request, 200);
+      Logger.writeDataToFile('../data/task-logger.json', JSON.stringify(loggerDataObj));
       const payload: ITaskData = <ITaskData>request.payload;
       const { boardId, taskId } = request.params;
       const updatedTask: ITaskData = await TaskMemoryRepository.updateTaskById(<string>boardId, <string>taskId, payload);
@@ -68,6 +75,8 @@ export default class TaskService {
    */
   public static createTask = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('createTask', request, 201);
+      Logger.writeDataToFile('../data/task-logger.json', JSON.stringify(loggerDataObj));
       const payload = <ITaskDataBasic>request.payload;
       const {boardId} = request.params;
       const createdTask = await TaskMemoryRepository.createTask(<string>boardId, payload);
@@ -86,6 +95,8 @@ export default class TaskService {
    */
   public static removeTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('removeTaskById', request, 204);
+      Logger.writeDataToFile('../data/task-logger.json', JSON.stringify(loggerDataObj));
       const { boardId, taskId } = request.params;
       await TaskMemoryRepository.removeTaskById(<string>boardId, <string>taskId);
       return h.response('The task has been deleted').code(204);

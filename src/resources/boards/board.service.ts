@@ -3,7 +3,8 @@ import { Request } from "@hapi/hapi";
 import Boom from '@hapi/boom';
 import BoardMemoryRepository from './board.memory.repository';
 import TaskMemoryRepository from '../tasks/task.memory.repository';
-import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
+import { IBoardData, IBoardDataBasic, IDataToLogging } from '../helpers/interfaces';
+import Logger from '../../logger';
 
 export default class BoardService {
   /**
@@ -14,6 +15,8 @@ export default class BoardService {
    */
   public static getAllBoards = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('getAllBoards', request, 200);
+      Logger.writeDataToFile('../data/board-logger.json', JSON.stringify(loggerDataObj));
       const allBoards = await BoardMemoryRepository.getAllBoards();
       return h.response(allBoards).code(200);
     }
@@ -30,6 +33,8 @@ export default class BoardService {
    */
   public static getBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('getBoardById', request, 200);
+      Logger.writeDataToFile('../data/board-logger.json', JSON.stringify(loggerDataObj));
       const {boardId} = request.params;
       const board = await BoardMemoryRepository.getBoardById(<string>boardId);
       return h.response(board).code(200);
@@ -50,6 +55,8 @@ export default class BoardService {
    */
   public static updateBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('updateBoardById', request, 200);
+      Logger.writeDataToFile('../data/board-logger.json', JSON.stringify(loggerDataObj));
       const payload: IBoardData = <IBoardData>request.payload;
       const {boardId} = request.params;
       const updatedBoard: IBoardData = await BoardMemoryRepository.updateBoardById(<string>boardId, payload);
@@ -68,6 +75,8 @@ export default class BoardService {
    */
   public static createBoard = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('createBoard', request, 201);
+      Logger.writeDataToFile('../data/board-logger.json', JSON.stringify(loggerDataObj));
       const payload: IBoardDataBasic = <IBoardDataBasic>request.payload;
       const createdBoard = await BoardMemoryRepository.createBoard(payload);
       return h.response(createdBoard).code(201);
@@ -85,6 +94,8 @@ export default class BoardService {
    */
   public static removeBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('removeBoardById', request, 204);
+      Logger.writeDataToFile('../data/board-logger.json', JSON.stringify(loggerDataObj));
       const {boardId} = request.params;
       await BoardMemoryRepository.removeBoardById(<string>boardId);
       await TaskMemoryRepository.removeTaskById(<string>boardId);

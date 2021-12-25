@@ -3,9 +3,8 @@ import { Request } from "@hapi/hapi";
 import Boom from '@hapi/boom';
 import BoardMemoryRepository from './board.memory.repository';
 import TaskMemoryRepository from '../tasks/task.memory.repository';
-import { IBoardData, IBoardDataBasic, IDataToLogging } from '../helpers/interfaces';
+import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
 import Logger from '../../logger';
-import ErrorHandler from '../../error';
 
 export default class BoardService {
   /**
@@ -16,14 +15,13 @@ export default class BoardService {
    */
   public static getAllBoards = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
-      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('getAllBoards', request, 200);
-      Logger.writeDataToFile('../data/board-logger.json', JSON.stringify(loggerDataObj));
+      Logger.logRequestInfo('getAllBoards', request, '../data/board-logger.json', 200);
       const allBoards = await BoardMemoryRepository.getAllBoards();
       return h.response(allBoards).code(200);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        ErrorHandler.handleError('getAllBoards', (<Error>error).message, 500);
+        Logger.logError('getAllBoards', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -38,15 +36,14 @@ export default class BoardService {
    */
   public static getBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
-      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('getBoardById', request, 200);
-      Logger.writeDataToFile('../data/board-logger.json', JSON.stringify(loggerDataObj));
+      Logger.logRequestInfo('getBoardById', request, '../data/board-logger.json', 200);
       const {boardId} = request.params;
       const board = await BoardMemoryRepository.getBoardById(<string>boardId);
       return h.response(board).code(200);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        ErrorHandler.handleError('getBoardById', (<Error>error).message, 500);
+        Logger.logError('getBoardById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -61,8 +58,7 @@ export default class BoardService {
    */
   public static updateBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
-      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('updateBoardById', request, 200);
-      Logger.writeDataToFile('../data/board-logger.json', JSON.stringify(loggerDataObj));
+      Logger.logRequestInfo('updateBoardById', request, '../data/board-logger.json', 200);
       const payload: IBoardData = <IBoardData>request.payload;
       const {boardId} = request.params;
       const updatedBoard: IBoardData = await BoardMemoryRepository.updateBoardById(<string>boardId, payload);
@@ -70,7 +66,7 @@ export default class BoardService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        ErrorHandler.handleError('updateBoardById', (<Error>error).message, 500);
+        Logger.logError('updateBoardById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -85,15 +81,14 @@ export default class BoardService {
    */
   public static createBoard = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
-      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('createBoard', request, 201);
-      Logger.writeDataToFile('../data/board-logger.json', JSON.stringify(loggerDataObj));
+      Logger.logRequestInfo('createBoard', request, '../data/board-logger.json', 201);
       const payload: IBoardDataBasic = <IBoardDataBasic>request.payload;
       const createdBoard = await BoardMemoryRepository.createBoard(payload);
       return h.response(createdBoard).code(201);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        ErrorHandler.handleError('createBoard', (<Error>error).message, 500);
+        Logger.logError('createBoard', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -108,8 +103,7 @@ export default class BoardService {
    */
   public static removeBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
-      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('removeBoardById', request, 204);
-      Logger.writeDataToFile('../data/board-logger.json', JSON.stringify(loggerDataObj));
+      Logger.logRequestInfo('removeBoardById', request, '../data/board-logger.json', 204);
       const {boardId} = request.params;
       await BoardMemoryRepository.removeBoardById(<string>boardId);
       await TaskMemoryRepository.removeTaskById(<string>boardId);
@@ -117,7 +111,7 @@ export default class BoardService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        ErrorHandler.handleError('removeBoardById', (<Error>error).message, 500);
+        Logger.logError('removeBoardById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;

@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Boom from '@hapi/boom';
 import User from './user.model';
 import {IUserData, ICreatedUserData} from '../helpers/interfaces';
-import ErrorHandler from '../../error';
+import Logger from '../../logger';
 
 export default class UserMemoryRepository {
   private static users: Array<IUserData> = [new User({})];
@@ -21,7 +21,7 @@ export default class UserMemoryRepository {
   public static getUserById = async (userId: string): Promise<IUserData | never> => {
     const userItem = UserMemoryRepository.users.find(user => user.id.toString() === userId.toString());
     if (!userItem) {
-      ErrorHandler.handleError('getUserById', `User with id=${userId} not found`, 404);
+      Logger.logError('getUserById', `User with id=${userId} not found`, 404);
       throw Boom.notFound(`User with id=${userId} not found`);
     }
     return userItem;
@@ -36,7 +36,7 @@ export default class UserMemoryRepository {
   public static updateUserById = async (userId: string, data: IUserData): Promise<IUserData | never> => {
     const index = UserMemoryRepository.users.findIndex(item => item.id.toString() === userId.toString());
     if (index === -1) {
-      ErrorHandler.handleError('updateUserById', `User with id=${userId} not found`, 404);
+      Logger.logError('updateUserById', `User with id=${userId} not found`, 404);
       throw Boom.notFound(`User with id=${userId} not found`);
     }
     else {
@@ -68,7 +68,7 @@ export default class UserMemoryRepository {
   public static removeUserById = async (userId: string): Promise<void | never> => {
     const userByIdIndex = UserMemoryRepository.users.findIndex(user => user.id.toString() === userId.toString());
     if (userByIdIndex === -1) {
-      ErrorHandler.handleError('removeUserById', `User with id=${userId} not found`, 404);
+      Logger.logError('removeUserById', `User with id=${userId} not found`, 404);
       throw Boom.notFound(`User with id=${userId} not found`);
     }
     else {

@@ -8,7 +8,6 @@ import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
 import pageNotFound from './resources/helpers/index';
 import Logger from './logger';
-import ErrorHandler from './error';
 
 const plugins = [Inert, Vision];
 const { PORT } = CONFIG;
@@ -53,7 +52,16 @@ const createServer = async (): Promise<Hapi.Server> => {
   Logger.clearFile('src/data/board-logger.json');
   Logger.clearFile('src/data/task-logger.json');
   Logger.clearFile('src/data/user-logger.json');
-  ErrorHandler.clearFile('src/data/error-logger.json');
+  Logger.clearFile('src/data/error-logger.json');
+
+  process
+    .on('unhandledRejection', (reason, p) => {
+      console.error(reason, 'Unhandled Rejection at Promise', p);
+    })
+    .on('uncaughtException', err => {
+      console.error(err, 'Uncaught Exception thrown');
+      // process.exit(1);
+    });
 
   try {
     await server.start();

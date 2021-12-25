@@ -3,10 +3,9 @@ import { Request } from "@hapi/hapi";
 import Boom from '@hapi/boom';
 import UserMemoryRepository from './user.memory.repository';
 import TaskMemoryRepository from '../tasks/task.memory.repository';
-import { IUserData, ICreatedUserData, IDataToLogging } from '../helpers/interfaces';
+import { IUserData, ICreatedUserData } from '../helpers/interfaces';
 import User from './user.model';
 import Logger from '../../logger';
-import ErrorHandler from '../../error';
 
 export default class UserService {
   /**
@@ -17,15 +16,14 @@ export default class UserService {
    */
   public static getAllUsers = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
-      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('getAllUsers', request, 200);
-      Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
+      Logger.logRequestInfo('getAllUsers', request, '../data/user-logger.json', 200);
       const allUsers = await UserMemoryRepository.getAllUsers();
       const res = allUsers.length ? allUsers.map(User.toResponse.bind(User)) : [];
       return h.response(res).code(200);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        ErrorHandler.handleError('getAllUsers', (<Error>error).message, 500);
+        Logger.logError('getAllUsers', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -41,14 +39,13 @@ export default class UserService {
   public static getUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     const {userId} = request.params;
     try {
-      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('getUserById', request, 200);
-      Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
+      Logger.logRequestInfo('getUserById', request, '../data/user-logger.json', 200);
       const user = await UserMemoryRepository.getUserById(<string>userId)
       return h.response(User.toResponse(user)).code(200);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        ErrorHandler.handleError('getUserById', (<Error>error).message, 500);
+        Logger.logError('getUserById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -63,8 +60,7 @@ export default class UserService {
    */
   public static updateUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
-      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('updateUserById', request, 200);
-      Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
+      Logger.logRequestInfo('updateUserById', request, '../data/user-logger.json', 200);
       const payload: IUserData = <IUserData>request.payload;
       const {userId} = request.params;
       const updatedUser: IUserData = await UserMemoryRepository.updateUserById(<string>userId, payload);
@@ -72,7 +68,7 @@ export default class UserService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        ErrorHandler.handleError('updateUserById', (<Error>error).message, 500);
+        Logger.logError('updateUserById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -87,15 +83,14 @@ export default class UserService {
    */
   public static createUser = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
-      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('createUser', request, 201);
-      Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
+      Logger.logRequestInfo('createUser', request, '../data/user-logger.json', 201);
       const payload: ICreatedUserData = <ICreatedUserData>request.payload;
       const createdUser = await UserMemoryRepository.createUser(payload);
       return h.response(User.toResponse(createdUser)).code(201);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        ErrorHandler.handleError('createUser', (<Error>error).message, 500);
+        Logger.logError('createUser', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -110,8 +105,7 @@ export default class UserService {
    */
   public static removeUserById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
-      const loggerDataObj: IDataToLogging = Logger.createDataToLogging('removeUserById', request, 204);
-      Logger.writeDataToFile('../data/user-logger.json', JSON.stringify(loggerDataObj));
+      Logger.logRequestInfo('removeUserById', request, '../data/user-logger.json', 204);
       const {userId} = request.params;
       await TaskMemoryRepository.updateTaskByUserId(<string>userId);
       await UserMemoryRepository.removeUserById(<string>userId);
@@ -119,7 +113,7 @@ export default class UserService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        ErrorHandler.handleError('removeUserById', (<Error>error).message, 500);
+        Logger.logError('removeUserById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;

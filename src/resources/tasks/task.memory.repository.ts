@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Boom from '@hapi/boom';
 import Task from './task.model';
 import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';
-import ErrorHandler from '../../error';
+import Logger from '../../logger';
 
 export default class TaskMemoryRepository {
   private static tasks: Array<ITaskData> = [new Task()];
@@ -23,7 +23,7 @@ export default class TaskMemoryRepository {
   public static getTaskById = async (boardId: string, taskId: string): Promise<ITaskData | never> => {
     const task = TaskMemoryRepository.tasks.find(taskItem => (taskItem.id === taskId) || (taskItem.boardId === boardId));
     if (!task) {
-      ErrorHandler.handleError('getTaskById', `Task with boardId=${boardId} and taskId=${taskId} not found`, 404);
+      Logger.logError('getTaskById', `Task with boardId=${boardId} and taskId=${taskId} not found`, 404);
       throw Boom.notFound(`Task with boardId=${boardId} and taskId=${taskId} not found`);
     }
     return task;
@@ -39,7 +39,7 @@ export default class TaskMemoryRepository {
   public static updateTaskById = async (boardId: string, taskId: string, data: ITaskData): Promise<ITaskData | never> => {
     const taskIndex = TaskMemoryRepository.tasks.findIndex(task => (task.id === taskId) && (task.boardId === boardId));
     if (taskIndex === -1) {
-      ErrorHandler.handleError('updateTaskById', `Task with taskId=${taskId} and boardId=${boardId} not found`, 404);
+      Logger.logError('updateTaskById', `Task with taskId=${taskId} and boardId=${boardId} not found`, 404);
       throw Boom.notFound(`Task with taskId=${taskId} and boardId=${boardId} not found`);
     }
     else {
@@ -60,7 +60,7 @@ export default class TaskMemoryRepository {
   public static updateTaskByUserId = async (userId: string): Promise<void> => {
     const taskIndex = TaskMemoryRepository.tasks.findIndex(task => task.userId === userId);
     if (taskIndex === -1) {
-      ErrorHandler.handleError('updateTaskByUserId', `Task with userId=${userId} not found`, 404);
+      Logger.logError('updateTaskByUserId', `Task with userId=${userId} not found`, 404);
       Boom.notFound(`Task with userId=${userId} not found`);
     }
     else {
@@ -99,7 +99,7 @@ export default class TaskMemoryRepository {
     if (!taskId) {
       const taskByBoardIdIndex = TaskMemoryRepository.tasks.findIndex(task => task.boardId === boardId);
       if (taskByBoardIdIndex === -1) {
-        ErrorHandler.handleError('removeTaskById', `Task with boardId=${boardId} not found`, 404);
+        Logger.logError('removeTaskById', `Task with boardId=${boardId} not found`, 404);
         Boom.notFound(`Task with boardId=${boardId} not found`);
       }
       else {
@@ -109,7 +109,7 @@ export default class TaskMemoryRepository {
     else {
       const taskByBoardIdTaskIdIndex = TaskMemoryRepository.tasks.findIndex(taskItem => (taskItem.id === taskId) || (taskItem.boardId === boardId));
       if (taskByBoardIdTaskIdIndex === -1) {
-        ErrorHandler.handleError('removeTaskById', `Task with taskId=${taskId} and boardId=${boardId} not found`, 404);
+        Logger.logError('removeTaskById', `Task with taskId=${taskId} and boardId=${boardId} not found`, 404);
         Boom.notFound(`Task with taskId=${taskId} and boardId=${boardId} not found`);
       }
       else {

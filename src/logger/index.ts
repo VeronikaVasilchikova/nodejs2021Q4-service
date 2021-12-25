@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { Request } from "@hapi/hapi";
-import { IDataToLogging } from '../resources/helpers/interfaces';
+import { IDataToLogging, IErrorData } from '../resources/helpers/interfaces';
 
 export default class Logger {
   /**
@@ -52,4 +52,33 @@ export default class Logger {
       throw new Error(`Have no access to ${filePath}`);
     }
   }
+
+  /**
+   * Method to log request info
+   * @param name - operation name
+   * @param request - Hapi request object
+   * @param filePath - path to a file
+   * @param statusCode response status code
+   * @returns return nothing
+   */
+  public static logRequestInfo = (name: string, request: Request, filePath: string, statusCode: number): void => {
+    const loggerDataObj: IDataToLogging = this.createDataToLogging(name, request, statusCode);
+    this.writeDataToFile(filePath, JSON.stringify(loggerDataObj));
+  };
+
+  /**
+   * Method to log server or client error
+   * @param name - operation name
+   * @param errorMessage server error
+   * @param statusCode response status code
+   * @returns return nothing
+   */
+  public static logError = (name: string, errorMessage: string, statusCode: number): void => {
+    const errorData: IErrorData = {
+      name,
+      errorMessage,
+      statusCode
+    };
+    this.writeDataToFile('../data/error-logger.json', JSON.stringify(errorData));
+  };
 }

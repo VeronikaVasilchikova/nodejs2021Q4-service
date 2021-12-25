@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Boom from '@hapi/boom';
 import Board from './board.model';
 import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
-import ErrorHandler from '../../error';
+import Logger from '../../logger';
 
 export default class BoardMemoryRepository {
   private static boards: Array<IBoardData> = [new Board()];
@@ -21,7 +21,7 @@ export default class BoardMemoryRepository {
   public static getBoardById = async (boardId: string): Promise<IBoardData | never> => {
     const board = BoardMemoryRepository.boards.find(boardItem => boardItem.id.toString() === boardId.toString());
     if (!board) {
-      ErrorHandler.handleError('getBoardById', `Board with id=${boardId} not found`, 404);
+      Logger.logError('getBoardById', `Board with id=${boardId} not found`, 404);
       throw Boom.notFound(`Board with id=${boardId} not found`);
     }
     return board;
@@ -36,7 +36,7 @@ export default class BoardMemoryRepository {
   public static updateBoardById = async (boardId: string, data: IBoardData): Promise<IBoardData | never> => {
     const index = BoardMemoryRepository.boards.findIndex(board => board.id.toString() === boardId.toString());
     if (index === -1) {
-      ErrorHandler.handleError('updateBoardById', `Board with id=${boardId} not found`, 404);
+      Logger.logError('updateBoardById', `Board with id=${boardId} not found`, 404);
       throw Boom.notFound(`Board with id=${boardId} not found`);
     }
     else {
@@ -68,7 +68,7 @@ export default class BoardMemoryRepository {
   public static removeBoardById = async (boardId: string): Promise<void | never> => {
     const index = BoardMemoryRepository.boards.findIndex(board => board.id.toString() === boardId.toString());
     if (index === -1) {
-      ErrorHandler.handleError('removeBoardById', `Board with id=${boardId} not found`, 404);
+      Logger.logError('removeBoardById', `Board with id=${boardId} not found`, 404);
       throw Boom.notFound(`Board with id=${boardId} not found`);
     }
     else {

@@ -21,7 +21,7 @@ export default class BoardMemoryRepository {
   public static getBoardById = async (boardId: string): Promise<IBoardData | never> => {
     const board = BoardMemoryRepository.boards.find(boardItem => boardItem.id.toString() === boardId.toString());
     if (!board) {
-      Logger.logError('getBoardById', `Board with id=${boardId} not found`, 404);
+      Logger.logError('clientError', 'getBoardById', `Board with id=${boardId} not found`, 404);
       throw Boom.notFound(`Board with id=${boardId} not found`);
     }
     return board;
@@ -36,7 +36,7 @@ export default class BoardMemoryRepository {
   public static updateBoardById = async (boardId: string, data: IBoardData): Promise<IBoardData | never> => {
     const index = BoardMemoryRepository.boards.findIndex(board => board.id.toString() === boardId.toString());
     if (index === -1) {
-      Logger.logError('updateBoardById', `Board with id=${boardId} not found`, 404);
+      Logger.logError('clientError', 'updateBoardById', `Board with id=${boardId} not found`, 404);
       throw Boom.notFound(`Board with id=${boardId} not found`);
     }
     else {
@@ -68,7 +68,7 @@ export default class BoardMemoryRepository {
   public static removeBoardById = async (boardId: string): Promise<void | never> => {
     const index = BoardMemoryRepository.boards.findIndex(board => board.id.toString() === boardId.toString());
     if (index === -1) {
-      Logger.logError('removeBoardById', `Board with id=${boardId} not found`, 404);
+      Logger.logError('clientError', 'removeBoardById', `Board with id=${boardId} not found`, 404);
       throw Boom.notFound(`Board with id=${boardId} not found`);
     }
     else {

@@ -21,7 +21,7 @@ export default class TaskService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('getAllTasks', (<Error>error).message, 500);
+        Logger.logError('serverError', 'getAllTasks', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -43,7 +43,7 @@ export default class TaskService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('getTaskById', (<Error>error).message, 500);
+        Logger.logError('serverError', 'getTaskById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -66,7 +66,7 @@ export default class TaskService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('updateTaskById', (<Error>error).message, 500);
+        Logger.logError('serverError', 'updateTaskById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -89,7 +89,7 @@ export default class TaskService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('createTask', (<Error>error).message, 500);
+        Logger.logError('serverError', 'createTask', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -111,7 +111,7 @@ export default class TaskService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('removeTaskById', (<Error>error).message, 500);
+        Logger.logError('serverError', 'removeTaskById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;

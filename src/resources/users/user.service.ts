@@ -23,7 +23,7 @@ export default class UserService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('getAllUsers', (<Error>error).message, 500);
+        Logger.logError('serverError', 'getAllUsers', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -45,7 +45,7 @@ export default class UserService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('getUserById', (<Error>error).message, 500);
+        Logger.logError('serverError', 'getUserById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -68,7 +68,7 @@ export default class UserService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('updateUserById', (<Error>error).message, 500);
+        Logger.logError('serverError', 'updateUserById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -90,7 +90,7 @@ export default class UserService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('createUser', (<Error>error).message, 500);
+        Logger.logError('serverError', 'createUser', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -113,7 +113,7 @@ export default class UserService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('removeUserById', (<Error>error).message, 500);
+        Logger.logError('serverError', 'removeUserById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;

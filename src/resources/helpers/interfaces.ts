@@ -50,7 +50,8 @@ export interface IDataToLogging {
 }
 
 export interface IErrorData {
-  name: string;
+  errorName: string;
+  methodName: string | undefined;
   errorMessage: string;
   statusCode: number;
 }

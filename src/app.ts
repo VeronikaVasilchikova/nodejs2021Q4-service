@@ -6,7 +6,7 @@ import SWAGGER from './plugins/swagger';
 import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
-import pageNotFound from './resources/helpers/index';
+import pageNotFound from './resources/helpers/pageNotFound';
 import Logger from './logger';
 
 const plugins = [Inert, Vision];
@@ -19,7 +19,24 @@ const { PORT } = CONFIG;
 const createServer = async (): Promise<Hapi.Server> => {
   const server: Hapi.Server = Hapi.server({
     port: PORT || 4000,
-    host: 'localhost'
+    host: 'localhost',
+    routes: {
+      validate: {
+          failAction: async (request, h, error) => {
+            const description: string | undefined = request.route.settings.description;
+            if (request.route.path.includes('boards') && !request.route.path.includes('tasks')) {
+              Logger.logValidationError(description, <Error>error, '../data/board-logger.json');
+            }
+            if (request.route.path.includes('tasks')) {
+              Logger.logValidationError(description, <Error>error, '../data/task-logger.json');
+            }
+            if (request.route.path.includes('users')) {
+              Logger.logValidationError(description, <Error>error, '../data/user-logger.json');
+            }
+            throw error;
+          }
+      }
+  }
   });
 
   await server.register(plugins);
@@ -31,7 +48,7 @@ const createServer = async (): Promise<Hapi.Server> => {
   server.route(userRouter.getAllUsers);
   server.route(userRouter.getUserById);
   server.route(userRouter.updateUserById);
-  server.route(userRouter.creatUser);
+  server.route(userRouter.createUser);
   server.route(userRouter.deleteUserById);
 
   // board routes

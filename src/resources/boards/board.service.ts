@@ -21,7 +21,7 @@ export default class BoardService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('getAllBoards', (<Error>error).message, 500);
+        Logger.logError('serverError', 'getAllBoards', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -43,7 +43,7 @@ export default class BoardService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('getBoardById', (<Error>error).message, 500);
+        Logger.logError('serverError', 'getBoardById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -66,7 +66,7 @@ export default class BoardService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('updateBoardById', (<Error>error).message, 500);
+        Logger.logError('serverError', 'updateBoardById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -88,7 +88,7 @@ export default class BoardService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('createBoard', (<Error>error).message, 500);
+        Logger.logError('serverError', 'createBoard', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -111,7 +111,7 @@ export default class BoardService {
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
-        Logger.logError('removeBoardById', (<Error>error).message, 500);
+        Logger.logError('serverError', 'removeBoardById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;

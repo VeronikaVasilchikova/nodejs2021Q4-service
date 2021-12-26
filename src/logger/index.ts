@@ -6,7 +6,7 @@ import { IDataToLogging, IErrorData } from '../resources/helpers/interfaces';
 export default class Logger {
   /**
    * Create object with request info and response status code
-   * @param name - operation name
+   * @param name - method name
    * @param request - Hapi request object
    * @param statusCode - response status code
    * @returns object with request info and response status code
@@ -55,7 +55,7 @@ export default class Logger {
 
   /**
    * Method to log request info
-   * @param name - operation name
+   * @param name - method name
    * @param request - Hapi request object
    * @param filePath - path to a file
    * @param statusCode response status code
@@ -67,15 +67,34 @@ export default class Logger {
   };
 
   /**
+   * Method to log validation error
+   * @param name - method name
+   * @param error - Boom error
+   * @param filePath - path to a file
+   * @returns return nothing
+   */
+  public static logValidationError = (name: string | undefined, error: Error, filePath: string): void => {
+    const validationErrorData: IErrorData = {
+      errorName: error?.name,
+      methodName: name,
+      errorMessage: error.message,
+      statusCode: 400
+    };
+    this.writeDataToFile(filePath, JSON.stringify(validationErrorData));
+  };
+
+  /**
    * Method to log server or client error
-   * @param name - operation name
+   * @param errorName - error name
+   * @param methodName - method name
    * @param errorMessage server error
    * @param statusCode response status code
    * @returns return nothing
    */
-  public static logError = (name: string, errorMessage: string, statusCode: number): void => {
+  public static logError = (errorName: string, methodName: string, errorMessage: string, statusCode: number): void => {
     const errorData: IErrorData = {
-      name,
+      errorName,
+      methodName,
       errorMessage,
       statusCode
     };

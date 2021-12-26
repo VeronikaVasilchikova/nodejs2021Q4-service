@@ -23,7 +23,7 @@ const createServer = async (): Promise<Hapi.Server> => {
     routes: {
       validate: {
           failAction: async (request, h, error) => {
-            const description: string | undefined = request.route.settings.description;
+            const {description} = request.route.settings;
             if (request.route.path.includes('boards') && !request.route.path.includes('tasks')) {
               Logger.logValidationError(description, <Error>error, '../data/board-logger.json');
             }

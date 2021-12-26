@@ -16,5 +16,9 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "resolveJsonModule": true
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/data/*.json"
+  ]
 }

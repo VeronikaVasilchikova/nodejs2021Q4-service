@@ -1,21 +1,10 @@
-const Joi = require('joi');
-const Boom = require('@hapi/boom');
-const {
-  getAllBoards,
-  getBoardById,
-  updateBoardById,
-  createBoard,
-  removeBoardById
-} = require('./board.service');
-const { removeTaskById } = require('../tasks/task.service');
-const boardSchema = require('./board.schema');
+import Joi from 'joi';
+import BoardService from './board.service';
+import boardSchema from './board.schema';
 
 const boardRouterOptions = {
   getAllBoards: {
-    handler: (request, h) => {
-      const allBoards = getAllBoards();
-      return h.response(allBoards).code(200);
-    },
+    handler: BoardService.getAllBoards,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -37,12 +26,7 @@ const boardRouterOptions = {
     }
   },
   getBoard: {
-    handler: (request, h) => {
-      const { boardId } = request.params;
-      const board = getBoardById(boardId);
-      if (!board) throw Boom.notFound('Board not found');
-      return h.response(board).code(200);
-    },
+    handler: BoardService.getBoardById,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -72,12 +56,7 @@ const boardRouterOptions = {
     }
   },
   updateBoard: {
-    handler: async (request, h) => {
-      const { payload } = request;
-      const { boardId } = request.params;
-      const updatedBoard = await updateBoardById(boardId, payload);
-      return h.response(updatedBoard).code(200);
-    },
+    handler: BoardService.updateBoardById,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -108,11 +87,7 @@ const boardRouterOptions = {
     }
   },
   createBoard: {
-    handler: async (request, h) => {
-      const { payload } = request;
-      const createdBoard = await createBoard(payload);
-      return h.response(createdBoard).code(201);
-    },
+    handler: BoardService.createBoard,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -140,12 +115,7 @@ const boardRouterOptions = {
     }
   },
   deleteBoard: {
-    handler: async (request, h) => {
-      const { boardId } = request.params;
-      await removeBoardById(boardId);
-      await removeTaskById(boardId);
-      return h.response('The board has been deleted').code(204);
-    },
+    handler: BoardService.removeBoardById,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -172,4 +142,4 @@ const boardRouterOptions = {
   }
 }
 
-module.exports = boardRouterOptions;
+export default boardRouterOptions;

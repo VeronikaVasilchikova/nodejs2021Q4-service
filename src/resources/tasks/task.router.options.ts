@@ -1,21 +1,10 @@
-const Joi = require('joi');
-const Boom = require('@hapi/boom');
-const {
-  getAllTasks,
-  getTaskById,
-  updateTaskById,
-  createTask,
-  removeTaskById
-} = require('./task.service');
-const taskSchema = require('./task.schema');
+import Joi from 'joi';
+import TaskService from './task.service';
+import taskSchema from './task.schema';
 
 const taskRouterOptions = {
   getAllTasks: {
-    handler: (request, h) => {
-      const { boardId } = request.params;
-      const allTasks = getAllTasks(boardId);
-      return h.response(allTasks).code(200);
-    },
+    handler: TaskService.getAllTasks,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -43,12 +32,7 @@ const taskRouterOptions = {
     }
   },
   getTask: {
-    handler: (request, h) => {
-      const { boardId, taskId } = request.params;
-      const task = getTaskById(boardId, taskId);
-      if (!task) throw Boom.notFound('Task not found');
-      return h.response(task).code(200);
-    },
+    handler: TaskService.getTaskById,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -80,12 +64,7 @@ const taskRouterOptions = {
     }
   },
   updateTask: {
-    handler: async (request, h) => {
-      const { payload } = request;
-      const { boardId, taskId } = request.params;
-      const updatedTask = await updateTaskById(boardId, taskId, payload);
-      return h.response(updatedTask).code(200);
-    },
+    handler: TaskService.updateTaskById,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -120,12 +99,7 @@ const taskRouterOptions = {
     }
   },
   createTask: {
-    handler: async (request, h) => {
-      const { payload } = request;
-      const { boardId } = request.params;
-      const createdTask = await createTask(boardId, payload);
-      return h.response(createdTask).code(201);
-    },
+    handler: TaskService.createTask,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -156,11 +130,7 @@ const taskRouterOptions = {
     }
   },
   deleteTask: {
-    handler: async (request, h) => {
-      const { boardId, taskId } = request.params;
-      await removeTaskById(boardId, taskId);
-      return h.response('The task has been deleted').code(204);
-    },
+    handler: TaskService.removeTaskById,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -188,4 +158,4 @@ const taskRouterOptions = {
   }
 }
 
-module.exports = taskRouterOptions;
+export default taskRouterOptions;

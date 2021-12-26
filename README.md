@@ -12,7 +12,7 @@ git clone {repository URL}
 ```
 
 ```
-git git checkout develop_task_4
+git checkout develop_task_5
 ```
 
 ## Installing NPM modules

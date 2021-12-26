@@ -1,21 +1,10 @@
-const Joi = require('joi');
-const Boom = require('@hapi/boom');
-const {
-  getAllUsers,
-  getUserById,
-  updateUserById,
-  createUser,
-  removeUserById
-} = require('./user.service');
-const User = require('./user.model');
-const userSchema = require('./user.schema');
+import Joi from 'joi';
+import UserService from "./user.service";
+import userSchema from './user.schema';
 
 const userRouterOptions = {
   getAllUsers: {
-    handler: (request, h) => {
-      const allUsers = getAllUsers();
-      return h.response(allUsers.map(User.toResponse)).code(200);
-    },
+    handler: UserService.getAllUsers,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -37,12 +26,7 @@ const userRouterOptions = {
     }
   },
   getUser: {
-    handler: (request, h) => {
-      const { userId } = request.params;
-      const user = getUserById(userId);
-      if (!user) throw Boom.notFound('User not found');
-      return h.response(User.toResponse(user)).code(200);
-    },
+    handler: UserService.getUserById,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -73,12 +57,7 @@ const userRouterOptions = {
     }
   },
   updateUser: {
-    handler: async (request, h) => {
-      const { payload } = request;
-      const { userId } = request.params;
-      const updatedUser = await updateUserById(userId, payload);
-      return h.response(User.toResponse(updatedUser)).code(200);
-    },
+    handler: UserService.updateUserById,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -109,11 +88,7 @@ const userRouterOptions = {
     }
   },
   createUser: {
-    handler: async (request, h) => {
-      const { payload } = request;
-      const createdUser = await createUser(payload);
-      return h.response(User.toResponse(createdUser)).code(201);
-    },
+    handler: UserService.createUser,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -141,11 +116,7 @@ const userRouterOptions = {
     }
   },
   deleteUser: {
-    handler: async (request, h) => {
-      const { userId } = request.params;
-      await removeUserById(userId);
-      return h.response('The user has been deleted').code(204);
-    },
+    handler: UserService.removeUserById,
     plugins: {
       'hapi-swagger': {
         responses: {
@@ -174,4 +145,4 @@ const userRouterOptions = {
   }
 }
 
-module.exports = userRouterOptions;
+export default userRouterOptions;

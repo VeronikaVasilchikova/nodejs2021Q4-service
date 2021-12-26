@@ -1,4 +1,4 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
 const boardSchema = {
   get: Joi.object({
@@ -28,4 +28,4 @@ const boardSchema = {
   }).required()
 }
 
-module.exports = boardSchema;
+export default boardSchema;

@@ -1,6 +1,8 @@
+import * as HapiSwagger from 'hapi-swagger';
+
 const Package = require('../package.json') ;
 
-const swaggerOptions = {
+const SWAGGER_OPTIONS: HapiSwagger.RegisterOptions = {
   jsonPath: '/documentation.json',
   documentationPath: '/documentation',
   info: {
@@ -25,4 +27,4 @@ const swaggerOptions = {
   grouping: 'tags'
 }
 
-module.exports = swaggerOptions;
+export default SWAGGER_OPTIONS;

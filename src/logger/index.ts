@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { Request } from "@hapi/hapi";
+import CONFIG from '../common/config';
 import { IDataToLogging, IErrorData, IErrorDataBasic } from '../resources/helpers/interfaces';
 
 export default class Logger {
@@ -59,7 +60,9 @@ export default class Logger {
    */
   public static logRequestInfo = (name: string, request: Request, filePath: string, statusCode: number): void => {
     const loggerDataObj: IDataToLogging = this.createDataToLogging(name, request, statusCode);
-    this.writeDataToFile(filePath, JSON.stringify(loggerDataObj));
+    if (['info', 'error', 'fatal', 'all'].includes(<string>CONFIG.LOGGING_VAR)) {
+      this.writeDataToFile(filePath, JSON.stringify(loggerDataObj));
+    }
   };
 
   /**
@@ -76,7 +79,9 @@ export default class Logger {
       errorMessage: error.message,
       statusCode: 400
     };
-    this.writeDataToFile(filePath, JSON.stringify(validationErrorData));
+    if (['warn', 'info', 'error', 'fatal', 'all'].includes(<string>CONFIG.LOGGING_VAR)) {
+      this.writeDataToFile(filePath, JSON.stringify(validationErrorData));
+    }
   };
 
   /**
@@ -94,7 +99,9 @@ export default class Logger {
       errorMessage,
       statusCode
     };
-    this.writeDataToFile('../data/error-logger.json', JSON.stringify(errorData));
+    if (['error', 'fatal', 'all'].includes(<string>CONFIG.LOGGING_VAR)) {
+      this.writeDataToFile('../data/error-logger.json', JSON.stringify(errorData));
+    }
   };
 
   /**
@@ -108,6 +115,8 @@ export default class Logger {
       errorName,
       errorMessage
     };
-    this.writeDataToFile('../data/error-logger.json', JSON.stringify(errorData));
+    if (['fatal', 'all'].includes(<string>CONFIG.LOGGING_VAR)) {
+      this.writeDataToFile('../data/error-logger.json', JSON.stringify(errorData));
+    }
   };
 }

@@ -7,7 +7,7 @@ process.on('uncaughtException', (error: Error, origin: string): void => {
   process.exit(1);
 });
 
-// uncomment below code to test 'uncaughtException'
+// uncomment code below to test 'uncaughtException'
 // throw Error('Oops!');
 
 // Catch unhandling rejected promises
@@ -16,7 +16,7 @@ process.on('unhandledRejection', (reason: {message: string}): void => {
   process.exit(1);
 });
 
-// uncomment below code to test 'unhandledRejection'
-Promise.reject(Error('Oops!'));
+// uncomment code below to test 'unhandledRejection'
+// Promise.reject(Error('Oops!'));
 
 createServer();

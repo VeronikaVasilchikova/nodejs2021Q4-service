@@ -1,0 +1,20 @@
+{"name":"createBoard","params":"there are no params","url":"http://localhost:4000/boards","body":{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]},"statusCode":201}
+{"name":"removeBoardById","params":{"boardId":"6f1e8df1-e933-4767-8ad3-bfb26dc61c22"},"url":"http://localhost:4000/boards/6f1e8df1-e933-4767-8ad3-bfb26dc61c22","body":"there is no body","statusCode":204}
+{"name":"createBoard","params":"there are no params","url":"http://localhost:4000/boards","body":{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]},"statusCode":201}
+{"name":"getAllBoards","params":"there are no params","url":"http://localhost:4000/boards","body":"there is no body","statusCode":200}
+{"name":"getAllBoards","params":"there are no params","url":"http://localhost:4000/boards","body":"there is no body","statusCode":200}
+{"name":"getBoardById","params":{"boardId":"811cbf1a-1605-44e9-aa65-ee5b8430b25b"},"url":"http://localhost:4000/boards/811cbf1a-1605-44e9-aa65-ee5b8430b25b","body":"there is no body","statusCode":200}
+{"name":"createBoard","params":"there are no params","url":"http://localhost:4000/boards","body":{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]},"statusCode":201}
+{"name":"removeBoardById","params":{"boardId":"ceb600ce-d7f4-44e8-9af0-1136994647b0"},"url":"http://localhost:4000/boards/ceb600ce-d7f4-44e8-9af0-1136994647b0","body":"there is no body","statusCode":204}
+{"name":"createBoard","params":"there are no params","url":"http://localhost:4000/boards","body":{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]},"statusCode":201}
+{"name":"updateBoardById","params":{"boardId":"287f5b03-a25a-4dd0-b44c-c797cbb54850"},"url":"http://localhost:4000/boards/287f5b03-a25a-4dd0-b44c-c797cbb54850","body":{"id":"287f5b03-a25a-4dd0-b44c-c797cbb54850","title":"Autotest updated board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]},"statusCode":200}
+{"name":"getBoardById","params":{"boardId":"287f5b03-a25a-4dd0-b44c-c797cbb54850"},"url":"http://localhost:4000/boards/287f5b03-a25a-4dd0-b44c-c797cbb54850","body":"there is no body","statusCode":200}
+{"name":"removeBoardById","params":{"boardId":"287f5b03-a25a-4dd0-b44c-c797cbb54850"},"url":"http://localhost:4000/boards/287f5b03-a25a-4dd0-b44c-c797cbb54850","body":"there is no body","statusCode":204}
+{"name":"createBoard","params":"there are no params","url":"http://localhost:4000/boards","body":{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]},"statusCode":201}
+{"name":"removeBoardById","params":{"boardId":"8cb750f8-1724-4d34-ab85-4028a32c7fe6"},"url":"http://localhost:4000/boards/8cb750f8-1724-4d34-ab85-4028a32c7fe6","body":"there is no body","statusCode":204}
+{"name":"getBoardById","params":{"boardId":"8cb750f8-1724-4d34-ab85-4028a32c7fe6"},"url":"http://localhost:4000/boards/8cb750f8-1724-4d34-ab85-4028a32c7fe6","body":"there is no body","statusCode":200}
+{"name":"createBoard","params":"there are no params","url":"http://localhost:4000/boards","body":{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]},"statusCode":201}
+{"name":"removeBoardById","params":{"boardId":"c38914a5-9862-49b2-83dc-1878d4bc9c48"},"url":"http://localhost:4000/boards/c38914a5-9862-49b2-83dc-1878d4bc9c48","body":"there is no body","statusCode":204}
+{"name":"removeBoardById","params":{"boardId":"811cbf1a-1605-44e9-aa65-ee5b8430b25b"},"url":"http://localhost:4000/boards/811cbf1a-1605-44e9-aa65-ee5b8430b25b","body":"there is no body","statusCode":204}
+{"name":"createBoard","params":"there are no params","url":"http://localhost:4000/boards","body":{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]},"statusCode":201}
+{"name":"removeBoardById","params":{"boardId":"72ebb57f-e755-486e-a4fc-41f9e5f41db1"},"url":"http://localhost:4000/boards/72ebb57f-e755-486e-a4fc-41f9e5f41db1","body":"there is no body","statusCode":204}

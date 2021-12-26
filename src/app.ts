@@ -71,15 +71,6 @@ const createServer = async (): Promise<Hapi.Server> => {
   Logger.clearFile('src/data/user-logger.json');
   Logger.clearFile('src/data/error-logger.json');
 
-  process
-    .on('unhandledRejection', (reason, p) => {
-      console.error(reason, 'Unhandled Rejection at Promise', p);
-    })
-    .on('uncaughtException', err => {
-      console.error(err, 'Uncaught Exception thrown');
-      // process.exit(1);
-    });
-
   try {
     await server.start();
     process.stdout.write(`Server running on %s ${server.info.uri}\n`);

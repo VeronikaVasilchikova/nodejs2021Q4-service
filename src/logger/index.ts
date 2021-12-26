@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { Request } from "@hapi/hapi";
-import { IDataToLogging, IErrorData } from '../resources/helpers/interfaces';
+import { IDataToLogging, IErrorData, IErrorDataBasic } from '../resources/helpers/interfaces';
 
 export default class Logger {
   /**
@@ -42,11 +42,7 @@ export default class Logger {
   public static writeDataToFile = (filename: string, log: string): void | never => {
     const filePath = path.resolve(__dirname, filename);
     if (fs.existsSync(filePath)) {
-      fs.appendFile(filePath, `${log}\n`, (error: NodeJS.ErrnoException | null): void | never => {
-        if (error) {
-          throw new Error(`${error}`);
-        }
-      });
+      fs.appendFileSync(filePath, `${log}\n`);
     }
     else {
       throw new Error(`Have no access to ${filePath}`);
@@ -97,6 +93,20 @@ export default class Logger {
       methodName,
       errorMessage,
       statusCode
+    };
+    this.writeDataToFile('../data/error-logger.json', JSON.stringify(errorData));
+  };
+
+  /**
+   * Method to log errors caused by unhandledRejection or uncaughtException methods
+   * @param errorName - error name
+   * @param methodName - method name
+   * @returns return nothing
+   */
+  public static logProcessError = (errorName: string, errorMessage: string): void => {
+    const errorData: IErrorDataBasic = {
+      errorName,
+      errorMessage
     };
     this.writeDataToFile('../data/error-logger.json', JSON.stringify(errorData));
   };

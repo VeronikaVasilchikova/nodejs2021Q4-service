@@ -49,9 +49,12 @@ export interface IDataToLogging {
   statusCode: number;
 }
 
-export interface IErrorData {
+export interface IErrorDataBasic {
   errorName: string;
-  methodName: string | undefined;
   errorMessage: string;
+}
+
+export interface IErrorData extends IErrorDataBasic {
+  methodName: string | undefined;
   statusCode: number;
 }

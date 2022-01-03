@@ -16,7 +16,7 @@ const userRouter = {
     path: '/users/{userId}',
     options: userRouterOptions.updateUser
   },
-  creatUser: {
+  createUser: {
     method: 'POST',
     path: '/users',
     options: userRouterOptions.createUser

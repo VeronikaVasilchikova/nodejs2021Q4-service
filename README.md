@@ -12,7 +12,7 @@ git clone {repository URL}
 ```
 
 ```
-git checkout develop_task_5
+git checkout dev_task_6
 ```
 
 ## Installing NPM modules
@@ -24,7 +24,12 @@ npm install
 ## Running application
 
 ```
-npm start
+npm run start:dev
+```
+or
+
+```
+npm run start:prod
 ```
 
 After starting the app on port (4000 as default) you can open

@@ -4,6 +4,7 @@ import Boom from '@hapi/boom';
 import BoardMemoryRepository from './board.memory.repository';
 import TaskMemoryRepository from '../tasks/task.memory.repository';
 import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
+import Logger from '../../logger';
 
 export default class BoardService {
   /**
@@ -14,11 +15,16 @@ export default class BoardService {
    */
   public static getAllBoards = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      Logger.logRequestInfo('getAllBoards', request, '../data/board-logger.json', 200);
       const allBoards = await BoardMemoryRepository.getAllBoards();
       return h.response(allBoards).code(200);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        Logger.logError('serverError', 'getAllBoards', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -30,12 +36,14 @@ export default class BoardService {
    */
   public static getBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      Logger.logRequestInfo('getBoardById', request, '../data/board-logger.json', 200);
       const {boardId} = request.params;
       const board = await BoardMemoryRepository.getBoardById(<string>boardId);
       return h.response(board).code(200);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
+        Logger.logError('serverError', 'getBoardById', (<Error>error).message, 500);
         throw Boom.badImplementation((<Error>error).message);
       }
       throw error;
@@ -50,13 +58,18 @@ export default class BoardService {
    */
   public static updateBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      Logger.logRequestInfo('updateBoardById', request, '../data/board-logger.json', 200);
       const payload: IBoardData = <IBoardData>request.payload;
       const {boardId} = request.params;
       const updatedBoard: IBoardData = await BoardMemoryRepository.updateBoardById(<string>boardId, payload);
       return h.response(updatedBoard).code(200);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        Logger.logError('serverError', 'updateBoardById', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -68,12 +81,17 @@ export default class BoardService {
    */
   public static createBoard = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      Logger.logRequestInfo('createBoard', request, '../data/board-logger.json', 201);
       const payload: IBoardDataBasic = <IBoardDataBasic>request.payload;
       const createdBoard = await BoardMemoryRepository.createBoard(payload);
       return h.response(createdBoard).code(201);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        Logger.logError('serverError', 'createBoard', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   }
 
@@ -85,13 +103,18 @@ export default class BoardService {
    */
   public static removeBoardById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      Logger.logRequestInfo('removeBoardById', request, '../data/board-logger.json', 204);
       const {boardId} = request.params;
       await BoardMemoryRepository.removeBoardById(<string>boardId);
       await TaskMemoryRepository.removeTaskById(<string>boardId);
       return h.response('The board has been deleted').code(204);
     }
     catch (error) {
-      throw Boom.badImplementation((<Error>error).message);
+      if (!Boom.isBoom(error)) {
+        Logger.logError('serverError', 'removeBoardById', (<Error>error).message, 500);
+        throw Boom.badImplementation((<Error>error).message);
+      }
+      throw error;
     }
   };
 }

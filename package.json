@@ -9,7 +9,8 @@
   "description": "REST service starter for RS School",
   "main": "src/server.ts",
   "scripts": {
-    "start": "ts-node-dev --respawn src/server.ts",
+    "start:dev": "ts-node-dev --respawn src/server.ts development",
+    "start:prod": "tsc -p tsconfig.json && node build/src/server.js production",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
@@ -54,7 +55,6 @@
     "hapi-swagger": "^14.2.4",
     "joi": "^17.4.2",
     "swagger-ui-express": "4.1.6",
-    "ts-node": "^10.4.0",
     "uuid": "8.3.2",
     "yamljs": "0.3.0"
   },
@@ -82,6 +82,7 @@
     "nodemon": "2.0.15",
     "prettier": "2.4.1",
     "supertest": "6.1.6",
+    "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.3"
   }

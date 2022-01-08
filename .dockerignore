@@ -1,0 +1,10 @@
+node_modules
+test
+npm-debug.log
+.git
+.github
+.vscode
+.prettierrc
+Dockerfile.server
+Dockerfile.postgresql
+README.md

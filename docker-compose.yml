@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  hapi-server:
+    container_name: hapi-server
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+      target: dev
+    env_file:
+      - .env
+    # depends_on:
+    #   - postgres
+    expose:
+      - ${PORT}
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - ./src:/hapi-server/src
+      - ./nodemon.json:/hapi-server/nodemon.json
+    command: npm run dev
+    restart: always

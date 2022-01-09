@@ -5,7 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: dev
+    networks:
+      - hapi-network
     depends_on:
       - postgres-db
     expose:
@@ -18,15 +19,24 @@ services:
       - ./src:/hapi-server/src
       - ./nodemon.json:/hapi-server/nodemon.json
     command: npm run dev
-    restart: always
+    restart: on-failure
   postgres-db:
+    container_name: hapi-postgres-db
     build:
       context: ./postgres-database
       dockerfile: Dockerfile
+    networks:
+      - hapi-network
     ports:
       - ${POSTGRES_PORT}-${POSTGRES_PORT}
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    restart: always
+      PGDATA: ${PGDATA}
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    restart: on-failure
+networks:
+  hapi-network:
+    driver: bridge

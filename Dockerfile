@@ -1,13 +1,11 @@
-# FROM node:lts-alpine3.14 as base
-FROM node:16.13-alpine as base
+FROM node:16.13-alpine
 
 WORKDIR /hapi-server
 
-COPY package*.json ./
+# COPY package*.json ./
+COPY package-docker.json ./package.json
 
-RUN npm install
-
-FROM base as dev
+RUN npm install --production
 
 COPY . .
 

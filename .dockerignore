@@ -1,10 +1,13 @@
 node_modules
 test
+pgdata
 npm-debug.log
 .git
 .github
+.gitignore
 .vscode
 .prettierrc
-Dockerfile.server
-Dockerfile.postgresql
+postgres-database/Dockerfile
+Dockerfile
+package-docker.json
 README.md

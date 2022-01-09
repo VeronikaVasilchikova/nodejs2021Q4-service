@@ -73,7 +73,7 @@ const createServer = async (): Promise<Hapi.Server> => {
 
   try {
     await server.start();
-    process.stdout.write(`Server running on ${server.info.uri} \n`);
+    process.stdout.write(`Server is running on ${server.info.uri} \n`);
   } catch(error) {
     process.stderr.write((<Error>error).message);
     process.exit(1);

@@ -9,5 +9,5 @@ npm-debug.log
 .prettierrc
 postgres-database/Dockerfile
 Dockerfile
-package-docker.json
+docker-compose.yml
 README.md

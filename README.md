@@ -12,24 +12,43 @@ git clone {repository URL}
 ```
 
 ```
-git checkout dev_task_6
+git checkout docker_task
 ```
 
-## Installing NPM modules
+```
+cd nodejs2021Q4-service
+```
 
+## To run application using Docker container run in your terminal
+```
+docker-compose up -d
+```
+# To see how containers are running
+Open Docker Desktop and select 'Containers/Apps'
+# To stop and to remove Docker containers run in your terminal
+```
+docker-compose down
+```
+# To check image's size run in your terminal
+```
+docker image ls
+```
+# To remove image run in your terminal
+```
+docker rmi {image ID}
+```
+
+## Running application without container
 ```
 npm install
 ```
-
-## Running application
-
 ```
-npm run start:dev
+npm run dev
 ```
 or
 
 ```
-npm run start:prod
+npm run build:start
 ```
 
 After starting the app on port (4000 as default) you can open
@@ -41,41 +60,16 @@ For more information about OpenAPI/Swagger please visit https://swagger.io/.
 After application running open new terminal and enter:
 
 To run all tests without authorization
-
 ```
 npm test
 ```
 
 To run only one of all test suites (users, boards or tasks)
-
 ```
 npm test <suite name>
 ```
 
-To run all test with authorization
-
-```
-npm run test:auth
-```
-
-To run only specific test suite with authorization (users, boards or tasks)
-
-```
-npm run test:auth <suite name>
-```
-
-## Development
-
-If you're using VSCode, you can get a better developer experience from integration with [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions.
-
 ### Auto-fix and format
-
 ```
 npm run lint
 ```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging

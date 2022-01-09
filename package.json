@@ -9,7 +9,7 @@
   "description": "REST service starter for RS School",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "nodemon src/server.ts development -L",
+    "dev": "nodemon src/server.ts development --exitcrash -L",
     "build": "tsc -p tsconfig.json",
     "start": "node build/src/server.js production",
     "build:start": "tsc -p tsconfig.json && node build/src/server.js production",

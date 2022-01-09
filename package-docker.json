@@ -9,7 +9,7 @@
   "description": "REST service starter for RS School",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "nodemon src/server.ts development -L"
+    "dev": "nodemon src/server.ts development --exitcrash -L"
   },
   "keywords": [
     "rs",

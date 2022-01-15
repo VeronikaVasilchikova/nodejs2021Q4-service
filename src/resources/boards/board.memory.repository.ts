@@ -11,7 +11,8 @@ export default class BoardMemoryRepository {
    */
   public static getAllBoards = async (): Promise<Array<IBoardData> | []>  => {
     const repo = getRepository(Boards);
-    return await repo.find();
+    const allBoards = await repo.find();
+    return allBoards;
   };
 
   /**
@@ -42,10 +43,10 @@ export default class BoardMemoryRepository {
       await repo.update(id, data);
       return updatedBoard;
     }
-    else {
+
       Logger.logError('clientError', 'updateBoardById', `Board with id=${id} not found`, 404);
       throw Boom.notFound(`Board with id=${id} not found`);
-    }
+
   };
 
   /**
@@ -56,7 +57,8 @@ export default class BoardMemoryRepository {
   public static createBoard = async (board: IBoardDataBasic): Promise<IBoardData> => {
     const repo = getRepository(Boards);
     const newBoard = repo.create(board);
-    return await repo.save(newBoard);
+    await repo.save(newBoard);
+    return newBoard;
   };
 
   /**

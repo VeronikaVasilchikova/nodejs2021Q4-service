@@ -4,7 +4,7 @@ import Boom from '@hapi/boom';
 import UserMemoryRepository from './user.memory.repository';
 import TaskMemoryRepository from '../tasks/task.memory.repository';
 import { IUserData, ICreatedUserData } from '../helpers/interfaces';
-import User from './user.model';
+import { Users } from '../../entity/users.entity';
 import Logger from '../../logger';
 
 export default class UserService {
@@ -18,7 +18,7 @@ export default class UserService {
     try {
       Logger.logRequestInfo('getAllUsers', request, '../../logs/user-logger.json', 200);
       const allUsers = await UserMemoryRepository.getAllUsers();
-      const res = allUsers.length ? allUsers.map(User.toResponse.bind(User)) : [];
+      const res = allUsers.length ? allUsers.map(Users.toResponse.bind(Users)) : [];
       return h.response(res).code(200);
     }
     catch (error) {
@@ -41,7 +41,7 @@ export default class UserService {
     try {
       Logger.logRequestInfo('getUserById', request, '../../logs/user-logger.json', 200);
       const user = await UserMemoryRepository.getUserById(<string>userId)
-      return h.response(User.toResponse(user)).code(200);
+      return h.response(Users.toResponse(user)).code(200);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
@@ -64,7 +64,7 @@ export default class UserService {
       const payload: IUserData = <IUserData>request.payload;
       const {userId} = request.params;
       const updatedUser: IUserData = await UserMemoryRepository.updateUserById(<string>userId, payload);
-      return h.response(User.toResponse(updatedUser)).code(200);
+      return h.response(Users.toResponse(updatedUser)).code(200);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
@@ -86,7 +86,7 @@ export default class UserService {
       Logger.logRequestInfo('createUser', request, '../../logs/user-logger.json', 201);
       const payload: ICreatedUserData = <ICreatedUserData>request.payload;
       const createdUser = await UserMemoryRepository.createUser(payload);
-      return h.response(User.toResponse(createdUser)).code(201);
+      return h.response(Users.toResponse(createdUser)).code(201);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {

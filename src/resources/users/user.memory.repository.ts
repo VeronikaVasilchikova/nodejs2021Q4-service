@@ -11,7 +11,8 @@ export default class UserMemoryRepository {
    */
   public static getAllUsers = async (): Promise<Array<IUserData> | []> => {
     const repo = getRepository(Users);
-    return await repo.find();
+    const allUsers = await repo.find();
+    return allUsers;
   };
 
   /**
@@ -25,10 +26,10 @@ export default class UserMemoryRepository {
     if (userItem !== undefined) {
       return userItem;
     }
-    else {
+
       Logger.logError('clientError', 'getUserById', `User with id=${id} not found`, 404);
       throw Boom.notFound(`User with id=${id} not found`);
-    }
+
   };
 
   /**
@@ -44,10 +45,10 @@ export default class UserMemoryRepository {
       await repo.update(id, data);
       return updatedUser;
     }
-    else {
+
       Logger.logError('clientError', 'updateUserById', `User with id=${id} not found`, 404);
       throw Boom.notFound(`User with id=${id} not found`);
-    }
+
   };
 
   /**
@@ -58,7 +59,8 @@ export default class UserMemoryRepository {
   public static createUser = async (user: ICreatedUserData): Promise<IUserData> => {
     const repo = getRepository(Users);
     const newUser = repo.create(user);
-    return await repo.save(newUser);
+    await repo.save(newUser);
+    return newUser;
   };
 
   /**

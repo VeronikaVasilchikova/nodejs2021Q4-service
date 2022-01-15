@@ -12,7 +12,8 @@ export default class TaskMemoryRepository {
    */
   public static getAllTasks = async (boardId: string): Promise<Array<ITaskData> | []> => {
     const repo = getRepository(Tasks);
-    return await repo.find({ where: { boardId } });
+    const allTasks = await repo.find({ where: { boardId } });
+    return allTasks;
   };
 
   /**
@@ -45,10 +46,10 @@ export default class TaskMemoryRepository {
       await repo.update(id, data);
       return updatedTask;
     }
-    else {
+
       Logger.logError('clientError', 'updateTaskById', `Task with taskId=${id} and boardId=${boardId} not found`, 404);
       throw Boom.notFound(`Task with taskId=${id} and boardId=${boardId} not found`);
-    }
+
   };
 
   /**
@@ -77,7 +78,8 @@ export default class TaskMemoryRepository {
   public static createTask = async (boardId: string, task: ITaskDataBasic): Promise<ITaskData> => {
     const repo = getRepository(Tasks);
     const newTask = repo.create({...task, boardId});
-    return await repo.save(newTask);
+    await repo.save(newTask);
+    return newTask;
   };
 
   /**

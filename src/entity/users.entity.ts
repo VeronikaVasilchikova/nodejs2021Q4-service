@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
 import bcryptjs from 'bcryptjs';
+import { IUserData, IUserDataToResponse } from '../resources/helpers/interfaces';
 
 @Entity({ name: 'users' })
 export class Users {
@@ -22,10 +23,10 @@ export class Users {
 
   /**
    * Creates a copy of the user object, but without the password field
-   * @param {User} user user object
-   * @returns {{id, name, login, string}} user object without password field
+   * @param user user object
+   * @returns user object without password field
    */
-  static toResponse(user: Users): { id: string, name: string, login: string } {
+  static toResponse(user: IUserData): IUserDataToResponse {
     const { id, name, login } = user;
     return { id, name, login };
   }

@@ -15,10 +15,10 @@
     "noUnusedLocals": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "strictPropertyInitialization": false
   },
   "include": [
-    "src/**/*.ts",
-    "postgres-database/**/*.ts",
+    "src/**/*.ts"
   ]
 }

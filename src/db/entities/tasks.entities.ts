@@ -1,43 +1,25 @@
-import { Column, Entity, BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity({ name: 'tasks' })
-export class TasksEntity extends BaseEntity {
-  constructor(
-    id: string,
-    title: string,
-    order: number,
-    description: string,
-    userId: string | null,
-    boardId: string | null,
-    columnId: string | null
-  ) {
-    super();
-    this.id = id;
-    this.title = title;
-    this.order = order;
-    this.description = description;
-    this.userId = userId;
-    this.boardId = boardId;
-    this.columnId = columnId;
-  }
+export class Tasks {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', length: 255 })
   title: string;
 
-  @Column({ type: 'int' })
+  @Column()
   order: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', length: 255 })
   description: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  userId: string | null;
+  @Column({ type: 'varchar', nullable: true, length: 255 })
+  userId!: string | null;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, length: 255 })
   boardId: string | null;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, length: 255 })
   columnId: string | null;
 }

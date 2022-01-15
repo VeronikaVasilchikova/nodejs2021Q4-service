@@ -1,23 +1,18 @@
-import { Column, Entity, BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Columns } from './columns.entities';
 
 @Entity({ name: 'boards' })
-export class BoardsEntity extends BaseEntity {
-  constructor(
-    id: string,
-    title: string,
-    columns: string[]
-  ) {
-    super();
-    this.id = id;
-    this.title = title;
-    this.columns = columns;
-  }
+export class Boards {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   title: string;
 
-  @Column({ array: true })
-  columns: string[];
+  @OneToMany(
+    () => Columns,
+    column => column.board,
+    { onDelete: 'CASCADE', cascade: true, eager: true }
+  )
+  columns: Columns[];
 }

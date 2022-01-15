@@ -51,10 +51,15 @@
     "@hapi/hapi": "^20.2.1",
     "@hapi/inert": "^6.0.4",
     "@hapi/vision": "^6.1.0",
+    "@types/node-emoji": "^1.8.1",
     "cross-env": "7.0.3",
     "dotenv": "10.0.0",
     "hapi-swagger": "^14.2.4",
     "joi": "^17.4.2",
+    "node-emoji": "^1.11.0",
+    "pg": "^8.7.1",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.41",
     "uuid": "8.3.2"
   },
   "devDependencies": {

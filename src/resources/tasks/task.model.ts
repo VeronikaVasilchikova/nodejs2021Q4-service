@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ITaskData } from '../helpers/interfaces';
 
-export default class Task {
+export default class Task implements ITaskData {
   id: string;
 
   title: string;

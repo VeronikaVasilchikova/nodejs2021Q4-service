@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IColumns, IBoardData } from '../helpers/interfaces';
 
-export default class Board {
+export default class Board implements IBoardData {
   id: string;
 
   title: string;

@@ -1,6 +1,7 @@
 import * as Hapi from '@hapi/hapi';
 import * as Inert from '@hapi/inert';
 import * as Vision from '@hapi/vision';
+import { get } from 'node-emoji';
 import CONFIG from './common/config';
 import SWAGGER from './plugins/swagger';
 import userRouter from './resources/users/user.router';
@@ -8,6 +9,7 @@ import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
 import pageNotFound from './resources/helpers/pageNotFound';
 import Logger from './logger';
+import { initDb } from './db';
 
 const plugins = [Inert, Vision];
 const { PORT } = CONFIG;
@@ -72,10 +74,18 @@ const createServer = async (): Promise<Hapi.Server> => {
   Logger.clearFile('./logs/error-logger.json');
 
   try {
-    await server.start();
-    process.stdout.write(`Server is running on ${server.info.uri} \n`);
+    await initDb();
+    process.stdout.write(`${get('dvd')} DB initialization -> Done! ${get('dvd')} \n`);
   } catch(error) {
-    process.stderr.write((<Error>error).message);
+    process.stderr.write(`${get('skull_and_crossbones')} ${(<Error>error).message} ${get('skull_and_crossbones')}`);
+    process.exit(1);
+  }
+
+  try {
+    await server.start();
+    process.stdout.write(`${get('rocket')} Server is running on ${server.info.uri} ${get('rocket')} \n`);
+  } catch(error) {
+    process.stderr.write(`${get('skull_and_crossbones')} ${(<Error>error).message} ${get('skull_and_crossbones')}`);
     process.exit(1);
   }
 

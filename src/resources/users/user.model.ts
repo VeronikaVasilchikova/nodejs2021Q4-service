@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IUserData, IUserDataToResponse } from '../helpers/interfaces';
 
-export default class User {
+export default class User implements IUserData {
   id: string;
 
   name: string;

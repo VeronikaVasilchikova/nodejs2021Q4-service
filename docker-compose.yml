@@ -16,7 +16,7 @@ services:
     environment:
       - ${PORT}
     volumes:
-      - ./src:/hapi-server/src
+      - ./logs:/hapi-server/logs
       - ./nodemon.json:/hapi-server/nodemon.json
     command: npm run dev
     restart: on-failure
@@ -39,4 +39,5 @@ services:
     restart: on-failure
 networks:
   hapi-network:
+    name: hapi-network
     driver: bridge

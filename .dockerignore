@@ -1,13 +1,14 @@
-node_modules
+**/node_modules
 test
+logs
 pgdata
 npm-debug.log
+build
 .git
 .github
 .gitignore
 .vscode
 .prettierrc
-postgres-database/Dockerfile
-Dockerfile
+**/Dockerfile
 docker-compose.yml
 README.md

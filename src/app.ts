@@ -22,19 +22,19 @@ const createServer = async (): Promise<Hapi.Server> => {
     host: '0.0.0.0',
     routes: {
       validate: {
-          failAction: async (request, h, error) => {
-            const {description} = request.route.settings;
-            if (request.route.path.includes('boards') && !request.route.path.includes('tasks')) {
-              Logger.logValidationError(description, <Error>error, '../data/board-logger.json');
-            }
-            if (request.route.path.includes('tasks')) {
-              Logger.logValidationError(description, <Error>error, '../data/task-logger.json');
-            }
-            if (request.route.path.includes('users')) {
-              Logger.logValidationError(description, <Error>error, '../data/user-logger.json');
-            }
-            throw error;
+        failAction: async (request, h, error) => {
+          const {description} = request.route.settings;
+          if (request.route.path.includes('boards') && !request.route.path.includes('tasks')) {
+            Logger.logValidationError(description, <Error>error, './logs/board-logger.json');
           }
+          if (request.route.path.includes('tasks')) {
+            Logger.logValidationError(description, <Error>error, './logs/task-logger.json');
+          }
+          if (request.route.path.includes('users')) {
+            Logger.logValidationError(description, <Error>error, './logs/user-logger.json');
+          }
+          throw error;
+        }
       }
   }
   });
@@ -66,10 +66,10 @@ const createServer = async (): Promise<Hapi.Server> => {
   server.route(taskRouter.deleteTaskById);
 
   // clear all files contain logging
-  Logger.clearFile('src/data/board-logger.json');
-  Logger.clearFile('src/data/task-logger.json');
-  Logger.clearFile('src/data/user-logger.json');
-  Logger.clearFile('src/data/error-logger.json');
+  Logger.clearFile('./logs/board-logger.json');
+  Logger.clearFile('./logs/task-logger.json');
+  Logger.clearFile('./logs/user-logger.json');
+  Logger.clearFile('./logs/error-logger.json');
 
   try {
     await server.start();

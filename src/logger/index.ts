@@ -41,7 +41,8 @@ export default class Logger {
    * @returns return nothing or throw error
    */
   public static writeDataToFile = (filename: string, log: string): void | never => {
-    const filePath = path.resolve(__dirname, filename);
+    const isProductionMode: boolean = process.argv[2] === 'production';
+    const filePath = path.resolve(__dirname, isProductionMode ? `../${filename}` : filename);
     if (fs.existsSync(filePath)) {
       fs.appendFileSync(filePath, `${log}\n`);
     }
@@ -100,7 +101,7 @@ export default class Logger {
       statusCode
     };
     if (['error', 'fatal', 'all'].includes(<string>CONFIG.LOGGING_VAR)) {
-      this.writeDataToFile('../data/error-logger.json', JSON.stringify(errorData));
+      this.writeDataToFile('../../logs/error-logger.json', JSON.stringify(errorData));
     }
   };
 
@@ -116,7 +117,7 @@ export default class Logger {
       errorMessage
     };
     if (['fatal', 'all'].includes(<string>CONFIG.LOGGING_VAR)) {
-      this.writeDataToFile('../data/error-logger.json', JSON.stringify(errorData));
+      this.writeDataToFile('../../logs/error-logger.json', JSON.stringify(errorData));
     }
   };
 }

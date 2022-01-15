@@ -9,13 +9,7 @@
   "description": "REST service starter for RS School",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "nodemon src/server.ts development --exitcrash -L",
-    "build": "tsc -p tsconfig.json",
-    "start": "node build/src/server.js production",
-    "build:start": "tsc -p tsconfig.json && node build/src/server.js production",
-    "lint": "eslint --ext .js,.ts --fix src/",
-    "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
-    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
+    "dev": "nodemon src/server.ts development --exitcrash -L"
   },
   "keywords": [
     "rs",
@@ -51,13 +45,10 @@
     "@hapi/hapi": "^20.2.1",
     "@hapi/inert": "^6.0.4",
     "@hapi/vision": "^6.1.0",
-    "cross-env": "7.0.3",
     "dotenv": "10.0.0",
     "hapi-swagger": "^14.2.4",
     "joi": "^17.4.2",
-    "uuid": "8.3.2"
-  },
-  "devDependencies": {
+    "uuid": "8.3.2",
     "@types/hapi__hapi": "^20.0.9",
     "@types/hapi__inert": "^5.2.3",
     "@types/hapi__joi": "^17.1.7",
@@ -66,23 +57,9 @@
     "@types/uuid": "^8.3.3",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
-    "chai": "4.3.4",
-    "debug": "4.3.2",
-    "dirty-chai": "2.0.1",
-    "eslint": "8.2.0",
-    "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-prettier": "8.3.0",
-    "eslint-plugin-import": "2.25.3",
-    "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "4.0.0",
-    "husky": "^4.3.8",
-    "jest": "27.3.1",
-    "lint-staged": "12.0.3",
     "nodemon": "2.0.15",
-    "prettier": "2.4.1",
-    "supertest": "6.1.6",
     "ts-node": "^10.4.0",
-    "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.3"
-  }
+  },
+  "devDependencies": {}
 }

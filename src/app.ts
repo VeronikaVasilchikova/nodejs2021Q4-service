@@ -19,7 +19,7 @@ const { PORT } = CONFIG;
 const createServer = async (): Promise<Hapi.Server> => {
   const server: Hapi.Server = Hapi.server({
     port: PORT || 4000,
-    host: 'localhost',
+    host: '0.0.0.0',
     routes: {
       validate: {
           failAction: async (request, h, error) => {
@@ -73,7 +73,7 @@ const createServer = async (): Promise<Hapi.Server> => {
 
   try {
     await server.start();
-    process.stdout.write(`Server running on %s ${server.info.uri}\n`);
+    process.stdout.write(`Server is running on ${server.info.uri} \n`);
   } catch(error) {
     process.stderr.write((<Error>error).message);
     process.exit(1);

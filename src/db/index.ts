@@ -7,7 +7,10 @@ import { Connection, getConnectionOptions, createConnection } from 'typeorm';
  */
 export const initDb = async (): Promise<Connection> => {
   const connectionOptions = await getConnectionOptions();
-  const connection = await createConnection(connectionOptions);
+  const connection: Connection = await createConnection({
+    ...connectionOptions,
+    entities: ['entities/*.ts']
+  });
   await connection.synchronize(true);
   return connection;
 }

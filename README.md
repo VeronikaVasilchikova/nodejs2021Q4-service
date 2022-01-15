@@ -73,3 +73,9 @@ npm test <suite name>
 ```
 npm run lint
 ```
+
+### Work with migrations
+To generate migration
+```
+npx typeorm migration:create -n {NameMigration} -d src/migration
+```

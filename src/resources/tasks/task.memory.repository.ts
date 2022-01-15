@@ -1,30 +1,32 @@
-import { v4 as uuidv4 } from 'uuid';
 import Boom from '@hapi/boom';
-import Task from './task.model';
+import { getRepository } from 'typeorm';
 import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';
 import Logger from '../../logger';
+import { Tasks } from '../../entity/tasks.entities';
 
 export default class TaskMemoryRepository {
-  private static tasks: Array<ITaskData> = [new Task()];
-
   /**
    * Returns all tasks of pointed board
    * @param boardId board identifier
    * @returns Promise resolved task array
    */
-  public static getAllTasks = async (boardId: string): Promise<Array<ITaskData> | []> => TaskMemoryRepository.tasks.filter(task => task.boardId === boardId);
+  public static getAllTasks = async (boardId: string): Promise<Array<ITaskData> | []> => {
+    const repo = getRepository(Tasks);
+    return await repo.find({ where: { boardId } });
+  };
 
   /**
    * Returns an existing task based on board and task identifier
    * @param boardId board identifier
-   * @param taskId task identifier
+   * @param id task identifier
    * @returns Promise resolved existing task data or throw error with status code 404
    */
-  public static getTaskById = async (boardId: string, taskId: string): Promise<ITaskData | never> => {
-    const task = TaskMemoryRepository.tasks.find(taskItem => (taskItem.id === taskId) || (taskItem.boardId === boardId));
+  public static getTaskById = async (boardId: string, id: string): Promise<ITaskData | never> => {
+    const repo = getRepository(Tasks);
+    const task = await repo.findOne({ where: { id, boardId } });
     if (!task) {
-      Logger.logError('clientError', 'getTaskById', `Task with boardId=${boardId} and taskId=${taskId} not found`, 404);
-      throw Boom.notFound(`Task with boardId=${boardId} and taskId=${taskId} not found`);
+      Logger.logError('clientError', 'getTaskById', `Task with boardId=${boardId} and taskId=${id} not found`, 404);
+      throw Boom.notFound(`Task with boardId=${boardId} and taskId=${id} not found`);
     }
     return task;
   }
@@ -32,23 +34,20 @@ export default class TaskMemoryRepository {
   /**
    * Returns an updated task based on board and task identifier
    * @param boardId board identifier
-   * @param taskId task identifier
+   * @param id task identifier
    * @param data new task data
    * @returns Promise resolved updated task data or throw error with status code 404
    */
-  public static updateTaskById = async (boardId: string, taskId: string, data: ITaskData): Promise<ITaskData | never> => {
-    const taskIndex = TaskMemoryRepository.tasks.findIndex(task => (task.id === taskId) && (task.boardId === boardId));
-    if (taskIndex === -1) {
-      Logger.logError('clientError', 'updateTaskById', `Task with taskId=${taskId} and boardId=${boardId} not found`, 404);
-      throw Boom.notFound(`Task with taskId=${taskId} and boardId=${boardId} not found`);
+  public static updateTaskById = async (boardId: string, id: string, data: ITaskData): Promise<ITaskData | never> => {
+    const repo = getRepository(Tasks);
+    const updatedTask = await repo.findOne({ where: { boardId, id } });
+    if (updatedTask !== undefined) {
+      await repo.update(id, data);
+      return updatedTask;
     }
     else {
-      const updatedTask = {
-        ...TaskMemoryRepository.tasks[taskIndex],
-        ...data
-      };
-      TaskMemoryRepository.tasks[taskIndex] = updatedTask;
-      return TaskMemoryRepository.tasks[taskIndex];
+      Logger.logError('clientError', 'updateTaskById', `Task with taskId=${id} and boardId=${boardId} not found`, 404);
+      throw Boom.notFound(`Task with taskId=${id} and boardId=${boardId} not found`);
     }
   };
 
@@ -58,22 +57,14 @@ export default class TaskMemoryRepository {
    * @returns Promise resolved no data or send error with status code 404
    */
   public static updateTaskByUserId = async (userId: string): Promise<void> => {
-    const taskIndex = TaskMemoryRepository.tasks.findIndex(task => task.userId === userId);
-    if (taskIndex === -1) {
-      Logger.logError('clientError', 'updateTaskByUserId', `Task with userId=${userId} not found`, 404);
-      Boom.notFound(`Task with userId=${userId} not found`);
+    const repo = getRepository(Tasks);
+    const taskByUserId = await repo.findOne({ where: { userId } });
+    if (taskByUserId !== undefined) {
+      await repo.update({userId}, {userId: null});
     }
     else {
-      TaskMemoryRepository.tasks = TaskMemoryRepository.tasks.map(item => {
-        if (item.userId === userId) {
-          const updatedItem = {
-            ...item,
-            userId: null
-          };
-          return updatedItem;
-        }
-        return item;
-      });
+      Logger.logError('clientError', 'updateTaskByUserId', `Task with userId=${userId} not found`, 404);
+      Boom.notFound(`Task with userId=${userId} not found`);
     }
   };
 
@@ -84,36 +75,38 @@ export default class TaskMemoryRepository {
    * @returns Promise resolved newly created task data
    */
   public static createTask = async (boardId: string, task: ITaskDataBasic): Promise<ITaskData> => {
-    const newTask = {id: uuidv4(), ...task, boardId};
-    TaskMemoryRepository.tasks.push(newTask);
-    return newTask;
+    const repo = getRepository(Tasks);
+    const newTask = repo.create({...task, boardId});
+    return await repo.save(newTask);
   };
 
   /**
    * Remove an existing task from database based on board or/and task identifier
    * @param boardId identifier of board
-   * @param taskId identifier of task
+   * @param id identifier of task
    * @returns Promise resolved no data or send error with status code 404
    */
-  public static removeTaskById = async (boardId: string, taskId?: string): Promise<void> => {
-    if (!taskId) {
-      const taskByBoardIdIndex = TaskMemoryRepository.tasks.findIndex(task => task.boardId === boardId);
-      if (taskByBoardIdIndex === -1) {
+  public static removeTaskById = async (boardId: string, id?: string): Promise<void> => {
+    const repo = getRepository(Tasks);
+    if (!id) {
+      const taskByBoardId = await repo.findOne({ where: { boardId } });
+      if (taskByBoardId !== undefined) {
+        await repo.delete({ boardId });
+      }
+      else {
         Logger.logError('clientError', 'removeTaskById', `Task with boardId=${boardId} not found`, 404);
         Boom.notFound(`Task with boardId=${boardId} not found`);
       }
-      else {
-        TaskMemoryRepository.tasks = TaskMemoryRepository.tasks.filter(task => task.boardId !== boardId);
-      }
+
     }
     else {
-      const taskByBoardIdTaskIdIndex = TaskMemoryRepository.tasks.findIndex(taskItem => (taskItem.id === taskId) || (taskItem.boardId === boardId));
-      if (taskByBoardIdTaskIdIndex === -1) {
-        Logger.logError('clientError', 'removeTaskById', `Task with taskId=${taskId} and boardId=${boardId} not found`, 404);
-        Boom.notFound(`Task with taskId=${taskId} and boardId=${boardId} not found`);
+      const taskByBoardIdTaskId = await repo.findOne({ where: { boardId, id } });
+      if (taskByBoardIdTaskId !== undefined) {
+        await repo.delete(id);
       }
       else {
-        TaskMemoryRepository.tasks = TaskMemoryRepository.tasks.filter(task => (task.id !== taskId) && (task.boardId !== boardId));
+        Logger.logError('clientError', 'removeTaskById', `Task with taskId=${id} and boardId=${boardId} not found`, 404);
+        Boom.notFound(`Task with taskId=${id} and boardId=${boardId} not found`);
       }
     }
   };

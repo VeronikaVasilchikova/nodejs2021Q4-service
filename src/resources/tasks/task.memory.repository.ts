@@ -46,9 +46,8 @@ export default class TaskMemoryRepository {
       await repo.update(id, data);
       return updatedTask;
     }
-
-      Logger.logError('clientError', 'updateTaskById', `Task with taskId=${id} and boardId=${boardId} not found`, 404);
-      throw Boom.notFound(`Task with taskId=${id} and boardId=${boardId} not found`);
+    Logger.logError('clientError', 'updateTaskById', `Task with taskId=${id} and boardId=${boardId} not found`, 404);
+    throw Boom.notFound(`Task with taskId=${id} and boardId=${boardId} not found`);
 
   };
 

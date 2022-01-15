@@ -6,13 +6,13 @@ export class Boards {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true, default: 'BOARD' })
   title: string;
 
   @OneToMany(
     () => Columns,
-    column => column.board,
-    { onDelete: 'CASCADE', cascade: true, eager: true }
+    columns => columns.board,
+    { cascade: true, onDelete: 'CASCADE', onUpdate: 'CASCADE', eager: true }
   )
   columns: Columns[];
 }

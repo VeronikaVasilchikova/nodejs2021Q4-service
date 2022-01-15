@@ -2,7 +2,7 @@ import Boom from '@hapi/boom';
 import { getRepository } from 'typeorm';
 import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
 import Logger from '../../logger';
-import { Boards } from "../../entity/boards.entities";
+import { Boards } from '../../entity/boards.entities';
 
 export default class BoardMemoryRepository {
   /**
@@ -38,14 +38,14 @@ export default class BoardMemoryRepository {
    */
   public static updateBoardById = async (id: string, data: IBoardData): Promise<IBoardData | never> => {
     const repo = getRepository(Boards);
-    const updatedBoard = await repo.findOne(id);
+    const updatedBoard = await repo.findOne({ where: { id } });
     if (updatedBoard !== undefined) {
-      await repo.update(id, data);
-      return updatedBoard;
+      const updatedBoardData = Object.assign(updatedBoard, data);
+      repo.save(updatedBoardData);
+      return updatedBoardData;
     }
-
-      Logger.logError('clientError', 'updateBoardById', `Board with id=${id} not found`, 404);
-      throw Boom.notFound(`Board with id=${id} not found`);
+    Logger.logError('clientError', 'updateBoardById', `Board with id=${id} not found`, 404);
+    throw Boom.notFound(`Board with id=${id} not found`);
 
   };
 

@@ -6,15 +6,15 @@ export class Columns {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, default: 'column title' })
   title: string;
 
-  @Column('integer')
+  @Column({type: 'integer', default: 1})
   order: number;
 
-  @ManyToOne(() => Boards, { onDelete: 'CASCADE' })
+  @ManyToOne(
+    () => Boards,
+    board => board.columns
+  )
   board: Boards;
-
-  @Column('uuid')
-  boardId: string;
 }

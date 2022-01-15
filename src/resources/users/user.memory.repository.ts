@@ -26,10 +26,8 @@ export default class UserMemoryRepository {
     if (userItem !== undefined) {
       return userItem;
     }
-
-      Logger.logError('clientError', 'getUserById', `User with id=${id} not found`, 404);
-      throw Boom.notFound(`User with id=${id} not found`);
-
+    Logger.logError('clientError', 'getUserById', `User with id=${id} not found`, 404);
+    throw Boom.notFound(`User with id=${id} not found`);
   };
 
   /**
@@ -45,10 +43,8 @@ export default class UserMemoryRepository {
       await repo.update(id, data);
       return updatedUser;
     }
-
-      Logger.logError('clientError', 'updateUserById', `User with id=${id} not found`, 404);
-      throw Boom.notFound(`User with id=${id} not found`);
-
+    Logger.logError('clientError', 'updateUserById', `User with id=${id} not found`, 404);
+    throw Boom.notFound(`User with id=${id} not found`);
   };
 
   /**

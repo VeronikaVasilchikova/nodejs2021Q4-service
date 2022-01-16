@@ -2,7 +2,7 @@ import Boom from '@hapi/boom';
 import { getRepository } from 'typeorm';
 import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';
 import Logger from '../../logger';
-import { Tasks } from '../../entity/tasks.entities';
+import { Tasks } from '../../entity/tasks.entity';
 
 export default class TaskMemoryRepository {
   /**

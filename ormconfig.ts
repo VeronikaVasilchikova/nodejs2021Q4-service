@@ -14,11 +14,13 @@ export default {
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
   logging: false,
-  entities: [`${pathToRootFolder}/entity/*.ts`],
-  migrations: [`${pathToRootFolder}/migration/*.ts`],
+  entities: [`${pathToRootFolder}/entity/**/*.ts`],
+  migrations: [`${pathToRootFolder}/migration/**/*.ts`],
+  subscribers: [`${pathToRootFolder}/subscriber/**/*.ts`],
   cli: {
     migrationsDir: `${pathToRootFolder}/migration`,
-    entitiesDir: `${pathToRootFolder}/entity`
+    entitiesDir: `${pathToRootFolder}/entity`,
+    subscribersDir: `${pathToRootFolder}/subscriber`
   },
   synchronize: false
 };

@@ -2,7 +2,7 @@ import Boom from '@hapi/boom';
 import { getRepository } from 'typeorm';
 import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
 import Logger from '../../logger';
-import { Boards } from '../../entity/boards.entities';
+import { Boards } from '../../entity/boards.entity';
 
 export default class BoardMemoryRepository {
   /**

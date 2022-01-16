@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Columns } from './columns.entities';
+import { Columns } from './columns.entity';
 
 @Entity({ name: 'boards' })
 export class Boards {
@@ -12,7 +12,8 @@ export class Boards {
   @OneToMany(
     () => Columns,
     columns => columns.board,
-    { cascade: true, onDelete: 'CASCADE', onUpdate: 'CASCADE', eager: true }
+    // { cascade: true, onDelete: 'CASCADE', onUpdate: 'CASCADE', eager: true }
+    { cascade: true, eager: true }
   )
   columns: Columns[];
 }

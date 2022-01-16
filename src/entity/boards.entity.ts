@@ -12,7 +12,6 @@ export class Boards {
   @OneToMany(
     () => Columns,
     columns => columns.board,
-    // { cascade: true, onDelete: 'CASCADE', onUpdate: 'CASCADE', eager: true }
     { cascade: true, eager: true }
   )
   columns: Columns[];

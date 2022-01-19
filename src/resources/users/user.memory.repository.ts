@@ -38,9 +38,10 @@ export default class UserMemoryRepository {
    */
   public static updateUserById = async (id: string, data: IUserData): Promise<IUserData | never> => {
     const repo = getRepository(Users);
-    const updatedUser = await repo.findOne(id);
-    if (updatedUser !== undefined) {
+    const userToUpdate = await repo.findOne(id);
+    if (userToUpdate !== undefined) {
       await repo.update(id, data);
+      const updatedUser = await repo.findOne(id) as IUserData;
       return updatedUser;
     }
     Logger.logError('clientError', 'updateUserById', `User with id=${id} not found`, 404);

@@ -38,9 +38,9 @@ export default class BoardMemoryRepository {
    */
   public static updateBoardById = async (id: string, data: IBoardData): Promise<IBoardData | never> => {
     const repo = getRepository(Boards);
-    const updatedBoard = await repo.findOne({ where: { id } });
-    if (updatedBoard !== undefined) {
-      const updatedBoardData = Object.assign(updatedBoard, data);
+    const boardToUpdate = await repo.findOne({ where: { id } });
+    if (boardToUpdate !== undefined) {
+      const updatedBoardData = Object.assign(boardToUpdate, data);
       repo.save(updatedBoardData);
       return updatedBoardData;
     }

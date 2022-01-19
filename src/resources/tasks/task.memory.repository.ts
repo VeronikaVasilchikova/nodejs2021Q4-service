@@ -41,9 +41,10 @@ export default class TaskMemoryRepository {
    */
   public static updateTaskById = async (boardId: string, id: string, data: ITaskData): Promise<ITaskData | never> => {
     const repo = getRepository(Tasks);
-    const updatedTask = await repo.findOne({ where: { boardId, id } });
-    if (updatedTask !== undefined) {
+    const taskToUpdate = await repo.findOne({ where: { boardId, id } });
+    if (taskToUpdate !== undefined) {
       await repo.update(id, data);
+      const updatedTask = await repo.findOne({ where: { boardId, id } }) as ITaskData;
       return updatedTask;
     }
     Logger.logError('clientError', 'updateTaskById', `Task with taskId=${id} and boardId=${boardId} not found`, 404);

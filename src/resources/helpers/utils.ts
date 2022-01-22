@@ -34,8 +34,8 @@ const verifyCredentials = async (request: Request, h: Hapi.ResponseToolkit) => {
     });
   }
   else {
-    Logger.logError('clientError', 'login', `UIncorrect name or login!`, 404);
-    throw Boom.notFound(`User not found`);
+    Logger.logError('clientError', 'login', `Forbidden! UIncorrect name or login!`, 403);
+    return h.response(Boom.badRequest('Incorrect password!')).code(403);
   }
 }
 

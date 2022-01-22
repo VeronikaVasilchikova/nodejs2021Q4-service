@@ -3,6 +3,9 @@ import Inert from '@hapi/inert';
 import Vision from '@hapi/vision';
 import Jwt from '@hapi/jwt';
 import { get } from 'node-emoji';
+import 'reflect-metadata';
+import { getConnection } from 'typeorm';
+import bcryptjs from 'bcryptjs';
 import CONFIG from './common/config';
 import SWAGGER from './plugins/swagger';
 import userRouter from './resources/users/user.router';
@@ -11,6 +14,7 @@ import taskRouter from './resources/tasks/task.router';
 import pageNotFound from './resources/helpers/pageNotFound';
 import Logger from './logger';
 import { initDb } from './db';
+import { Users } from './entity/users.entity';
 
 const plugins = [Inert, Vision];
 const { PORT, JWT_SECRET_KEY } = CONFIG;
@@ -105,6 +109,22 @@ const createServer = async (): Promise<Hapi.Server> => {
 
   try {
     await initDb();
+    const password: string = await bcryptjs.hash('admin', 10);
+    const user = await getConnection()
+      .createQueryBuilder()
+      .select('user')
+      .from(Users, 'user')
+      .where('user.login = :login', {login: 'admin'})
+      .getOne();
+
+    if (!user) {
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Users)
+        .values([{login: 'admin', password} ])
+        .execute();
+    }
     process.stdout.write(`${get('dvd')} DB initialization -> Done! ${get('dvd')} \n`);
   } catch(error) {
     process.stderr.write(`${get('skull_and_crossbones')} ${(<Error>error).message} ${get('skull_and_crossbones')}`);

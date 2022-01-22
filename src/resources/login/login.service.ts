@@ -6,7 +6,7 @@ import { createToken } from '../helpers/utils';
 
 export default class LoginService {
   /**
-   * Returns Hapi response with newly created task with status code 201 or throw error
+   * Returns Hapi response with jwt token and status code 201 or throw error
    * @param request Hapi request
    * @param h Hapi response
    * @returns Promise resolved Hapi response object or throw error

@@ -41,7 +41,7 @@ export default class BoardMemoryRepository {
     const boardToUpdate = await repo.findOne({ where: { id } });
     if (boardToUpdate !== undefined) {
       const updatedBoardData = Object.assign(boardToUpdate, data);
-      repo.save(updatedBoardData);
+      await repo.save(updatedBoardData);
       return updatedBoardData;
     }
     Logger.logError('clientError', 'updateBoardById', `Board with id=${id} not found`, 404);

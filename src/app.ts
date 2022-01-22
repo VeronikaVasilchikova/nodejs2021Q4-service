@@ -1,6 +1,7 @@
 import * as Hapi from '@hapi/hapi';
 import * as Inert from '@hapi/inert';
 import * as Vision from '@hapi/vision';
+import * as Jwt from '@hapi/jwt';
 import { get } from 'node-emoji';
 import CONFIG from './common/config';
 import SWAGGER from './plugins/swagger';
@@ -38,11 +39,35 @@ const createServer = async (): Promise<Hapi.Server> => {
           throw error;
         }
       }
-  }
+    }
   });
 
   await server.register(plugins);
   await server.register(SWAGGER);
+  await server.register(Jwt);
+
+  // Describe jwt strategy
+  server.auth.strategy('hapi_jwt_strategy', 'jwt', {
+    keys: 'some_shared_secret',
+    verify: {
+      aud: 'urn:audience:test',
+      iss: 'urn:issuer:test',
+      sub: false,
+      nbf: true,
+      exp: true,
+      maxAgeSec: 14400,
+      timeSkewSec: 15
+    },
+    validate: (artifacts, request, h) => {
+      return {
+        isValid: true,
+        credentials: { user: artifacts.decoded.payload.user }
+      };
+    }
+  });
+
+  // Set the strategy
+  server.auth.default('hapi_jwt_strategy');
 
   server.route(pageNotFound);
 
@@ -66,6 +91,8 @@ const createServer = async (): Promise<Hapi.Server> => {
   server.route(taskRouter.updateTaskById);
   server.route(taskRouter.createTask);
   server.route(taskRouter.deleteTaskById);
+
+  // login routes
 
   // clear all files contain logging
   Logger.clearFile('./logs/board-logger.json');

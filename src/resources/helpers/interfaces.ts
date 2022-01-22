@@ -58,3 +58,9 @@ export interface IErrorData extends IErrorDataBasic {
   methodName: string | undefined;
   statusCode: number;
 }
+
+export interface ILoginPayload {
+  password: string;
+  name?: string;
+  login?: string;
+}

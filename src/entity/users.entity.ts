@@ -30,4 +30,19 @@ export class Users {
     const { id, name, login } = user;
     return { id, name, login };
   }
+
+  // @PrimaryGeneratedColumn('uuid')
+  // id!: string;
+
+  // @Column()
+  // name!: string;
+
+  // @Column()
+  // login!: string;
+
+  // @Column()
+  // password!: string;
+
+  // @OneToMany('EntTask', 'userId')
+  // tasks!: EntTask[];
 }

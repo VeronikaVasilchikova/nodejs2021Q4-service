@@ -1,4 +1,4 @@
-import * as HapiSwagger from 'hapi-swagger';
+import HapiSwagger from 'hapi-swagger';
 import SWAGGER_OPTIONS from '../../doc/swagger-options';
 
 const SWAGGER = {

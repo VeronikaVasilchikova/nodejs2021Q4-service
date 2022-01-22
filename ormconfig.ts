@@ -8,7 +8,8 @@ const pathToRootFolder: string = process.argv[2] === 'production' ? 'build' : 's
 
 export default {
   type: 'postgres',
-  host: 'postgres-db',
+  // host: 'postgres-db',
+  host: 'localHost',
   port: +POSTGRES_PORT,
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,

@@ -1,7 +1,7 @@
-import * as Hapi from '@hapi/hapi';
-import * as Inert from '@hapi/inert';
-import * as Vision from '@hapi/vision';
-import * as Jwt from '@hapi/jwt';
+import Hapi from '@hapi/hapi';
+import Inert from '@hapi/inert';
+import Vision from '@hapi/vision';
+import Jwt from '@hapi/jwt';
 import { get } from 'node-emoji';
 import CONFIG from './common/config';
 import SWAGGER from './plugins/swagger';
@@ -13,7 +13,7 @@ import Logger from './logger';
 import { initDb } from './db';
 
 const plugins = [Inert, Vision];
-const { PORT } = CONFIG;
+const { PORT, JWT_SECRET_KEY } = CONFIG;
 
 /**
  * Initiate Hapi server
@@ -48,7 +48,7 @@ const createServer = async (): Promise<Hapi.Server> => {
 
   // Describe jwt strategy
   server.auth.strategy('hapi_jwt_strategy', 'jwt', {
-    keys: 'some_shared_secret',
+    keys: JWT_SECRET_KEY as string,
     verify: {
       aud: 'urn:audience:test',
       iss: 'urn:issuer:test',
@@ -58,10 +58,13 @@ const createServer = async (): Promise<Hapi.Server> => {
       maxAgeSec: 14400,
       timeSkewSec: 15
     },
-    validate: (artifacts, request, h) => {
+    validate: async (artifacts, request, h) => {
+      console.log(artifacts)
       return {
         isValid: true,
-        credentials: { user: artifacts.decoded.payload.user }
+        credentials: {
+          users: artifacts.decoded.payload.users
+        }
       };
     }
   });

@@ -1,9 +1,9 @@
-import * as HapiSwagger from 'hapi-swagger';
+import HapiSwagger from 'hapi-swagger';
 import * as Package from '../package.json';
 
 const SWAGGER_OPTIONS: HapiSwagger.RegisterOptions = {
   jsonPath: '/documentation.json',
-  documentationPath: '/documentation',
+  documentationPath: '/doc',
   info: {
     title: 'Trello Service',
     description: `Let's try to create a competitor for Trello!`,
@@ -21,6 +21,10 @@ const SWAGGER_OPTIONS: HapiSwagger.RegisterOptions = {
     {
       name: 'tasks',
       description: 'Tasks operations'
+    },
+    {
+      name: 'login',
+      description: 'Try to login'
     }
   ],
   grouping: 'tags'

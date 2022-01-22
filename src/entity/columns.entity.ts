@@ -17,4 +17,19 @@ export class Columns {
     board => board.columns
   )
   board: Boards;
+
+  // @PrimaryGeneratedColumn('uuid')
+  // id?: string;
+
+  // @Column()
+  // title!: string;
+
+  // @Column()
+  // order!: number;
+
+  // @ManyToOne('EntBoard', 'columns', {
+  //   onDelete: 'CASCADE',
+  //   onUpdate: 'CASCADE',
+  // })
+  // board!: EntBoard;
 }

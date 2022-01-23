@@ -1,5 +1,4 @@
-import Hapi from '@hapi/hapi';
-import { Request } from "@hapi/hapi";
+import Hapi, { Request } from '@hapi/hapi';
 import Boom from '@hapi/boom';
 import bcryptjs from 'bcryptjs';
 import { getRepository } from 'typeorm';
@@ -28,15 +27,16 @@ export default class LoginService {
         Logger.logRequestInfo('login', request, '../../logs/user-logger.json', 201);
         return h.response(Users.toResponse(<IUserData>userItem)).code(200);
       }
-      else {
+      
         Logger.logError('clientError', 'login', `Forbidden! Incorrect password!`, 403);
         const error = Boom.badRequest('Forbidden! Incorrect password!');
         error.output.statusCode = 403;
         error.reformat();
         throw error;
-      }
+      
     });
   }
+
   /**
    * Returns Hapi response with jwt token and status code 201 or throw error
    * @param request Hapi request

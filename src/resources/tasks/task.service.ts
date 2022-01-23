@@ -1,5 +1,4 @@
-import Hapi from '@hapi/hapi';
-import { Request } from "@hapi/hapi";
+import Hapi, { Request } from '@hapi/hapi';
 import Boom from '@hapi/boom';
 import TaskMemoryRepository from './task.memory.repository';
 import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';

@@ -15,19 +15,4 @@ export class Boards {
     { cascade: true, eager: true }
   )
   columns: Columns[];
-
-  // @PrimaryGeneratedColumn('uuid')
-  // id?: string;
-
-  // @Column()
-  // title!: string;
-
-  // @OneToMany('EntColumn', 'board', {
-  //   eager: true,
-  //   cascade: true,
-  // })
-  // columns!: EntColumn[];
-
-  // @OneToMany('EntTask', 'boardId')
-  // tasks!: EntTask[];
 }

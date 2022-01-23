@@ -1,11 +1,11 @@
 import loginRouterOptions from './login.router.options';
 
-const taskRouter = {
-  createTask: {
+const loginRouter = {
+  authenticateUser: {
     method: 'POST',
     path: '/login',
     options: loginRouterOptions.authenticateUser
   }
 }
 
-export default taskRouter;
+export default loginRouter;

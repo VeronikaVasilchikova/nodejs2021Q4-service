@@ -37,34 +37,4 @@ export class Tasks {
     user => user.id
   )
   user: Users;
-
-  // @PrimaryGeneratedColumn('uuid')
-  // id?: string;
-
-  // @Column()
-  // title!: string;
-
-  // @Column()
-  // order!: number;
-
-  // @Column()
-  // description!: string;
-
-  // @Column({ type: 'uuid', nullable: true, name: 'column_id' })
-  // columnId!: string | null;
-
-  // @ManyToOne('EntBoard', 'tasks', {
-  //   eager: true,
-  //   onUpdate: 'CASCADE',
-  //   onDelete: 'CASCADE',
-  // })
-  // boardId!: EntBoard;
-
-  // @ManyToOne('EntUser', 'tasks', {
-  //   eager: true,
-  //   nullable: true,
-  //   onDelete: 'SET NULL',
-  //   onUpdate: 'CASCADE',
-  // })
-  // userId!: EntUser | null;
 }

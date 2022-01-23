@@ -1,12 +1,8 @@
 import LoginService from "./login.service";
 import loginSchema from './login.schema';
-import { verifyCredentials } from '../helpers/utils';
 
 const loginRouterOptions = {
   authenticateUser: {
-    pre: [
-      { method: verifyCredentials, assign: 'user' }
-    ],
     handler: LoginService.authenticate,
     plugins: {
       'hapi-swagger': {

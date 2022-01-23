@@ -1,7 +1,6 @@
 import Hapi from '@hapi/hapi';
 import Inert from '@hapi/inert';
 import Vision from '@hapi/vision';
-import Jwt from '@hapi/jwt';
 import { get } from 'node-emoji';
 import 'reflect-metadata';
 import { getConnection } from 'typeorm';
@@ -11,13 +10,14 @@ import SWAGGER from './plugins/swagger';
 import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
+import loginRouter from './resources/login/login.router';
 import pageNotFound from './resources/helpers/pageNotFound';
 import Logger from './logger';
 import { initDb } from './db';
 import { Users } from './entity/users.entity';
 
 const plugins = [Inert, Vision];
-const { PORT, JWT_SECRET_KEY } = CONFIG;
+const { PORT } = CONFIG;
 
 /**
  * Initiate Hapi server
@@ -48,33 +48,6 @@ const createServer = async (): Promise<Hapi.Server> => {
 
   await server.register(plugins);
   await server.register(SWAGGER);
-  await server.register(Jwt);
-
-  // Describe jwt strategy
-  server.auth.strategy('hapi_jwt_strategy', 'jwt', {
-    keys: JWT_SECRET_KEY as string,
-    verify: {
-      aud: 'urn:audience:test',
-      iss: 'urn:issuer:test',
-      sub: false,
-      nbf: true,
-      exp: true,
-      maxAgeSec: 14400,
-      timeSkewSec: 15
-    },
-    validate: async (artifacts, request, h) => {
-      console.log(artifacts)
-      return {
-        isValid: true,
-        credentials: {
-          users: artifacts.decoded.payload.users
-        }
-      };
-    }
-  });
-
-  // Set the strategy
-  server.auth.default('hapi_jwt_strategy');
 
   server.route(pageNotFound);
 
@@ -100,12 +73,21 @@ const createServer = async (): Promise<Hapi.Server> => {
   server.route(taskRouter.deleteTaskById);
 
   // login routes
+  server.route(loginRouter.authenticateUser);
 
   // clear all files contain logging
   Logger.clearFile('./logs/board-logger.json');
   Logger.clearFile('./logs/task-logger.json');
   Logger.clearFile('./logs/user-logger.json');
   Logger.clearFile('./logs/error-logger.json');
+
+  try {
+    await server.start();
+    process.stdout.write(`${get('rocket')} Server is running on ${server.info.uri} ${get('rocket')} \n`);
+  } catch(error) {
+    process.stderr.write(`${get('skull_and_crossbones')} ${(<Error>error).message} ${get('skull_and_crossbones')}`);
+    process.exit(1);
+  }
 
   try {
     await initDb();
@@ -126,14 +108,6 @@ const createServer = async (): Promise<Hapi.Server> => {
         .execute();
     }
     process.stdout.write(`${get('dvd')} DB initialization -> Done! ${get('dvd')} \n`);
-  } catch(error) {
-    process.stderr.write(`${get('skull_and_crossbones')} ${(<Error>error).message} ${get('skull_and_crossbones')}`);
-    process.exit(1);
-  }
-
-  try {
-    await server.start();
-    process.stdout.write(`${get('rocket')} Server is running on ${server.info.uri} ${get('rocket')} \n`);
   } catch(error) {
     process.stderr.write(`${get('skull_and_crossbones')} ${(<Error>error).message} ${get('skull_and_crossbones')}`);
     process.exit(1);

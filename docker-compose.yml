@@ -16,7 +16,7 @@ services:
     environment:
       - ${PORT}
     volumes:
-      - ./src:/hapi-server/src
+      - ./logs:/hapi-server/logs
       - ./nodemon.json:/hapi-server/nodemon.json
     command: npm run dev
     restart: on-failure
@@ -33,10 +33,13 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-      PGDATA: ${PGDATA}
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     restart: on-failure
 networks:
   hapi-network:
+    name: hapi-network
     driver: bridge
+volumes:
+  pgdata:
+  logs:

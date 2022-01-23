@@ -1,52 +1,52 @@
-import { v4 as uuidv4 } from 'uuid';
 import Boom from '@hapi/boom';
-import Board from './board.model';
+import { getRepository } from 'typeorm';
 import { IBoardData, IBoardDataBasic } from '../helpers/interfaces';
 import Logger from '../../logger';
+import { Boards } from '../../entity/boards.entity';
 
 export default class BoardMemoryRepository {
-  private static boards: Array<IBoardData> = [new Board()];
-
   /**
    * Returns an array of all boards
    * @returns Promise resolved an array of all boards
    */
-  public static getAllBoards = async (): Promise<Array<IBoardData> | []>  => BoardMemoryRepository.boards;
+  public static getAllBoards = async (): Promise<Array<IBoardData> | []>  => {
+    const repo = getRepository(Boards);
+    const allBoards = await repo.find();
+    return allBoards;
+  };
 
   /**
    * Returns a board data based on the identifier
-   * @param boardId identifier of board
+   * @param id identifier of board
    * @returns Promise resolved a board data or throw error with status code 404
    */
-  public static getBoardById = async (boardId: string): Promise<IBoardData | never> => {
-    const board = BoardMemoryRepository.boards.find(boardItem => boardItem.id.toString() === boardId.toString());
+  public static getBoardById = async (id: string): Promise<IBoardData | never> => {
+    const repo = getRepository(Boards);
+    const board = await repo.findOne({ where: { id } });
     if (!board) {
-      Logger.logError('clientError', 'getBoardById', `Board with id=${boardId} not found`, 404);
-      throw Boom.notFound(`Board with id=${boardId} not found`);
+      Logger.logError('clientError', 'getBoardById', `Board with id=${id} not found`, 404);
+      throw Boom.notFound(`Board with id=${id} not found`);
     }
     return board;
   }
 
   /**
    * Returns an updated board data based on identifier
-   * @param boardId identifier of board
+   * @param id identifier of board
    * @param data new data for existing board
    * @returns Promise resolved an updated board data or throw error with status code 404
    */
-  public static updateBoardById = async (boardId: string, data: IBoardData): Promise<IBoardData | never> => {
-    const index = BoardMemoryRepository.boards.findIndex(board => board.id.toString() === boardId.toString());
-    if (index === -1) {
-      Logger.logError('clientError', 'updateBoardById', `Board with id=${boardId} not found`, 404);
-      throw Boom.notFound(`Board with id=${boardId} not found`);
+  public static updateBoardById = async (id: string, data: IBoardData): Promise<IBoardData | never> => {
+    const repo = getRepository(Boards);
+    const boardToUpdate = await repo.findOne({ where: { id } });
+    if (boardToUpdate !== undefined) {
+      const updatedBoardData = Object.assign(boardToUpdate, data);
+      repo.save(updatedBoardData);
+      return updatedBoardData;
     }
-    else {
-      const updatedBoard = {
-        ...BoardMemoryRepository.boards[index],
-        ...data
-      };
-      BoardMemoryRepository.boards[index] = updatedBoard;
-      return BoardMemoryRepository.boards[index];
-    }
+    Logger.logError('clientError', 'updateBoardById', `Board with id=${id} not found`, 404);
+    throw Boom.notFound(`Board with id=${id} not found`);
+
   };
 
   /**
@@ -55,24 +55,26 @@ export default class BoardMemoryRepository {
    * @returns Promise resolved a newly created board data
    */
   public static createBoard = async (board: IBoardDataBasic): Promise<IBoardData> => {
-    const newBoard = {id: uuidv4(), ...board};
-    BoardMemoryRepository.boards.push(newBoard);
+    const repo = getRepository(Boards);
+    const newBoard = repo.create(board);
+    await repo.save(newBoard);
     return newBoard;
   };
 
   /**
    * Remove an existing board from database based on identifier
-   * @param boardId identifier of board
+   * @param id identifier of board
    * @returns Promise resolved no data or throw error with status code 404
    */
-  public static removeBoardById = async (boardId: string): Promise<void | never> => {
-    const index = BoardMemoryRepository.boards.findIndex(board => board.id.toString() === boardId.toString());
-    if (index === -1) {
-      Logger.logError('clientError', 'removeBoardById', `Board with id=${boardId} not found`, 404);
-      throw Boom.notFound(`Board with id=${boardId} not found`);
+  public static removeBoardById = async (id: string): Promise<void | never> => {
+    const repo = getRepository(Boards);
+    const deletedBoard = await repo.findOne({ where: { id } });
+    if (deletedBoard !== undefined) {
+      await repo.delete(id)
     }
     else {
-      BoardMemoryRepository.boards = BoardMemoryRepository.boards.filter(board => board.id.toString() !== boardId.toString());
+      Logger.logError('clientError', 'removeBoardById', `Board with id=${id} not found`, 404);
+      throw Boom.notFound(`Board with id=${id} not found`);
     }
   };
 }

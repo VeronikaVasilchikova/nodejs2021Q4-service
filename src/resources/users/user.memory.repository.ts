@@ -1,52 +1,51 @@
-import { v4 as uuidv4 } from 'uuid';
+import { getRepository } from 'typeorm';
 import Boom from '@hapi/boom';
-import User from './user.model';
 import {IUserData, ICreatedUserData} from '../helpers/interfaces';
 import Logger from '../../logger';
+import { Users } from '../../entity/users.entity';
 
 export default class UserMemoryRepository {
-  private static users: Array<IUserData> = [new User({})];
-
   /**
    * Returns all users
    * @returns Promise resolved user array
    */
-  public static getAllUsers = async (): Promise<Array<IUserData> | []> => UserMemoryRepository.users;
+  public static getAllUsers = async (): Promise<Array<IUserData> | []> => {
+    const repo = getRepository(Users);
+    const allUsers = await repo.find();
+    return allUsers;
+  };
 
   /**
    * Returns an existing user based on identifier
-   * @param userId user identifier
+   * @param id user identifier
    * @returns Promise resolved user data or throw error with status code 404
    */
-  public static getUserById = async (userId: string): Promise<IUserData | never> => {
-    const userItem = UserMemoryRepository.users.find(user => user.id.toString() === userId.toString());
-    if (!userItem) {
-      Logger.logError('clientError', 'getUserById', `User with id=${userId} not found`, 404);
-      throw Boom.notFound(`User with id=${userId} not found`);
+  public static getUserById = async (id: string): Promise<IUserData | never> => {
+    const repo = getRepository(Users);
+    const userItem = await repo.findOne({ where: { id } });
+    if (userItem !== undefined) {
+      return userItem;
     }
-    return userItem;
+    Logger.logError('clientError', 'getUserById', `User with id=${id} not found`, 404);
+    throw Boom.notFound(`User with id=${id} not found`);
   };
 
   /**
    * Returns an updated user based on identifier
-   * @param userId user identifier
+   * @param id user identifier
    * @param data new user data
    * @returns Promise resolved an updated user data or throw error with status code 404
    */
-  public static updateUserById = async (userId: string, data: IUserData): Promise<IUserData | never> => {
-    const index = UserMemoryRepository.users.findIndex(item => item.id.toString() === userId.toString());
-    if (index === -1) {
-      Logger.logError('clientError', 'updateUserById', `User with id=${userId} not found`, 404);
-      throw Boom.notFound(`User with id=${userId} not found`);
+  public static updateUserById = async (id: string, data: IUserData): Promise<IUserData | never> => {
+    const repo = getRepository(Users);
+    const userToUpdate = await repo.findOne(id);
+    if (userToUpdate !== undefined) {
+      await repo.update(id, data);
+      const updatedUser = await repo.findOne(id) as IUserData;
+      return updatedUser;
     }
-    else {
-      const updatedUser = {
-        ...UserMemoryRepository.users[index],
-        ...data
-      };
-      UserMemoryRepository.users[index] = updatedUser;
-      return UserMemoryRepository.users[index];
-    }
+    Logger.logError('clientError', 'updateUserById', `User with id=${id} not found`, 404);
+    throw Boom.notFound(`User with id=${id} not found`);
   };
 
   /**
@@ -55,24 +54,26 @@ export default class UserMemoryRepository {
    * @returns Promise resolved a newly created user data
    */
   public static createUser = async (user: ICreatedUserData): Promise<IUserData> => {
-    const newUser = {id: uuidv4(), ...user};
-    UserMemoryRepository.users.push(newUser);
+    const repo = getRepository(Users);
+    const newUser = repo.create(user);
+    await repo.save(newUser);
     return newUser;
   };
 
   /**
    * Remove an existing user from database based on user identifier
-   * @param userId identifier of user
+   * @param id identifier of user
    * @returns Promise resolved no data or throw error with status code 404
    */
-  public static removeUserById = async (userId: string): Promise<void | never> => {
-    const userByIdIndex = UserMemoryRepository.users.findIndex(user => user.id.toString() === userId.toString());
-    if (userByIdIndex === -1) {
-      Logger.logError('clientError', 'removeUserById', `User with id=${userId} not found`, 404);
-      throw Boom.notFound(`User with id=${userId} not found`);
+  public static removeUserById = async (id: string): Promise<void | never> => {
+    const repo = getRepository(Users);
+    const deletedUser = await repo.findOne({ where: { id } });
+    if (deletedUser !== undefined) {
+      await repo.delete(id);
     }
     else {
-      UserMemoryRepository.users = UserMemoryRepository.users.filter((user: IUserData) => user.id.toString() !== userId.toString());
+      Logger.logError('clientError', 'removeUserById', `User with id=${id} not found`, 404);
+      throw Boom.notFound(`User with id=${id} not found`);
     }
   };
 }

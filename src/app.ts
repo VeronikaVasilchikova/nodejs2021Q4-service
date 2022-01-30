@@ -1,15 +1,20 @@
-import * as Hapi from '@hapi/hapi';
-import * as Inert from '@hapi/inert';
-import * as Vision from '@hapi/vision';
+import Hapi from '@hapi/hapi';
+import Inert from '@hapi/inert';
+import Vision from '@hapi/vision';
 import { get } from 'node-emoji';
+import 'reflect-metadata';
+import { getConnection } from 'typeorm';
+import bcryptjs from 'bcryptjs';
 import CONFIG from './common/config';
 import SWAGGER from './plugins/swagger';
 import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
 import taskRouter from './resources/tasks/task.router';
+import loginRouter from './resources/login/login.router';
 import pageNotFound from './resources/helpers/pageNotFound';
 import Logger from './logger';
 import { initDb } from './db';
+import { Users } from './entity/users.entity';
 
 const plugins = [Inert, Vision];
 const { PORT } = CONFIG;
@@ -38,7 +43,7 @@ const createServer = async (): Promise<Hapi.Server> => {
           throw error;
         }
       }
-  }
+    }
   });
 
   await server.register(plugins);
@@ -67,6 +72,9 @@ const createServer = async (): Promise<Hapi.Server> => {
   server.route(taskRouter.createTask);
   server.route(taskRouter.deleteTaskById);
 
+  // login routes
+  server.route(loginRouter.authenticateUser);
+
   // clear all files contain logging
   Logger.clearFile('./logs/board-logger.json');
   Logger.clearFile('./logs/task-logger.json');
@@ -74,16 +82,32 @@ const createServer = async (): Promise<Hapi.Server> => {
   Logger.clearFile('./logs/error-logger.json');
 
   try {
-    await initDb();
-    process.stdout.write(`${get('dvd')} DB initialization -> Done! ${get('dvd')} \n`);
+    await server.start();
+    process.stdout.write(`${get('rocket')} Server is running on ${server.info.uri} ${get('rocket')} \n`);
   } catch(error) {
     process.stderr.write(`${get('skull_and_crossbones')} ${(<Error>error).message} ${get('skull_and_crossbones')}`);
     process.exit(1);
   }
 
   try {
-    await server.start();
-    process.stdout.write(`${get('rocket')} Server is running on ${server.info.uri} ${get('rocket')} \n`);
+    await initDb();
+    const password: string = await bcryptjs.hash('admin', 10);
+    const user = await getConnection()
+      .createQueryBuilder()
+      .select('user')
+      .from(Users, 'user')
+      .where('user.login = :login', {login: 'admin'})
+      .getOne();
+
+    if (!user) {
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Users)
+        .values([{login: 'admin', password} ])
+        .execute();
+    }
+    process.stdout.write(`${get('dvd')} DB initialization -> Done! ${get('dvd')} \n`);
   } catch(error) {
     process.stderr.write(`${get('skull_and_crossbones')} ${(<Error>error).message} ${get('skull_and_crossbones')}`);
     process.exit(1);

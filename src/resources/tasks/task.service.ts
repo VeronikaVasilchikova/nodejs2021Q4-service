@@ -1,9 +1,9 @@
-import * as Hapi from '@hapi/hapi';
-import { Request } from "@hapi/hapi";
+import Hapi, { Request } from '@hapi/hapi';
 import Boom from '@hapi/boom';
 import TaskMemoryRepository from './task.memory.repository';
 import { ITaskData, ITaskDataBasic } from '../helpers/interfaces';
 import Logger from '../../logger';
+import { verifyToken } from '../helpers/utils';
 
 export default class TaskService {
   /**
@@ -14,10 +14,15 @@ export default class TaskService {
    */
   public static getAllTasks = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const token = await verifyToken(request);
+      if (!token) {
+        Logger.logError('clientError', 'getAllTasks', 'Unauthorized', 401);
+        throw Boom.unauthorized();
+      }
       Logger.logRequestInfo('getAllTasks', request, '../../logs/task-logger.json', 200);
       const {boardId} = request.params;
       const allTasks = await TaskMemoryRepository.getAllTasks(<string>boardId);
-      return h.response(allTasks).code(200);
+      return h.response(allTasks).header('Authorization', `Bearer ${token}`).code(200);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
@@ -36,10 +41,15 @@ export default class TaskService {
    */
   public static getTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const token = await verifyToken(request);
+      if (!token) {
+        Logger.logError('clientError', 'getTaskById', 'Unauthorized', 401);
+        throw Boom.unauthorized();
+      }
       Logger.logRequestInfo('getTaskById', request, '../../logs/task-logger.json', 200);
       const { boardId, taskId } = request.params;
       const task = await TaskMemoryRepository.getTaskById(<string>boardId, <string>taskId);
-      return h.response(task).code(200);
+      return h.response(task).header('Authorization', `Bearer ${token}`).code(200);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
@@ -58,11 +68,16 @@ export default class TaskService {
    */
   public static updateTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const token = await verifyToken(request);
+      if (!token) {
+        Logger.logError('clientError', 'updateTaskById', 'Unauthorized', 401);
+        throw Boom.unauthorized();
+      }
       Logger.logRequestInfo('updateTaskById', request, '../../logs/task-logger.json', 200);
       const payload: ITaskData = <ITaskData>request.payload;
       const { boardId, taskId } = request.params;
       const updatedTask: ITaskData = await TaskMemoryRepository.updateTaskById(<string>boardId, <string>taskId, payload);
-      return h.response(updatedTask).code(200);
+      return h.response(updatedTask).header('Authorization', `Bearer ${token}`).code(200);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
@@ -81,11 +96,16 @@ export default class TaskService {
    */
   public static createTask = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const token = await verifyToken(request);
+      if (!token) {
+        Logger.logError('clientError', 'createTask', 'Unauthorized', 401);
+        throw Boom.unauthorized();
+      }
       Logger.logRequestInfo('createTask', request, '../../logs/task-logger.json', 201);
       const payload = <ITaskDataBasic>request.payload;
       const {boardId} = request.params;
       const createdTask = await TaskMemoryRepository.createTask(<string>boardId, payload);
-      return h.response(createdTask).code(201);
+      return h.response(createdTask).header('Authorization', `Bearer ${token}`).code(201);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {
@@ -104,10 +124,15 @@ export default class TaskService {
    */
   public static removeTaskById = async (request: Request, h: Hapi.ResponseToolkit): Promise<Hapi.ResponseObject> | never => {
     try {
+      const token = await verifyToken(request);
+      if (!token) {
+        Logger.logError('clientError', 'removeTaskById', 'Unauthorized', 401);
+        throw Boom.unauthorized();
+      }
       Logger.logRequestInfo('removeTaskById', request, '../../logs/task-logger.json', 204);
       const { boardId, taskId } = request.params;
       await TaskMemoryRepository.removeTaskById(<string>boardId, <string>taskId);
-      return h.response('The task has been deleted').code(204);
+      return h.response('The task has been deleted').header('Authorization', `Bearer ${token}`).code(204);
     }
     catch (error) {
       if (!Boom.isBoom(error)) {

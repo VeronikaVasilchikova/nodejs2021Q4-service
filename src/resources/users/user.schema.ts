@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const nameValidationRule = Joi.string().required().example('test name');
+const nameValidationRule = Joi.string().required();
 const loginValidationRule = Joi.string().required().example('test login');
 
 const userSchema = {

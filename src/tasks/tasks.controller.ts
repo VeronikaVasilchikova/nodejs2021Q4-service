@@ -9,10 +9,10 @@ export class TasksController {
 
   @Post(':boardId/tasks')
   public async create(
-    @Body() createUserDto: CreateTaskDto,
+    @Body() createTaskDto: CreateTaskDto,
     @Param('boardId') boardId: string
   ): Promise<TaskDto> {
-    const createdTask = await this.tasksService.create(boardId, createUserDto);
+    const createdTask = await this.tasksService.create(boardId, createTaskDto);
     return createdTask;
   }
 
@@ -37,8 +37,8 @@ export class TasksController {
     @Param('taskId') taskId: string,
     @Body() updateTaskDto: CreateTaskDto
   ): Promise<TaskDto> {
-    const updatedUser = await this.tasksService.update(boardId, taskId, updateTaskDto);
-    return updatedUser;
+    const updatedTask = await this.tasksService.update(boardId, taskId, updateTaskDto);
+    return updatedTask;
   }
 
   @Delete(':boardId/tasks/:taskId')

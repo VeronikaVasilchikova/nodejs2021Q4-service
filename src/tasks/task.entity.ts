@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { Boards } from './boards.entity';
+import { BoardsEntity } from '../boards/board.entity';
 import { UsersEntity } from '../users/user.entity';
 
 @Entity({ name: 'tasks' })
@@ -27,10 +27,10 @@ export class TasksEntity {
   columnId: string | null;
 
   @ManyToOne(
-    () => Boards,
+    () => BoardsEntity,
     board => board.id
   )
-  board: Boards;
+  board: BoardsEntity;
 
   @ManyToOne(
     () => UsersEntity,

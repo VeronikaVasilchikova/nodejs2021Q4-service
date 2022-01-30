@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskDto } from './dto/task.dto';
@@ -8,6 +8,7 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post(':boardId/tasks')
+  @HttpCode(HttpStatus.CREATED)
   public async create(
     @Body() createTaskDto: CreateTaskDto,
     @Param('boardId') boardId: string
@@ -17,12 +18,14 @@ export class TasksController {
   }
 
   @Get(':boardId/tasks')
+  @HttpCode(HttpStatus.OK)
   public async findAll(@Param('boardId') boardId: string): Promise<TaskDto[]> {
     const allTasks = await this.tasksService.findAll(boardId);
     return allTasks || [];
   }
 
   @Get(':boardId/tasks/:taskId')
+  @HttpCode(HttpStatus.OK)
   public async findOne(
     @Param('boardId') boardId: string,
     @Param('taskId') taskId: string
@@ -31,7 +34,8 @@ export class TasksController {
     return task;
   }
 
-  @Patch(':boardId/tasks/:taskId')
+  @Put(':boardId/tasks/:taskId')
+  @HttpCode(HttpStatus.OK)
   public async update(
     @Param('boardId') boardId: string,
     @Param('taskId') taskId: string,
@@ -42,6 +46,7 @@ export class TasksController {
   }
 
   @Delete(':boardId/tasks/:taskId')
+  @HttpCode(HttpStatus.NO_CONTENT)
   public async remove(@Param('boardId') boardId: string): Promise<void> {
     await this.tasksService.remove(boardId);
   }

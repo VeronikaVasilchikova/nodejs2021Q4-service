@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { HttpException } from "@nestjs/common";
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -22,24 +23,21 @@ export class UsersService {
 
   public async findOne(id: string): Promise<UserDto> {
     const userItem = await this.repo.findOne({ where: { id } });
-    if (userItem !== undefined) {
-      return userItem;
-    }
+    if (!userItem) throw new HttpException(`User with id=${id} not found`, 404);
+    return userItem;
   }
 
   public async update(id: string, updateUserDto: UpdateUserDto): Promise<UserDto> {
     const userToUpdate = await this.repo.findOne(id);
-    if (userToUpdate !== undefined) {
-      await this.repo.update(id, updateUserDto);
-      const updatedUser = await this.repo.findOne(id);
-      return updatedUser;
-    }
+    if (!userToUpdate) throw new HttpException(`User with id=${id} not found`, 404);
+    await this.repo.update(id, updateUserDto);
+    const updatedUser = await this.repo.findOne(id);
+    return updatedUser;
   }
 
   public async remove(id: string): Promise<void> {
-    const deletedUser = await this.repo.findOne({ where: { id } });
-    if (deletedUser !== undefined) {
-      await this.repo.delete(id);
-    }
+    const userToDelete = await this.repo.findOne({ where: { id } });
+    if (!userToDelete) throw new HttpException(`User with id=${id} not found`, 404);
+    await this.repo.delete(id);
   }
 }

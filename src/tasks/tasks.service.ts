@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { HttpException } from "@nestjs/common";
 import { Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskDto } from './dto/task.dto';
@@ -22,39 +23,34 @@ export class TasksService {
 
   public async findOne(boardId: string, taskId: string): Promise<TaskDto> {
     const taskItem = await this.repo.findOne({ where: { boardId, taskId } });
-    if (taskItem !== undefined) {
-      return taskItem;
-    }
+    if (!taskItem) throw new HttpException(`Task with boardId=${boardId} and id=${taskId} not found`, 404);
+    return taskItem;
   }
 
   public async update(boardId: string, taskId: string, updateTaskDto: CreateTaskDto): Promise<TaskDto> {
     const taskToUpdate = await this.repo.findOne({ where: { boardId, taskId } });
-    if (taskToUpdate !== undefined) {
-      await this.repo.update(taskId, updateTaskDto);
-      const updatedTask = await this.repo.findOne({ where: { boardId, taskId } });
-      return updatedTask;
-    }
+    if (!taskToUpdate) throw new HttpException(`Task with boardId=${boardId} and id=${taskId} not found`, 404);
+    await this.repo.update(taskId, updateTaskDto);
+    const updatedTask = await this.repo.findOne({ where: { boardId, taskId } });
+    return updatedTask;
   }
 
   public async updateByUserId(userId: string): Promise<TaskDto | void> {
     const taskByUserId = await this.repo.findOne({ where: { userId } });
-    if (taskByUserId !== undefined) {
-      await this.repo.update({userId}, {userId: null});
-    }
+    if (!taskByUserId) throw new HttpException(`Task with userId=${userId} not found`, 404);
+    await this.repo.update({userId}, {userId: null});
   }
 
   public async remove(boardId: string, taskId?: string): Promise<void> {
     if (!taskId) {
       const taskByBoardId = await this.repo.findOne({ where: { boardId } });
-      if (taskByBoardId !== undefined) {
-        await this.repo.delete({ boardId });
-      }
+      if (!taskByBoardId) throw new HttpException(`Task with boardId=${boardId} not found`, 404);
+      await this.repo.delete({ boardId });
     }
     else {
       const taskByBoardIdTaskId = await this.repo.findOne({ where: { boardId, taskId } });
-      if (taskByBoardIdTaskId !== undefined) {
-        await this.repo.delete(taskId);
-      }
+      if (!taskByBoardIdTaskId) throw new HttpException(`Task with boardId=${boardId} and id=${taskId} not found`, 404);
+      await this.repo.delete(taskId);
     }
   }
 }

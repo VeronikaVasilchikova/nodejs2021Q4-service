@@ -4,10 +4,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserToResponseDto } from './dto/user-to-response.dto';
 import { UsersEntity } from './user.entity';
+import { TasksService } from '../tasks/tasks.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly tasksService: TasksService
+  ) {}
 
   @Post()
   public async create(@Body() createUserDto: CreateUserDto): Promise<UserToResponseDto> {
@@ -35,7 +39,7 @@ export class UsersController {
 
   @Delete(':id')
   public async remove(@Param('id') id: string): Promise<void> {
-    // TaskMemoryRepository.updateTaskByUserId(<string>userId);
+    await this.tasksService.updateByUserId(id);
     await this.usersService.remove(id);
   }
 }

@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Columns } from './columns.entity';
+import { ColumnsEntity } from './columns.entity';
 
 @Entity({ name: 'boards' })
 export class BoardsEntity {
@@ -10,9 +10,9 @@ export class BoardsEntity {
   title: string;
 
   @OneToMany(
-    () => Columns,
+    () => ColumnsEntity,
     columns => columns.board,
     { cascade: true, eager: true }
   )
-  columns: Columns[];
+  columns: ColumnsEntity[];
 }

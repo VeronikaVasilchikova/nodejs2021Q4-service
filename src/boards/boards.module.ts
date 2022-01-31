@@ -12,4 +12,4 @@ import { BoardsEntity } from './board.entity';
   providers: [BoardsService],
   exports: []
 })
-export class TasksModule {}
+export class BoardsModule {}

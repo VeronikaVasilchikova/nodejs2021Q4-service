@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { BoardsEntity } from './board.entity';
 
 @Entity({ name: 'columns' })
-export class Columns {
+export class ColumnsEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

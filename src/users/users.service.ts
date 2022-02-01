@@ -27,6 +27,12 @@ export class UsersService {
     return userItem;
   }
 
+  public async findOneByLogin(login: string): Promise<UserDto> {
+    const userItem = await this.repo.findOne({ where: { login } });
+    if (!userItem) throw new HttpException(`User with login=${login} not found`, 404);
+    return userItem;
+  }
+
   public async update(id: string, updateUserDto: UpdateUserDto): Promise<UserDto> {
     const userToUpdate = await this.repo.findOne(id);
     if (!userToUpdate) throw new HttpException(`User with id=${id} not found`, 404);

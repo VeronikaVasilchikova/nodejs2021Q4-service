@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskDto } from './dto/task.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth-guard';
 
 @Controller('boards')
 export class TasksController {
@@ -9,6 +10,7 @@ export class TasksController {
 
   @Post(':boardId/tasks')
   @HttpCode(HttpStatus.CREATED)
+  @UseGuards(JwtAuthGuard)
   public async create(
     @Body() createTaskDto: CreateTaskDto,
     @Param('boardId') boardId: string
@@ -19,6 +21,7 @@ export class TasksController {
 
   @Get(':boardId/tasks')
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   public async findAll(@Param('boardId') boardId: string): Promise<TaskDto[]> {
     const allTasks = await this.tasksService.findAll(boardId);
     return allTasks || [];
@@ -26,6 +29,7 @@ export class TasksController {
 
   @Get(':boardId/tasks/:taskId')
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   public async findOne(
     @Param('boardId') boardId: string,
     @Param('taskId') taskId: string
@@ -36,6 +40,7 @@ export class TasksController {
 
   @Put(':boardId/tasks/:taskId')
   @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
   public async update(
     @Param('boardId') boardId: string,
     @Param('taskId') taskId: string,
@@ -47,6 +52,7 @@ export class TasksController {
 
   @Delete(':boardId/tasks/:taskId')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
   public async remove(@Param('boardId') boardId: string): Promise<void> {
     await this.tasksService.remove(boardId);
   }

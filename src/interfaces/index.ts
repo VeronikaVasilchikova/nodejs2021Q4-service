@@ -9,6 +9,7 @@ export interface IDataToLogging {
 export interface IErrorDataBasic {
   errorName: string;
   errorMessage: string;
+  timestamp: string;
 }
 
 export interface IErrorData extends IErrorDataBasic {

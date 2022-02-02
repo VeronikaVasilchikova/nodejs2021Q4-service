@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import ExtraLogger from './extralogger';
+import { ValidationPipe } from './pipes/validation.pipe';
 
 async function bootstrap() {
   const PORT = process.env.PORT || 4000;
@@ -9,19 +10,21 @@ async function bootstrap() {
   const options: SwaggerDocumentOptions = {
     deepScanRoutes: true
   };
+  const config = new DocumentBuilder()
+    .setTitle('NestJS API')
+    .setDescription('NestJS API documentation')
+    .setVersion('1.0')
+    .addTag('users')
+    .build();
   const document = SwaggerModule.createDocument(
     app,
-    new DocumentBuilder()
-      .setTitle('NestJS server')
-      .setDescription('NestJS API description')
-      .setVersion('1.0')
-      .addTag('users')
-      .build(),
+    config,
     options
   );
 
   SwaggerModule.setup('docs', app, document);
   ExtraLogger.clearAllLogFiles();
+  app.useGlobalPipes(new ValidationPipe())
   await app.listen(PORT, () => {
     process.stdout.write(`Server is running on ${PORT} \n`);
   });

@@ -22,3 +22,9 @@ export interface ILoginPayload {
   name?: string;
   login?: string;
 }
+
+export interface IColumnData {
+  id: string;
+  title: string;
+  order: number;
+}

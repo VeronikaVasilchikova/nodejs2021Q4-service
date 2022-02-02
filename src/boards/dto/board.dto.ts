@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID, IsString } from 'class-validator';
+import { IsUUID, IsString, IsArray } from 'class-validator';
 import { BoardsEntity } from '../board.entity';
+import { IColumnData } from '../../interfaces';
 
 export class BoardDto implements Readonly<BoardDto> {
   static id: string;
@@ -14,11 +15,12 @@ export class BoardDto implements Readonly<BoardDto> {
   id: string;
 
   @ApiProperty({required: true})
-  @IsString()
+  @IsString({message: 'Title should be a string'})
   title: string;
 
   @ApiProperty({required: true})
-  columns: {id: string, title: string, order: number}[]
+  @IsArray()
+  columns: IColumnData[]
 
   public static from(dto: BoardDto) {
     const board = new BoardDto();

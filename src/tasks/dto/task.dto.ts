@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID, IsString, IsNumber } from 'class-validator';
+import { IsUUID, IsString, IsNumber, IsOptional } from 'class-validator';
 import { TasksEntity } from '../task.entity';
 
 export class TaskDto implements Readonly<TaskDto> {
@@ -13,33 +13,34 @@ export class TaskDto implements Readonly<TaskDto> {
 
   constructor() {}
 
-  @ApiProperty({required: true})
+  @ApiProperty({required: true, description: 'Task Id'})
   @IsUUID()
   id: string;
 
-  @ApiProperty({required: true})
-  @IsString()
+  @ApiProperty({required: true, description: 'Task title'})
+  @IsString({message: 'Title should be a string'})
   title: string;
 
-  @ApiProperty({required: true})
-  @IsNumber()
+  @ApiProperty({required: true, description: 'Task order'})
+  @IsNumber({}, {message: 'Order should be a number'})
   order: number;
 
-  @ApiProperty()
-  @IsString()
-  description: string;
+  @ApiProperty({description: 'Task description'})
+  @IsString({message: 'Description should be a string'})
+  @IsOptional()
+  description?: string;
 
-  @ApiProperty({required: true})
-  @IsString()
-  userId: string;
+  @ApiProperty({required: true, description: 'Task UserId'})
+  @IsString({message: 'UserId should be a string or null'})
+  userId: string | null;
 
-  @ApiProperty({required: true})
-  @IsString()
-  boardId: string;
+  @ApiProperty({required: true, description: 'Task BoardId'})
+  @IsString({message: 'BoardId should be a string or null'})
+  boardId: string | null;
 
-  @ApiProperty({required: true})
-  @IsString()
-  columnId: string;
+  @ApiProperty({required: true, description: 'Column Id'})
+  @IsString({message: 'ColumnId should be a string or null'})
+  columnId: string | null;
 
   public static from(dto: TaskDto) {
     const task = new TaskDto();

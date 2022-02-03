@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, HttpStatus, HttpException, Req, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardDto } from './dto/board.dto';
@@ -8,6 +9,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth-guard';
 export class BoardsController {
   constructor(private readonly boardsService: BoardsService) {}
 
+  @ApiTags('Boards')
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)

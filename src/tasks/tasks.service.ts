@@ -4,6 +4,7 @@ import { HttpException } from "@nestjs/common";
 import { Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskDto } from './dto/task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 import { TasksEntity } from './task.entity';
 
 @Injectable()
@@ -21,17 +22,17 @@ export class TasksService {
     return allTasks;
   }
 
-  public async findOne(boardId: string, taskId: string): Promise<TaskDto> {
-    const taskItem = await this.repo.findOne({ where: { boardId, taskId } });
-    if (!taskItem) throw new HttpException(`Task with boardId=${boardId} and id=${taskId} not found`, 404);
+  public async findOne(boardId: string, id: string): Promise<TaskDto> {
+    const taskItem = await this.repo.findOne({ where: { boardId, id } });
+    if (!taskItem) throw new HttpException(`Task with boardId=${boardId} and id=${id} not found`, 404);
     return taskItem;
   }
 
-  public async update(boardId: string, taskId: string, updateTaskDto: CreateTaskDto): Promise<TaskDto> {
-    const taskToUpdate = await this.repo.findOne({ where: { boardId, taskId } });
-    if (!taskToUpdate) throw new HttpException(`Task with boardId=${boardId} and id=${taskId} not found`, 404);
-    await this.repo.update(taskId, updateTaskDto);
-    const updatedTask = await this.repo.findOne({ where: { boardId, taskId } });
+  public async update(boardId: string, id: string, updateTaskDto: UpdateTaskDto): Promise<TaskDto> {
+    const taskToUpdate = await this.repo.findOne({ where: { boardId, id } });
+    if (!taskToUpdate) throw new HttpException(`Task with boardId=${boardId} and id=${id} not found`, 404);
+    await this.repo.update(id, updateTaskDto);
+    const updatedTask = await this.repo.findOne({ where: { boardId, id } });
     return updatedTask;
   }
 
@@ -41,16 +42,16 @@ export class TasksService {
     await this.repo.update({userId}, {userId: null});
   }
 
-  public async remove(boardId: string, taskId?: string): Promise<void> {
-    if (!taskId) {
+  public async remove(boardId: string, id?: string): Promise<void> {
+    if (!id) {
       const taskByBoardId = await this.repo.findOne({ where: { boardId } });
       if (!taskByBoardId) throw new HttpException(`Task with boardId=${boardId} not found`, 404);
       await this.repo.delete({ boardId });
     }
     else {
-      const taskByBoardIdTaskId = await this.repo.findOne({ where: { boardId, taskId } });
-      if (!taskByBoardIdTaskId) throw new HttpException(`Task with boardId=${boardId} and id=${taskId} not found`, 404);
-      await this.repo.delete(taskId);
+      const taskByBoardIdTaskId = await this.repo.findOne({ where: { boardId, id } });
+      if (!taskByBoardIdTaskId) throw new HttpException(`Task with boardId=${boardId} and id=${id} not found`, 404);
+      await this.repo.delete(id);
     }
   }
 }

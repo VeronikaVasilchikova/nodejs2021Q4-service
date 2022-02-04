@@ -7,6 +7,7 @@ import { UserToResponseDto } from './dto/user-to-response.dto';
 import { UsersEntity } from './user.entity';
 import { TasksService } from '../tasks/tasks.service';
 import { JwtAuthGuard } from '../auth/jwt-auth-guard';
+import { ValidationPipe } from '../pipes/validation.pipe';
 
 @ApiTags('Users')
 @Controller('users')
@@ -21,8 +22,9 @@ export class UsersController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)
-  public async create(@Body() createUserDto: CreateUserDto): Promise<UserToResponseDto> {
+  public async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto): Promise<UserToResponseDto> {
     const createdUser = await this.usersService.create(createUserDto);
+    console.log(createdUser)
     return UsersEntity.toResponse(createdUser);
   }
 
@@ -30,7 +32,7 @@ export class UsersController {
   @ApiResponse({status: 200, type: [UserToResponseDto]})
   @Get()
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   public async findAll(): Promise<UserToResponseDto[]> {
     const allUsers = await this.usersService.findAll();
     return allUsers.length ? allUsers.map(UsersEntity.toResponse.bind(UsersEntity)) : [];
@@ -51,7 +53,7 @@ export class UsersController {
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
-  public async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<UserToResponseDto> {
+  public async update(@Param('id') id: string, @Body(new ValidationPipe()) updateUserDto: UpdateUserDto): Promise<UserToResponseDto> {
     const updatedUser = await this.usersService.update(id, updateUserDto);
     return UsersEntity.toResponse(updatedUser);
   }
@@ -60,7 +62,7 @@ export class UsersController {
   @ApiResponse({status: 204})
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   public async remove(@Param('id') id: string): Promise<void> {
     await this.tasksService.updateByUserId(id);
     await this.usersService.remove(id);

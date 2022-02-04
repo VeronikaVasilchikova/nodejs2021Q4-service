@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import ExtraLogger from './extralogger';
-import { ValidationPipe } from './pipes/validation.pipe';
 
 async function bootstrap() {
   const PORT = process.env.PORT || 4000;
@@ -23,7 +22,6 @@ async function bootstrap() {
 
   SwaggerModule.setup('docs', app, document);
   ExtraLogger.clearAllLogFiles();
-  app.useGlobalPipes(new ValidationPipe())
   await app.listen(PORT, () => {
     process.stdout.write(`Server is running on ${PORT} \n`);
   });

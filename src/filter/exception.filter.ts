@@ -2,6 +2,7 @@ import { ArgumentsHost, ExceptionFilter, Catch, HttpStatus, HttpException } from
 import { HttpAdapterHost } from '@nestjs/core';
 import * as fs from 'fs';
 import { FILE_PATH, VAR_LOG } from '../constants';
+import { ValidationException } from '../exceptions/validation.exception';
 
 @Catch()
 export class Exception implements ExceptionFilter {
@@ -14,10 +15,12 @@ export class Exception implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
+    const errorMessage = exception instanceof HttpException ? exception.message : 'Server error';
     const responseBody = {
       statusCode: httpStatus,
       timestamp: new Date().toISOString(),
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
+      errorMessage
     };
 
     if (VAR_LOG.EXCEPTION.includes(<string>process.env.LOGGING_VAR)) {

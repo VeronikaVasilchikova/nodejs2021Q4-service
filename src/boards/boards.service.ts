@@ -4,6 +4,7 @@ import { HttpException } from "@nestjs/common";
 import { Repository } from 'typeorm';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardDto } from './dto/board.dto';
+import { UpdateBoardDto } from './dto/update-board.dto';
 import { BoardsEntity } from './board.entity';
 
 @Injectable()
@@ -21,13 +22,13 @@ export class BoardsService {
     return allBoards;
   }
 
-  public async findOne(id: string): Promise<BoardDto> {
+  public async findOne(id: string): Promise<BoardDto | never> {
     const board = await this.repo.findOne({ where: { id } });
     if (!board) throw new HttpException(`Board with id=${id} not found`, 404);
     return board;
   }
 
-  public async update(id: string, updateBoardDto: CreateBoardDto): Promise<BoardDto> {
+  public async update(id: string, updateBoardDto: UpdateBoardDto): Promise<BoardDto | never> {
     const boardToUpdate = await this.repo.findOne({ where: { id } });
     if (!boardToUpdate) throw new HttpException(`Board with id=${id} not found`, 404);
     const updatedBoardData = Object.assign(boardToUpdate, updateBoardDto);
@@ -35,7 +36,7 @@ export class BoardsService {
     return updatedBoardData;
   }
 
-  public async remove(id: string): Promise<void> {
+  public async remove(id: string): Promise<void | never> {
     const boardToDelete = await this.repo.findOne({ where: { id } });
     if (!boardToDelete) throw new HttpException(`Board with id=${id} not found`, 404);
     await this.repo.delete(id);

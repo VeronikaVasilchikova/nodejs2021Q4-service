@@ -1,48 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID, IsString, IsArray } from 'class-validator';
-import { BoardsEntity } from '../board.entity';
+import { IsUUID, IsString, IsArray, IsNotEmpty } from 'class-validator';
 import { IColumnData } from '../../interfaces';
 
 export class BoardDto implements Readonly<BoardDto> {
-  static id: string;
-  static title: string;
-  static columns: { id: string; title: string; order: number; }[];
-
-  constructor() {}
-
-  @ApiProperty({required: true})
+  @ApiProperty({required: true, description: 'Board Id'})
   @IsUUID()
+  @IsNotEmpty()
   id: string;
 
-  @ApiProperty({required: true})
+  @ApiProperty({required: true, description: 'Board title'})
   @IsString({message: 'Title should be a string'})
+  @IsNotEmpty()
   title: string;
 
-  @ApiProperty({required: true})
+  @ApiProperty({required: true, description: 'Board columns'})
   @IsArray()
   columns: IColumnData[]
-
-  public static from(dto: BoardDto) {
-    const board = new BoardDto();
-    board.id = dto.id;
-    board.title = dto.title;
-    board.columns = dto.columns;
-    return board;
-  }
-
-  public static fromEntity(entity: BoardsEntity) {
-    return this.from({
-      id: entity.id,
-      title: entity.title,
-      columns: entity.columns
-    });
-  }
-
-  public static toEntity() {
-    const board = new BoardDto();
-    board.id = this.id;
-    board.title = this.title;
-    board.columns = this.columns;
-    return board;
-  }
 }

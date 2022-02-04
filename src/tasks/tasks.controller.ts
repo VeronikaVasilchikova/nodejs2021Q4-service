@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskDto } from './dto/task.dto';
@@ -10,6 +10,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth-guard';
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
+  @ApiOperation({summary: 'Create a new task'})
+  @ApiResponse({status: 201, type: TaskDto})
   @Post(':boardId/tasks')
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)
@@ -21,6 +23,8 @@ export class TasksController {
     return createdTask;
   }
 
+  @ApiOperation({summary: 'Get all tasks'})
+  @ApiResponse({status: 200, type: [TaskDto]})
   @Get(':boardId/tasks')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
@@ -29,6 +33,8 @@ export class TasksController {
     return allTasks || [];
   }
 
+  @ApiOperation({summary: 'Get task by task and board ids'})
+  @ApiResponse({status: 200, type: TaskDto})
   @Get(':boardId/tasks/:taskId')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
@@ -40,6 +46,8 @@ export class TasksController {
     return task;
   }
 
+  @ApiOperation({summary: 'Update task by task and board ids'})
+  @ApiResponse({status: 200, type: TaskDto})
   @Put(':boardId/tasks/:taskId')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
@@ -52,10 +60,15 @@ export class TasksController {
     return updatedTask;
   }
 
+  @ApiOperation({summary: 'Delete task by task and board ids'})
+  @ApiResponse({status: 204})
   @Delete(':boardId/tasks/:taskId')
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
-  public async remove(@Param('boardId') boardId: string): Promise<void> {
-    await this.tasksService.remove(boardId);
+  public async remove(
+    @Param('boardId') boardId: string,
+    @Param('taskId') taskId: string
+  ): Promise<void> {
+    await this.tasksService.remove(boardId, taskId);
   }
 }

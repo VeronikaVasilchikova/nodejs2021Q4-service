@@ -1,15 +1,17 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, HttpCode, HttpStatus, HttpException, Req, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardDto } from './dto/board.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth-guard';
 
+@ApiTags('Boards')
 @Controller('boards')
 export class BoardsController {
   constructor(private readonly boardsService: BoardsService) {}
 
-  @ApiTags('Boards')
+  @ApiOperation({summary: 'Create a new board'})
+  @ApiResponse({status: 200, type: BoardDto})
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)
@@ -23,6 +25,8 @@ export class BoardsController {
     }
   }
 
+  @ApiOperation({summary: 'Get all boards'})
+  @ApiResponse({status: 200, type: [BoardDto]})
   @Get()
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
@@ -36,6 +40,8 @@ export class BoardsController {
     }
   }
 
+  @ApiOperation({summary: 'Get board by id'})
+  @ApiResponse({status: 200, type: BoardDto})
   @Get(':boardId')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
@@ -50,6 +56,8 @@ export class BoardsController {
     }
   }
 
+  @ApiOperation({summary: 'Update board by id'})
+  @ApiResponse({status: 200, type: BoardDto})
   @Put(':boardId')
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
@@ -67,6 +75,8 @@ export class BoardsController {
     }
   }
 
+  @ApiOperation({summary: 'Delete board by id'})
+  @ApiResponse({status: 204})
   @Delete(':boardId')
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)

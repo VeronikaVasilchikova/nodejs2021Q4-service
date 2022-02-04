@@ -1,9 +1,4 @@
+import { OmitType } from "@nestjs/swagger";
 import { UserDto } from "./user.dto";
 
-const Omit = <T, K extends keyof T>(Class: new () => T, keys: K[]): new () => Omit<T, typeof keys[number]> => Class;
-
-export class UserToResponseDto extends Omit(UserDto, ['password']) {
-  constructor() {
-    super();
-  }
-}
+export class UserToResponseDto extends OmitType(UserDto, ['password'] as const) {}

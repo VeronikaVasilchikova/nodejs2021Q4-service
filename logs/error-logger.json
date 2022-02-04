@@ -1,2 +1,0 @@
-{"statusCode":401,"timestamp":"2022-02-04T17:54:31.948Z","path":"/users/e950a98b-dd36-47fe-afeb-8475503ffd3d","errorMessage":"User Unauthorized!"}
-{"statusCode":500,"timestamp":"2022-02-04T17:55:32.881Z","path":"/boards/77fb5d25-29ba-4501-a3f7-a05e789085c1","errorMessage":"Server error"}

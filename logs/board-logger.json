@@ -1,4 +1,4 @@
-Method-GET, URL-/boards, request body-{}, query-{}, statusCode-200
-Method-GET, URL-/boards, request body-{}, query-{}, statusCode-200
-Method-GET, URL-/boards, request body-{}, query-{}, statusCode-200
-Method-GET, URL-/boards/77fb5d25-29ba-4501-a3f7-a05e789085c1, request body-{}, query-{}, statusCode-200
+Method-GET, URL-/boards, request body-{"title":"updated"}, query-{}, statusCode-200
+Method-POST, URL-/boards, request body-{"title":"updated","columns":[{"title":"column","order":2}]}, query-{}, statusCode-201
+Method-GET, URL-/boards/d3a710a6-1d77-41a4-99b3-b6763704cf66, request body-{"title":"updated","columns":[{"title":"column","order":2}]}, query-{}, statusCode-200
+Method-DELETE, URL-/boards/d3a710a6-1d77-41a4-99b3-b6763704cf66, request body-{"title":"updated","columns":[{"title":"column","order":2}]}, query-{}, statusCode-204

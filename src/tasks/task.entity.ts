@@ -28,7 +28,8 @@ export class TasksEntity {
 
   @ManyToOne(
     () => BoardsEntity,
-    board => board.id
+    board => board.id,
+    { onDelete: 'CASCADE' }
   )
   board: BoardsEntity;
 

@@ -1,3 +1,0 @@
-Method-GET, URL-/boards/77fb5d25-29ba-4501-a3f7-a05e789085c1/tasks, request body-{}, query-{}, statusCode-200
-Method-POST, URL-/boards/77fb5d25-29ba-4501-a3f7-a05e789085c1/tasks, request body-{"title":"task","description":"descr","userId":"e950a98b-dd36-47fe-afeb-8475503ffd3d","boardId":"77fb5d25-29ba-4501-a3f7-a05e789085c1","order":2,"columnId":null}, query-{}, statusCode-201
-Method-GET, URL-/boards/77fb5d25-29ba-4501-a3f7-a05e789085c1/tasks, request body-{}, query-{}, statusCode-200

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BoardsEntity } from './board.entity';
 
 @Entity({ name: 'columns' })
@@ -14,7 +14,12 @@ export class ColumnsEntity {
 
   @ManyToOne(
     () => BoardsEntity,
-    board => board.columns
+    board => board.columns,
+    { onDelete: 'CASCADE' }
   )
+  @JoinColumn([{ name: 'boardId', referencedColumnName: 'id' }])
   board: BoardsEntity;
+
+  @Column()
+  boardId: string;
 }

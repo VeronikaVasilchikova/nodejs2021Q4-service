@@ -6,7 +6,7 @@ export class BoardsEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true, default: 'BOARD' })
+  @Column({ type: 'varchar', length: 255, default: 'BOARD' })
   title: string;
 
   @OneToMany(

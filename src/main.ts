@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
+import 'reflect-metadata';
 import { AppModule } from './app.module';
 import ExtraLogger from './extralogger';
 

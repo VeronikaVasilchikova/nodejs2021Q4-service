@@ -32,7 +32,7 @@ export class UsersController {
   @ApiResponse({status: 200, type: [UserToResponseDto]})
   @Get()
   @HttpCode(HttpStatus.OK)
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   public async findAll(): Promise<UserToResponseDto[]> {
     const allUsers = await this.usersService.findAll();
     return allUsers.length ? allUsers.map(UsersEntity.toResponse.bind(UsersEntity)) : [];
@@ -62,7 +62,7 @@ export class UsersController {
   @ApiResponse({status: 204})
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   public async remove(@Param('id') id: string): Promise<void> {
     await this.tasksService.updateByUserId(id);
     await this.usersService.remove(id);

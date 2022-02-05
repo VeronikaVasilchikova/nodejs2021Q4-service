@@ -12,11 +12,10 @@ export default class ExtraLogger {
     const filePath: string = FILE_PATH.ERROR;
     if (fs.existsSync(filePath)) {
       fs.appendFileSync(filePath, `${log}\n`);
-    }
-    else {
+    } else {
       throw new Error(`Have no access to ${filePath}`);
     }
-  }
+  };
 
   /**
    * Method to log errors caused by unhandledRejection or uncaughtException methods
@@ -24,11 +23,14 @@ export default class ExtraLogger {
    * @param methodName - method name
    * @returns return nothing
    */
-  public static logProcessError = (errorName: string, errorMessage: string): void => {
+  public static logProcessError = (
+    errorName: string,
+    errorMessage: string,
+  ): void => {
     const errorData: IErrorDataBasic = {
       errorName,
       errorMessage,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
     if (VAR_LOG.PROCESS.includes(<string>process.env.LOGGING_VAR)) {
       this.writeErrorToFile(JSON.stringify(errorData));
@@ -41,13 +43,12 @@ export default class ExtraLogger {
    */
   public static clearAllLogFiles = (): void | never => {
     const logFiles: string[] = Object.values(FILE_PATH);
-    logFiles.forEach(filePath => {
+    logFiles.forEach((filePath) => {
       if (fs.existsSync(filePath)) {
         fs.writeFileSync(filePath, '');
-      }
-      else {
+      } else {
         throw new Error(`Have no access to ${filePath}`);
       }
-    })
-  }
+    });
+  };
 }

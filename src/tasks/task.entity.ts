@@ -11,7 +11,7 @@ export class TasksEntity {
   @Column({ type: 'varchar', length: 255, default: 'TASK' })
   title: string;
 
-  @Column({ type: 'integer', default: 1})
+  @Column({ type: 'integer', default: 1 })
   order: number;
 
   @Column({ type: 'varchar', length: 255, default: 'TASK DESCRIPTION' })
@@ -26,16 +26,9 @@ export class TasksEntity {
   @Column({ type: 'varchar', nullable: true, default: uuidv4() })
   columnId: string | null;
 
-  @ManyToOne(
-    () => BoardsEntity,
-    board => board.id,
-    { onDelete: 'CASCADE' }
-  )
+  @ManyToOne(() => BoardsEntity, (board) => board.id, { onDelete: 'CASCADE' })
   board: BoardsEntity;
 
-  @ManyToOne(
-    () => UsersEntity,
-    user => user.id
-  )
+  @ManyToOne(() => UsersEntity, (user) => user.id)
   user: UsersEntity;
 }

@@ -6,12 +6,9 @@ import { BoardsEntity } from './board.entity';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([BoardsEntity]),
-    AuthModule
-  ],
+  imports: [TypeOrmModule.forFeature([BoardsEntity]), AuthModule],
   controllers: [BoardsController],
   providers: [BoardsService],
-  exports: []
+  exports: [],
 })
 export class BoardsModule {}

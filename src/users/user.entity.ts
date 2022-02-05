@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
 import * as bcryptjs from 'bcryptjs';
 
 @Entity({ name: 'users' })
@@ -30,7 +36,12 @@ export class UsersEntity {
    * @param user user object
    * @returns user object without password field
    */
-  static toResponse(user: {id: string, name: string, login: string, password: string}): {id: string, name: string, login: string} {
+  static toResponse(user: {
+    id: string;
+    name: string;
+    login: string;
+    password: string;
+  }): { id: string; name: string; login: string } {
     const { id, name, login } = user;
     return { id, name, login };
   }

@@ -9,10 +9,9 @@ export class BoardsEntity {
   @Column({ type: 'varchar', length: 255, default: 'BOARD' })
   title: string;
 
-  @OneToMany(
-    () => ColumnsEntity,
-    columns => columns.board,
-    { cascade: true, eager: true }
-  )
+  @OneToMany(() => ColumnsEntity, (columns) => columns.board, {
+    cascade: true,
+    eager: true,
+  })
   columns: ColumnsEntity[];
 }

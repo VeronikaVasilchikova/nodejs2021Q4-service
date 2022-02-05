@@ -6,6 +6,6 @@ import { AuthModule } from 'src/auth/auth.module';
 @Module({
   imports: [AuthModule],
   providers: [FilesService],
-  controllers: [FilesController]
+  controllers: [FilesController],
 })
 export class FilesModule {}

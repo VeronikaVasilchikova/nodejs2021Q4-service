@@ -5,20 +5,20 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class FilesService {
-  constructor() {}
-
   public upload(file: Express.Multer.File): string | never {
     try {
       const fileName = `${uuidv4()}${file.originalname}`;
       const filePath = path.resolve(__dirname, '..', 'static');
       if (!fs.existsSync(filePath)) {
-        fs.mkdirSync(filePath, {recursive: true});
+        fs.mkdirSync(filePath, { recursive: true });
       }
       fs.writeFileSync(path.join(filePath, fileName), file.buffer);
       return fileName;
-    }
-    catch (e) {
-      throw new HttpException('Error during loading file', HttpStatus.INTERNAL_SERVER_ERROR);
+    } catch (e) {
+      throw new HttpException(
+        'Error during loading file',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

@@ -10,15 +10,12 @@ import { UsersModule } from 'src/users/users.module';
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY || 'my_secret_key',
       signOptions: {
-        expiresIn: '24h'
-      }
-    })
+        expiresIn: '24h',
+      },
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService],
-  exports: [
-    AuthService,
-    JwtModule
-  ]
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

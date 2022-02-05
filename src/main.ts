@@ -1,5 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
+import {
+  SwaggerModule,
+  DocumentBuilder,
+  SwaggerDocumentOptions,
+} from '@nestjs/swagger';
 import 'reflect-metadata';
 import { AppModule } from './app.module';
 import ExtraLogger from './extralogger';
@@ -8,18 +12,14 @@ async function bootstrap() {
   const PORT = process.env.PORT || 4000;
   const app = await NestFactory.create(AppModule);
   const options: SwaggerDocumentOptions = {
-    deepScanRoutes: true
+    deepScanRoutes: true,
   };
   const config = new DocumentBuilder()
     .setTitle('NestJS API')
     .setDescription('NestJS API documentation')
     .setVersion('1.0')
     .build();
-  const document = SwaggerModule.createDocument(
-    app,
-    config,
-    options
-  );
+  const document = SwaggerModule.createDocument(app, config, options);
 
   SwaggerModule.setup('docs', app, document);
   ExtraLogger.clearAllLogFiles();
@@ -38,7 +38,7 @@ process.on('uncaughtException', (error: Error, origin: string): void => {
 // throw Error('Oops! This is uncaughtException!');
 
 // Catch unhandling rejected promises
-process.on('unhandledRejection', (reason: {message: string}): void => {
+process.on('unhandledRejection', (reason: { message: string }): void => {
   ExtraLogger.logProcessError('unhandledRejection', reason.message);
   process.exit(1);
 });

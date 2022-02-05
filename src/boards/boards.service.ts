@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HttpException } from "@nestjs/common";
+import { HttpException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardDto } from './dto/board.dto';
@@ -9,7 +9,10 @@ import { BoardsEntity } from './board.entity';
 
 @Injectable()
 export class BoardsService {
-  constructor(@InjectRepository(BoardsEntity) private readonly repo: Repository<BoardsEntity>) {}
+  constructor(
+    @InjectRepository(BoardsEntity)
+    private readonly repo: Repository<BoardsEntity>,
+  ) {}
 
   public async create(createBoardDto: CreateBoardDto): Promise<BoardDto> {
     const newBoard = this.repo.create(createBoardDto);
@@ -28,9 +31,13 @@ export class BoardsService {
     return board;
   }
 
-  public async update(id: string, updateBoardDto: UpdateBoardDto): Promise<BoardDto | never> {
+  public async update(
+    id: string,
+    updateBoardDto: UpdateBoardDto,
+  ): Promise<BoardDto | never> {
     const boardToUpdate = await this.repo.findOne({ where: { id } });
-    if (!boardToUpdate) throw new HttpException(`Board with id=${id} not found`, 404);
+    if (!boardToUpdate)
+      throw new HttpException(`Board with id=${id} not found`, 404);
     const updatedBoardData = Object.assign(boardToUpdate, updateBoardDto);
     await this.repo.save(updatedBoardData);
     return updatedBoardData;
@@ -38,7 +45,8 @@ export class BoardsService {
 
   public async remove(id: string): Promise<void | never> {
     const boardToDelete = await this.repo.findOne({ where: { id } });
-    if (!boardToDelete) throw new HttpException(`Board with id=${id} not found`, 404);
+    if (!boardToDelete)
+      throw new HttpException(`Board with id=${id} not found`, 404);
     await this.repo.delete(id);
   }
 }

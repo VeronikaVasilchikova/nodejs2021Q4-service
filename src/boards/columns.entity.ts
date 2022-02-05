@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { BoardsEntity } from './board.entity';
 
 @Entity({ name: 'columns' })
@@ -9,14 +15,12 @@ export class ColumnsEntity {
   @Column({ type: 'varchar', length: 255, default: 'column title' })
   title: string;
 
-  @Column({type: 'integer', default: 1})
+  @Column({ type: 'integer', default: 1 })
   order: number;
 
-  @ManyToOne(
-    () => BoardsEntity,
-    board => board.columns,
-    { onDelete: 'CASCADE' }
-  )
+  @ManyToOne(() => BoardsEntity, (board) => board.columns, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn([{ name: 'boardId', referencedColumnName: 'id' }])
   board: BoardsEntity;
 

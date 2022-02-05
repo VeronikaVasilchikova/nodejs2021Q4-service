@@ -1,4 +1,3 @@
-
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import * as fs from 'fs';
@@ -15,7 +14,7 @@ export class LoggerMiddleware implements NestMiddleware {
 
     response.on('finish', () => {
       const { statusCode } = response;
-      const log: string = `Method-${method}, URL-${originalUrl}, ${bodyToString}, ${queryToString}, statusCode-${statusCode}`;
+      const log = `Method-${method}, URL-${originalUrl}, ${bodyToString}, ${queryToString}, statusCode-${statusCode}`;
 
       if (VAR_LOG.REQ.includes(<string>process.env.LOGGING_VAR)) {
         this.logger.log(log);
@@ -35,7 +34,7 @@ export class LoggerMiddleware implements NestMiddleware {
    * @returns return nothing or throw error
    */
   private writeLogToFile = (originalUrl: string, log: string): void | never => {
-    let filePath: string;
+    let filePath = '';
     if (originalUrl.includes('boards') && !originalUrl.includes('tasks')) {
       filePath = FILE_PATH.BOARD;
     }
@@ -48,9 +47,8 @@ export class LoggerMiddleware implements NestMiddleware {
 
     if (fs.existsSync(filePath)) {
       fs.appendFileSync(filePath, `${log}\n`);
-    }
-    else {
+    } else {
       throw new Error(`Have no access to ${filePath}`);
     }
-  }
+  };
 }

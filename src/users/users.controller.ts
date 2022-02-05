@@ -24,7 +24,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   public async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto): Promise<UserToResponseDto> {
     const createdUser = await this.usersService.create(createUserDto);
-    console.log(createdUser)
     return UsersEntity.toResponse(createdUser);
   }
 

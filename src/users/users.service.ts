@@ -62,12 +62,6 @@ export class UsersService {
 
   public async remove(id: string): Promise<void | never> {
     const userToDelete = await this.repo.findOne({ where: { id } });
-    console.log(`
-
-    remove
-    ${userToDelete}
-
-    `);
     if (!userToDelete)
       throw new HttpException(`User with id=${id} not found`, 404);
     await this.repo.delete(id);

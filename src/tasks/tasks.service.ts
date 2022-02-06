@@ -59,13 +59,6 @@ export class TasksService {
     return updatedTask;
   }
 
-  public async updateByUserId(userId: string): Promise<void | never> {
-    const taskByUserId = await this.repo.findOne({ where: { userId } });
-    if (!taskByUserId)
-      throw new HttpException(`Task with userId=${userId} not found`, 404);
-    await this.repo.update({ userId }, { userId: null });
-  }
-
   public async remove(boardId: string, id?: string): Promise<void | never> {
     if (!id) {
       const taskByBoardId = await this.repo.findOne({ where: { boardId } });

@@ -16,7 +16,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserToResponseDto } from './dto/user-to-response.dto';
 import { UsersEntity } from './user.entity';
-import { TasksService } from '../tasks/tasks.service';
 import { JwtAuthGuard } from '../auth/jwt-auth-guard';
 import { ValidationPipe } from '../pipes/validation.pipe';
 
@@ -32,10 +31,7 @@ import { ValidationPipe } from '../pipes/validation.pipe';
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly tasksService: TasksService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({ status: 201, type: UserToResponseDto })
@@ -85,7 +81,6 @@ export class UsersController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   public async remove(@Param('id') id: string): Promise<void> {
-    await this.tasksService.updateByUserId(id);
     await this.usersService.remove(id);
   }
 }

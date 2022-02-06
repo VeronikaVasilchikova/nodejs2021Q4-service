@@ -17,11 +17,14 @@ export class UsersService {
 
   public async create(createUserDto: CreateUserDto): Promise<UserDto> {
     const hashedPassword = await bcryptjs.hash(createUserDto.password, 10);
-    const newUser = await this.repo.create({
+    const existedUser = await this.repo.findOne({
+      where: { login: createUserDto.login },
+    });
+    if (existedUser) await this.repo.delete(existedUser.id);
+    const newUser = await this.repo.save({
       ...createUserDto,
       password: hashedPassword,
     });
-    await this.repo.save(newUser);
     return newUser;
   }
 
@@ -59,6 +62,12 @@ export class UsersService {
 
   public async remove(id: string): Promise<void | never> {
     const userToDelete = await this.repo.findOne({ where: { id } });
+    console.log(`
+
+    remove
+    ${userToDelete}
+
+    `);
     if (!userToDelete)
       throw new HttpException(`User with id=${id} not found`, 404);
     await this.repo.delete(id);

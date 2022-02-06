@@ -1,0 +1,19 @@
+Method-POST, URL-/boards, request body-{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]}, query-{}, statusCode-201
+Method-POST, URL-/boards, request body-{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]}, query-{}, statusCode-201
+Method-GET, URL-/boards, request body-{}, query-{}, statusCode-200
+Method-GET, URL-/boards, request body-{}, query-{}, statusCode-200
+Method-GET, URL-/boards/89e7d64d-7f45-4be8-8f73-e9561cf827c0, request body-{}, query-{}, statusCode-200
+Method-POST, URL-/boards, request body-{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]}, query-{}, statusCode-201
+Method-DELETE, URL-/boards/e960ffa4-27e7-4a3b-8588-0df5ab4c5d20, request body-{}, query-{}, statusCode-204
+Method-POST, URL-/boards, request body-{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]}, query-{}, statusCode-201
+Method-PUT, URL-/boards/629537cc-5ba0-4cde-86c3-46ed3ed86817, request body-{"title":"Autotest updated board","columns":[{"title":"Backlog","order":1,"boardId":"629537cc-5ba0-4cde-86c3-46ed3ed86817","id":"3d50fd71-3817-466d-9ec3-58eed0bebf74"},{"title":"Sprint","order":2,"boardId":"629537cc-5ba0-4cde-86c3-46ed3ed86817","id":"98155e04-82d3-474f-b46c-eb13a84d47db"}],"id":"629537cc-5ba0-4cde-86c3-46ed3ed86817"}, query-{}, statusCode-200
+Method-GET, URL-/boards/629537cc-5ba0-4cde-86c3-46ed3ed86817, request body-{}, query-{}, statusCode-200
+Method-DELETE, URL-/boards/629537cc-5ba0-4cde-86c3-46ed3ed86817, request body-{}, query-{}, statusCode-204
+Method-DELETE, URL-/boards/b31a7713-9591-45aa-8870-604593e77546, request body-{}, query-{}, statusCode-204
+Method-POST, URL-/boards, request body-{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]}, query-{}, statusCode-201
+Method-DELETE, URL-/boards/ed367146-4b00-4cac-b5ac-a519e0e8db23, request body-{}, query-{}, statusCode-204
+Method-POST, URL-/boards, request body-{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]}, query-{}, statusCode-201
+Method-POST, URL-/boards, request body-{"title":"Autotest board","columns":[{"title":"Backlog","order":1},{"title":"Sprint","order":2}]}, query-{}, statusCode-201
+Method-DELETE, URL-/boards/85253ab2-9a2e-441a-855a-c0753b217f43, request body-{}, query-{}, statusCode-204
+Method-DELETE, URL-/boards/6ce7493c-9917-457a-b885-40d0b2076841, request body-{}, query-{}, statusCode-204
+Method-DELETE, URL-/boards/89e7d64d-7f45-4be8-8f73-e9561cf827c0, request body-{}, query-{}, statusCode-204

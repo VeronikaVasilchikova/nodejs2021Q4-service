@@ -1,0 +1,10 @@
+Method-GET, URL-/users, request body-{}, query-{}, statusCode-200
+Method-POST, URL-/users, request body-{"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}, query-{}, statusCode-201
+Method-GET, URL-/users/01612f27-749f-442b-92f1-94b34d421fe0, request body-{}, query-{}, statusCode-200
+Method-POST, URL-/users, request body-{"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}, query-{}, statusCode-201
+Method-POST, URL-/users, request body-{"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}, query-{}, statusCode-201
+Method-PUT, URL-/users/c8c1ea49-1e3b-40d1-9157-fade9b910772, request body-{"name":"Autotest updated TEST_USER","login":"test_user","password":"T35t_P@55w0rd","id":"c8c1ea49-1e3b-40d1-9157-fade9b910772"}, query-{}, statusCode-200
+Method-GET, URL-/users/c8c1ea49-1e3b-40d1-9157-fade9b910772, request body-{}, query-{}, statusCode-200
+Method-POST, URL-/users, request body-{"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}, query-{}, statusCode-201
+Method-POST, URL-/users, request body-{"name":"TEST_USER","login":"test_user","password":"T35t_P@55w0rd"}, query-{}, statusCode-201
+Method-DELETE, URL-/users/a242621e-d4f5-447a-b6d1-b2d5d322dab9, request body-{}, query-{}, statusCode-204

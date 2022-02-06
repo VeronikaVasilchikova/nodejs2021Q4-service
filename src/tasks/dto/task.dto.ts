@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID, IsString, IsNumber, IsOptional } from 'class-validator';
+import { IsString, IsNumber, IsOptional } from 'class-validator';
 
 export class TaskDto implements Readonly<TaskDto> {
   @ApiProperty({ required: true, description: 'Task Id' })
-  @IsUUID()
   id: string;
 
   @ApiProperty({ required: true, description: 'Task title' })

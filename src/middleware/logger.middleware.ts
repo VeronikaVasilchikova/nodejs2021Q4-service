@@ -34,7 +34,7 @@ export class LoggerMiddleware implements NestMiddleware {
    * @returns return nothing or throw error
    */
   private writeLogToFile = (originalUrl: string, log: string): void | never => {
-    let filePath = '';
+    let filePath = FILE_PATH.ERROR;
     if (originalUrl.includes('boards') && !originalUrl.includes('tasks')) {
       filePath = FILE_PATH.BOARD;
     }

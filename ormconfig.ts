@@ -1,27 +1,25 @@
 const {
+  POSTGRES_HOST,
   POSTGRES_PORT=5432,
   POSTGRES_USER,
   POSTGRES_PASSWORD,
   POSTGRES_DB
 } = process.env;
-const pathToRootFolder: string = process.argv[2] === 'production' ? 'build' : 'src';
+const pathToRootFolder: string = process.argv[2] === 'production' ? 'dist' : 'src';
 
 export default {
   type: 'postgres',
-  host: 'postgres-db', // for container running
-  // host: 'localHost', // for local running
+  host: POSTGRES_HOST,
   port: +POSTGRES_PORT,
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
   logging: false,
-  entities: [`${pathToRootFolder}/entity/**/*.ts`],
+  entities: [`${pathToRootFolder}/**/*entity.ts`],
   migrations: [`${pathToRootFolder}/migration/**/*.ts`],
-  subscribers: [`${pathToRootFolder}/subscriber/**/*.ts`],
   cli: {
     migrationsDir: `${pathToRootFolder}/migration`,
-    entitiesDir: `${pathToRootFolder}/entity`,
-    subscribersDir: `${pathToRootFolder}/subscriber`
+    entitiesDir: `${pathToRootFolder}/entity`
   },
   synchronize: false
 };

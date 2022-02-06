@@ -1,0 +1,27 @@
+Method-POST, URL-/boards/b31a7713-9591-45aa-8870-604593e77546/tasks, request body-{"title":"Autotest task","order":0,"description":"Lorem ipsum","userId":null,"boardId":null,"columnId":null}, query-{}, statusCode-201
+Method-GET, URL-/boards/b31a7713-9591-45aa-8870-604593e77546/tasks, request body-{}, query-{}, statusCode-200
+Method-GET, URL-/boards/b31a7713-9591-45aa-8870-604593e77546/tasks, request body-{}, query-{}, statusCode-200
+Method-GET, URL-/boards/b31a7713-9591-45aa-8870-604593e77546/tasks/3be4651d-a3ef-4bc9-9260-6f5f49cc4d5a, request body-{}, query-{}, statusCode-200
+Method-POST, URL-/boards/b31a7713-9591-45aa-8870-604593e77546/tasks, request body-{"title":"Autotest task","order":0,"description":"Lorem ipsum","userId":null,"boardId":null,"columnId":null}, query-{}, statusCode-201
+Method-DELETE, URL-/boards/b31a7713-9591-45aa-8870-604593e77546/tasks/e8bae0d7-aa27-451b-9ad0-d33bba395321, request body-{}, query-{}, statusCode-204
+Method-POST, URL-/boards/b31a7713-9591-45aa-8870-604593e77546/tasks, request body-{"title":"Autotest task","order":0,"description":"Lorem ipsum","userId":null,"boardId":null,"columnId":null}, query-{}, statusCode-201
+Method-PUT, URL-/boards/b31a7713-9591-45aa-8870-604593e77546/tasks/ee4bdd3c-a33c-4722-b1d0-ee5df205fa15, request body-{"title":"Autotest updated task","order":0,"description":"Lorem ipsum","userId":null,"boardId":"b31a7713-9591-45aa-8870-604593e77546","columnId":null,"id":"ee4bdd3c-a33c-4722-b1d0-ee5df205fa15"}, query-{}, statusCode-200
+Method-GET, URL-/boards/b31a7713-9591-45aa-8870-604593e77546/tasks/ee4bdd3c-a33c-4722-b1d0-ee5df205fa15, request body-{}, query-{}, statusCode-200
+Method-GET, URL-/boards/b31a7713-9591-45aa-8870-604593e77546/tasks/3be4651d-a3ef-4bc9-9260-6f5f49cc4d5a, request body-{}, query-{}, statusCode-200
+Method-DELETE, URL-/boards/b31a7713-9591-45aa-8870-604593e77546/tasks/3be4651d-a3ef-4bc9-9260-6f5f49cc4d5a, request body-{}, query-{}, statusCode-204
+Method-POST, URL-/boards/85253ab2-9a2e-441a-855a-c0753b217f43/tasks, request body-{"title":"Task #2","order":2,"description":"Lorem ipsum","userId":"a242621e-d4f5-447a-b6d1-b2d5d322dab9","boardId":"85253ab2-9a2e-441a-855a-c0753b217f43"}, query-{}, statusCode-201
+Method-POST, URL-/boards/85253ab2-9a2e-441a-855a-c0753b217f43/tasks, request body-{"title":"Task #1","order":1,"description":"Lorem ipsum","userId":"a242621e-d4f5-447a-b6d1-b2d5d322dab9","boardId":"85253ab2-9a2e-441a-855a-c0753b217f43"}, query-{}, statusCode-201
+Method-POST, URL-/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks, request body-{"title":"Task #1","order":1,"description":"Lorem ipsum","boardId":"6ce7493c-9917-457a-b885-40d0b2076841","userId":null,"columnId":null}, query-{}, statusCode-201
+Method-GET, URL-/boards/85253ab2-9a2e-441a-855a-c0753b217f43/tasks/73f20b31-3dcf-49a3-b5af-2ee9e6ed8ee5, request body-{}, query-{}, statusCode-200
+Method-GET, URL-/boards/85253ab2-9a2e-441a-855a-c0753b217f43/tasks/e513a58a-4f0d-45df-8af2-cf7663844128, request body-{}, query-{}, statusCode-200
+Method-POST, URL-/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks, request body-{"title":"Task #2","order":2,"description":"Lorem ipsum","boardId":"6ce7493c-9917-457a-b885-40d0b2076841","userId":null,"columnId":null}, query-{}, statusCode-201
+Method-DELETE, URL-/boards/85253ab2-9a2e-441a-855a-c0753b217f43/tasks/73f20b31-3dcf-49a3-b5af-2ee9e6ed8ee5, request body-{}, query-{}, statusCode-204
+Method-POST, URL-/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks, request body-{"title":"Task #4","order":4,"description":"Lorem ipsum","boardId":"6ce7493c-9917-457a-b885-40d0b2076841","userId":null,"columnId":null}, query-{}, statusCode-201
+Method-DELETE, URL-/boards/85253ab2-9a2e-441a-855a-c0753b217f43/tasks/e513a58a-4f0d-45df-8af2-cf7663844128, request body-{}, query-{}, statusCode-204
+Method-POST, URL-/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks, request body-{"title":"Task #3","order":3,"description":"Lorem ipsum","boardId":"6ce7493c-9917-457a-b885-40d0b2076841","userId":null,"columnId":null}, query-{}, statusCode-201
+Method-POST, URL-/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks, request body-{"title":"Task #5","order":5,"description":"Lorem ipsum","boardId":"6ce7493c-9917-457a-b885-40d0b2076841","userId":null,"columnId":null}, query-{}, statusCode-201
+Method-GET, URL-/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks/ceeaa291-276b-4702-8c2a-77dca3fc7810, request body-{}, query-{}, statusCode-200
+Method-GET, URL-/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks/f691cd44-3d7a-4801-a2cb-38513aee7f15, request body-{}, query-{}, statusCode-200
+Method-GET, URL-/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks/474e196e-f2a4-4163-a379-4cf57e3f9b67, request body-{}, query-{}, statusCode-200
+Method-GET, URL-/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks/f9dbdd9e-6f59-4d86-9c1e-6682f6365640, request body-{}, query-{}, statusCode-200
+Method-GET, URL-/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks/bcaf8710-6920-4246-b0b4-3981fe8eb12c, request body-{}, query-{}, statusCode-200

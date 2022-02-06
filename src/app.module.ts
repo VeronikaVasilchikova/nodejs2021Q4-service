@@ -41,7 +41,6 @@ import { ColumnsEntity } from './boards/columns.entity';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      dropSchema: true,
       logging: true,
       synchronize: false,
       entities: ['dist/src/**/*.entity.js'],

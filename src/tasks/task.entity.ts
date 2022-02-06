@@ -1,5 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { BoardsEntity } from '../boards/board.entity';
 import { UsersEntity } from '../users/user.entity';
 
@@ -17,18 +22,22 @@ export class TasksEntity {
   @Column({ type: 'varchar', length: 255, default: 'TASK DESCRIPTION' })
   description: string;
 
-  @Column({ type: 'varchar', nullable: true, default: uuidv4() })
+  @ManyToOne(() => UsersEntity, (user) => user.id, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'userId' })
+  @Column({ type: 'varchar', nullable: true, default: null })
   userId: string | null;
 
-  @Column({ type: 'varchar', nullable: true, default: uuidv4() })
+  @ManyToOne(() => BoardsEntity, (board) => board.id, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'boardId' })
+  @Column({ type: 'varchar', nullable: true, default: null })
   boardId: string | null;
 
-  @Column({ type: 'varchar', nullable: true, default: uuidv4() })
+  @Column({ type: 'varchar', nullable: true, default: null })
   columnId: string | null;
-
-  @ManyToOne(() => BoardsEntity, (board) => board.id, { onDelete: 'CASCADE' })
-  board: BoardsEntity;
-
-  @ManyToOne(() => UsersEntity, (user) => user.id)
-  user: UsersEntity;
 }

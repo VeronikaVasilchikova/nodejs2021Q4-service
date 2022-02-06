@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HttpException } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import * as bcryptjs from 'bcryptjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
@@ -15,7 +16,11 @@ export class UsersService {
   ) {}
 
   public async create(createUserDto: CreateUserDto): Promise<UserDto> {
-    const newUser = await this.repo.create(createUserDto);
+    const hashedPassword = await bcryptjs.hash(createUserDto.password, 10);
+    const newUser = await this.repo.create({
+      ...createUserDto,
+      password: hashedPassword,
+    });
     await this.repo.save(newUser);
     return newUser;
   }
@@ -42,9 +47,10 @@ export class UsersService {
     updateUserDto: UpdateUserDto,
   ): Promise<UserDto | never> {
     const userToUpdate = await this.repo.findOne(id);
+    const hashedPassword = await bcryptjs.hash(updateUserDto.password, 10);
     if (!userToUpdate)
       throw new HttpException(`User with id=${id} not found`, 404);
-    await this.repo.update(id, updateUserDto);
+    await this.repo.update(id, { ...updateUserDto, password: hashedPassword });
     const updatedUser = await this.repo.findOne(id);
     if (!updatedUser)
       throw new HttpException(`User with id=${id} not found`, 404);

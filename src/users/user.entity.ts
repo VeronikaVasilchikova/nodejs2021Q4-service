@@ -1,11 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BeforeInsert,
-  BeforeUpdate,
-} from 'typeorm';
-import * as bcryptjs from 'bcryptjs';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class UsersEntity {
@@ -15,21 +8,11 @@ export class UsersEntity {
   @Column({ type: 'varchar', length: 64, default: 'username' })
   name: string;
 
-  @Column({ type: 'varchar', length: 64, default: 'userlogin' })
+  @Column({ type: 'varchar', length: 64, default: 'userlogin', unique: true })
   login: string;
 
   @Column({ type: 'varchar', length: 64, default: 'P@55w0rd' })
   password: string;
-
-  @BeforeInsert()
-  async hashPasswordBeforeInsert() {
-    this.password = await bcryptjs.hash(this.password, 10);
-  }
-
-  @BeforeUpdate()
-  async hashPasswordBeforeUpdate() {
-    this.password = await bcryptjs.hash(this.password, 10);
-  }
 
   /**
    * Creates a copy of the user object, but without the password field

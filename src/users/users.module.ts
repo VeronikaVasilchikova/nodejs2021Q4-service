@@ -5,7 +5,7 @@ import { UsersController } from './users.controller';
 import { UsersEntity } from './user.entity';
 import { TasksService } from '../tasks/tasks.service';
 import { TasksEntity } from '../tasks/task.entity';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [

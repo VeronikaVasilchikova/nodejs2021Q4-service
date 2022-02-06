@@ -20,10 +20,10 @@ export class ColumnsEntity {
 
   @ManyToOne(() => BoardsEntity, (board) => board.columns, {
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'boardId', referencedColumnName: 'id' }])
   board: BoardsEntity;
-
   @Column()
   boardId: string;
 }

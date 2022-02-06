@@ -19,9 +19,21 @@ import { ColumnsEntity } from './boards/columns.entity';
 
 @Module({
   imports: [
+    UsersModule,
+    TasksModule,
+    BoardsModule,
+    AuthModule,
+    SwaggerModule,
+    FilesModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
     }),
+    TypeOrmModule.forFeature([
+      UsersEntity,
+      BoardsEntity,
+      TasksEntity,
+      ColumnsEntity,
+    ]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -29,23 +41,18 @@ import { ColumnsEntity } from './boards/columns.entity';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      logging: false,
-      entities: [UsersEntity, TasksEntity, ColumnsEntity, BoardsEntity],
-      migrations: ['../migration/*.ts'],
-      cli: {
-        migrationsDir: '../migration',
-      },
+      dropSchema: true,
+      logging: true,
       synchronize: false,
+      entities: ['dist/src/**/*.entity.js'],
+      migrations: ['dist/src/migration/*.js'],
+      cli: {
+        migrationsDir: 'dist/src/migration',
+      },
     }),
     ServeStaticModule.forRoot({
       rootPath: path.resolve(__dirname, 'static'),
     }),
-    UsersModule,
-    TasksModule,
-    BoardsModule,
-    AuthModule,
-    SwaggerModule,
-    FilesModule,
   ],
   controllers: [],
   providers: [

@@ -24,19 +24,20 @@ async function bootstrap(useFastify: string | undefined) {
       AppModule,
       new FastifyAdapter(),
     );
+    app.enableCors();
     const document = SwaggerModule.createDocument(app, config, options);
     SwaggerModule.setup('docs', app, document);
     ExtraLogger.clearAllLogFiles();
-    await app.listen(PORT, () => {
+    await app.listen(PORT, '0.0.0.0', () => {
       process.stdout.write(`Server is running on ${PORT} based on fastify \n`);
     });
   } else {
     const app = await NestFactory.create(AppModule);
+    app.enableCors();
     const document = SwaggerModule.createDocument(app, config, options);
-
     SwaggerModule.setup('docs', app, document);
     ExtraLogger.clearAllLogFiles();
-    await app.listen(PORT, () => {
+    await app.listen(PORT, '0.0.0.0', () => {
       process.stdout.write(`Server is running on ${PORT} based on express \n`);
     });
   }

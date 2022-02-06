@@ -20,6 +20,7 @@ import { ValidationPipe } from '../pipes/validation.pipe';
 
 @ApiTags('Boards')
 @Controller('boards')
+@UseGuards(JwtAuthGuard)
 export class BoardsController {
   constructor(private readonly boardsService: BoardsService) {}
 
@@ -27,7 +28,6 @@ export class BoardsController {
   @ApiResponse({ status: 200, type: BoardDto })
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @UseGuards(JwtAuthGuard)
   public async create(
     @Body(new ValidationPipe()) createBoardDto: CreateBoardDto,
   ): Promise<BoardDto> {
@@ -39,7 +39,6 @@ export class BoardsController {
   @ApiResponse({ status: 200, type: [BoardDto] })
   @Get()
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
   public async findAll(): Promise<BoardDto[]> {
     const allBoards = await this.boardsService.findAll();
     return allBoards || [];
@@ -49,7 +48,6 @@ export class BoardsController {
   @ApiResponse({ status: 200, type: BoardDto })
   @Get(':boardId')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
   public async findOne(@Param('boardId') boardId: string): Promise<BoardDto> {
     const board = await this.boardsService.findOne(boardId);
     return board;
@@ -59,7 +57,6 @@ export class BoardsController {
   @ApiResponse({ status: 200, type: BoardDto })
   @Put(':boardId')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(JwtAuthGuard)
   public async update(
     @Param('boardId') boardId: string,
     @Body(new ValidationPipe()) updateBoardDto: UpdateBoardDto,
@@ -75,7 +72,6 @@ export class BoardsController {
   @ApiResponse({ status: 204 })
   @Delete(':boardId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(JwtAuthGuard)
   public async remove(@Param('boardId') boardId: string): Promise<void> {
     await this.boardsService.remove(boardId);
   }

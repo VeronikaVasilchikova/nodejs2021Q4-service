@@ -1,11 +1,12 @@
 FROM node:16.13-alpine
 
-WORKDIR /hapi-server
+WORKDIR /server
 
-COPY package-docker.json ./package.json
+COPY package*.json .
 
-RUN npm install --production
+RUN npm install
 
 COPY . .
 
-CMD ["nodemon", "src/server.ts", "development", "--exitcrash", "-L"]
+# CMD ["nest", "start", "--watch"]
+CMD npm run start:dev

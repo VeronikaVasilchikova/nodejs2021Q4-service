@@ -4,28 +4,42 @@ import {
   DocumentBuilder,
   SwaggerDocumentOptions,
 } from '@nestjs/swagger';
-import 'reflect-metadata';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import ExtraLogger from './extralogger';
 
-async function bootstrap() {
+async function bootstrap(useFastify: string | undefined) {
   const PORT = process.env.PORT || 4000;
-  const app = await NestFactory.create(AppModule);
-  const options: SwaggerDocumentOptions = {
-    deepScanRoutes: true,
-  };
+  const options: SwaggerDocumentOptions = { deepScanRoutes: true };
   const config = new DocumentBuilder()
     .setTitle('NestJS API')
     .setDescription('NestJS API documentation')
     .setVersion('1.0')
     .build();
-  const document = SwaggerModule.createDocument(app, config, options);
+  if (useFastify === 'fastify') {
+    const app = await NestFactory.create<NestFastifyApplication>(
+      AppModule,
+      new FastifyAdapter(),
+    );
+    const document = SwaggerModule.createDocument(app, config, options);
+    SwaggerModule.setup('docs', app, document);
+    ExtraLogger.clearAllLogFiles();
+    await app.listen(PORT, () => {
+      process.stdout.write(`Server is running on ${PORT} based on fastify \n`);
+    });
+  } else {
+    const app = await NestFactory.create(AppModule);
+    const document = SwaggerModule.createDocument(app, config, options);
 
-  SwaggerModule.setup('docs', app, document);
-  ExtraLogger.clearAllLogFiles();
-  await app.listen(PORT, () => {
-    process.stdout.write(`Server is running on ${PORT} \n`);
-  });
+    SwaggerModule.setup('docs', app, document);
+    ExtraLogger.clearAllLogFiles();
+    await app.listen(PORT, () => {
+      process.stdout.write(`Server is running on ${PORT} based on express \n`);
+    });
+  }
 }
 
 // Catch unhandling unexpected exceptions
@@ -46,4 +60,4 @@ process.on('unhandledRejection', (reason: { message: string }): void => {
 // uncomment code below to test 'unhandledRejection'
 // Promise.reject(Error('Oops! This is unhandledRejection!'));
 
-bootstrap();
+bootstrap(process.env.USE_FASTIFY);

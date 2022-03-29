@@ -1,12 +1,12 @@
 version: "3.8"
 services:
-  hapi-server:
-    container_name: hapi-server
+  nestjs-server:
+    container_name: veronika-server
     build:
       context: .
       dockerfile: Dockerfile
     networks:
-      - hapi-network
+      - veronika-network
     depends_on:
       - postgres-db
     expose:
@@ -16,19 +16,18 @@ services:
     environment:
       - ${PORT}
     volumes:
-      - ./logs:/hapi-server/logs
-      - ./nodemon.json:/hapi-server/nodemon.json
-    command: npm run dev
+      - ./logs:/server/logs
+      - ./nodemon.json:/server/nodemon.json
     restart: on-failure
   postgres-db:
-    container_name: hapi-postgres-db
+    container_name: veronika-postgres-db
     build:
       context: ./postgres-database
       dockerfile: Dockerfile
     networks:
-      - hapi-network
+      - veronika-network
     ports:
-      - ${POSTGRES_PORT}-${POSTGRES_PORT}
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -37,8 +36,8 @@ services:
       - ./pgdata:/var/lib/postgresql/data
     restart: on-failure
 networks:
-  hapi-network:
-    name: hapi-network
+  veronika-network:
+    name: veronika-network
     driver: bridge
 volumes:
   pgdata:

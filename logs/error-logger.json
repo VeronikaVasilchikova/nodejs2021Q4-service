@@ -1,0 +1,29 @@
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.883Z","path":"/boards","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.891Z","path":"/users","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.896Z","path":"/boards/12345/tasks","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.906Z","path":"/boards/12345","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.914Z","path":"/users/123","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.918Z","path":"/boards","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.921Z","path":"/boards/12345/tasks/12345","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.924Z","path":"/users","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.928Z","path":"/boards/12345","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.932Z","path":"/boards/12345/tasks","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.937Z","path":"/users/12345","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.942Z","path":"/boards/12345","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:43.946Z","path":"/boards/12345/tasks/12345","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:44.033Z","path":"/users/12345","errorMessage":"User Unauthorized!"}
+{"statusCode":401,"timestamp":"2022-02-06T20:45:44.059Z","path":"/boards/12345/tasks/12345","errorMessage":"User Unauthorized!"}
+Method-POST, URL-/login, request body-{"login":"admin","password":"admin"}, query-{}, statusCode-201
+Method-POST, URL-/login, request body-{"login":"admin","password":"admin"}, query-{}, statusCode-201
+Method-POST, URL-/login, request body-{"login":"admin","password":"admin"}, query-{}, statusCode-201
+{"statusCode":404,"timestamp":"2022-02-06T20:45:44.540Z","path":"/users/01612f27-749f-442b-92f1-94b34d421fe0","errorMessage":"Task with userId=01612f27-749f-442b-92f1-94b34d421fe0 not found"}
+{"statusCode":404,"timestamp":"2022-02-06T20:45:44.702Z","path":"/users/e340c21d-0826-4986-a37a-7304b31e0652","errorMessage":"Task with userId=e340c21d-0826-4986-a37a-7304b31e0652 not found"}
+{"statusCode":404,"timestamp":"2022-02-06T20:45:44.994Z","path":"/users/c8c1ea49-1e3b-40d1-9157-fade9b910772","errorMessage":"Task with userId=c8c1ea49-1e3b-40d1-9157-fade9b910772 not found"}
+{"statusCode":404,"timestamp":"2022-02-06T20:45:45.107Z","path":"/boards/b31a7713-9591-45aa-8870-604593e77546/tasks/3be4651d-a3ef-4bc9-9260-6f5f49cc4d5a","errorMessage":"Task with boardId=b31a7713-9591-45aa-8870-604593e77546 and id=3be4651d-a3ef-4bc9-9260-6f5f49cc4d5a not found"}
+{"statusCode":404,"timestamp":"2022-02-06T20:45:45.149Z","path":"/users/f8305d20-5404-4418-b5b6-86beb74d2b37","errorMessage":"Task with userId=f8305d20-5404-4418-b5b6-86beb74d2b37 not found"}
+{"statusCode":404,"timestamp":"2022-02-06T20:45:45.259Z","path":"/boards/ed367146-4b00-4cac-b5ac-a519e0e8db23","errorMessage":"Board with id=ed367146-4b00-4cac-b5ac-a519e0e8db23 not found"}
+{"statusCode":404,"timestamp":"2022-02-06T20:45:45.568Z","path":"/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks/474e196e-f2a4-4163-a379-4cf57e3f9b67","errorMessage":"Task with boardId=6ce7493c-9917-457a-b885-40d0b2076841 and id=474e196e-f2a4-4163-a379-4cf57e3f9b67 not found"}
+{"statusCode":404,"timestamp":"2022-02-06T20:45:45.570Z","path":"/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks/f691cd44-3d7a-4801-a2cb-38513aee7f15","errorMessage":"Task with boardId=6ce7493c-9917-457a-b885-40d0b2076841 and id=f691cd44-3d7a-4801-a2cb-38513aee7f15 not found"}
+{"statusCode":404,"timestamp":"2022-02-06T20:45:45.573Z","path":"/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks/ceeaa291-276b-4702-8c2a-77dca3fc7810","errorMessage":"Task with boardId=6ce7493c-9917-457a-b885-40d0b2076841 and id=ceeaa291-276b-4702-8c2a-77dca3fc7810 not found"}
+{"statusCode":404,"timestamp":"2022-02-06T20:45:45.576Z","path":"/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks/f9dbdd9e-6f59-4d86-9c1e-6682f6365640","errorMessage":"Task with boardId=6ce7493c-9917-457a-b885-40d0b2076841 and id=f9dbdd9e-6f59-4d86-9c1e-6682f6365640 not found"}
+{"statusCode":404,"timestamp":"2022-02-06T20:45:45.579Z","path":"/boards/6ce7493c-9917-457a-b885-40d0b2076841/tasks/bcaf8710-6920-4246-b0b4-3981fe8eb12c","errorMessage":"Task with boardId=6ce7493c-9917-457a-b885-40d0b2076841 and id=bcaf8710-6920-4246-b0b4-3981fe8eb12c not found"}
